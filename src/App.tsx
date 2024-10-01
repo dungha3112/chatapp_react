@@ -1,13 +1,20 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import ConversationPage from "./pages/conversations/ConversationPage";
+import ConversationChanelPage from "./pages/conversations/ConversationChanelPage";
 
 const router = createBrowserRouter([
-  { path: "/", element: <div>hello</div> },
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
 
-  { path: "/:id", element: <div>Page chanel conversation</div> },
+  {
+    path: "/",
+    element: <ConversationPage />,
+    children: [
+      { path: "/conversation/:id", element: <ConversationChanelPage /> },
+    ],
+  },
 ]);
 
 const App = () => {

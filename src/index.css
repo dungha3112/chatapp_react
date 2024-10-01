@@ -26,3 +26,15 @@ html {
 h1 {
   margin: 0;
 }
+
+/* input:-webkit-autofill {
+  color: #fff;
+  -webkit-box-shadow: 0 0 0 30px #131313 inset;
+  box-shadow: 0 0 0 30px #131313 inset;
+}
+
+input:focus,
+input:active, input: {
+  color: #fff;
+  background-color: #131313;
+} */
