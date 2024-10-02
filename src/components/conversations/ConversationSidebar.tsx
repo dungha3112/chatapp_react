@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ConversationHeaderSidebar,
   ConversationSidebarContainer,
@@ -8,8 +7,12 @@ import {
 import { FiEdit } from "react-icons/fi";
 import conversations from "../../__mocks/conversations";
 import styles from "./index.module.scss";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ConversationSidebar = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   return (
     <ConversationSidebarStyle>
       <ConversationHeaderSidebar>
@@ -21,7 +24,11 @@ const ConversationSidebar = () => {
 
       <ConversationSidebarContainer>
         {conversations.map((conversation) => (
-          <ConversationSidebarItem key={conversation.id}>
+          <ConversationSidebarItem
+            key={conversation.id}
+            onClick={() => navigate(`/conversation/${conversation.id}`)}
+            className={parseInt(id!) === conversation.id ? "actived" : ""}
+          >
             <div className={styles.conversationAvatar}></div>
             <div>
               <span className={styles.conversationName}>

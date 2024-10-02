@@ -12,7 +12,12 @@ export const ConversationSidebarStyle = styled.aside`
   border-right: 1px solid #5454543d;
   overflow-y: scroll;
   &::-webkit-scrollbar {
-    display: none;
+    width: 8px;
+    height: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #151515;
+    border-radius: 10px;
   }
 `;
 
@@ -43,6 +48,10 @@ export const ConversationSidebarItem = styled.div`
   padding: 8px 16px;
   border-bottom: 1px solid #5454543d;
   cursor: pointer;
+
+  &.actived {
+    background-color: #151515;
+  }
 `;
 
 export const ConversationChanelPageStyle = styled.div`
