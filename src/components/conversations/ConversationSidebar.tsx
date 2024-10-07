@@ -5,7 +5,7 @@ import {
   ConversationSidebarStyle,
 } from "../../styles/conversations";
 import { FiEdit } from "react-icons/fi";
-import conversations from "../../__mocks/conversations";
+// import conversations from "../../__mocks/conversations";
 import styles from "./index.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -23,7 +23,7 @@ const ConversationSidebar = () => {
       </ConversationHeaderSidebar>
 
       <ConversationSidebarContainer>
-        {conversations.map((conversation) => (
+        {/* {conversations.map((conversation) => (
           <ConversationSidebarItem
             key={conversation.id}
             onClick={() => navigate(`/conversation/${conversation.id}`)}
@@ -39,7 +39,7 @@ const ConversationSidebar = () => {
               </span>
             </div>
           </ConversationSidebarItem>
-        ))}
+        ))} */}
       </ConversationSidebarContainer>
     </ConversationSidebarStyle>
   );

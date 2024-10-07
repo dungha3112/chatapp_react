@@ -1,18 +1,31 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, InputContainer, InputField, InputLabel } from "../../styles";
 import styles from "./index.module.scss";
-import { Link } from "react-router-dom";
-import { RegisterType } from "../../utils/types";
+import { Link, useNavigate } from "react-router-dom";
+import { CreateUserParams } from "../../utils/types";
+import { postRegisterApi } from "../../utils/api";
+import { useState } from "react";
 
 const RegisterForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterType>();
+  } = useForm<CreateUserParams>();
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const onSubmit: SubmitHandler<RegisterType> = (data) => {
-    console.log(data);
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<CreateUserParams> = async (data) => {
+    try {
+      setLoading(true);
+      await postRegisterApi(data);
+      navigate("/login");
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -56,7 +69,7 @@ const RegisterForm = () => {
       </InputContainer>
 
       <Button type="submit" className={styles.button}>
-        Create a new account
+        {loading ? "Loading ..." : "Create a new account"}
       </Button>
 
       <div className={styles.footer}>

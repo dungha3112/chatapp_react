@@ -1,9 +1,9 @@
-export type LoginType = {
+export type UserCredentialsParams = {
   email: string;
   password: string;
 };
 
-export type RegisterType = LoginType & {
+export type CreateUserParams = UserCredentialsParams & {
   firstName: string;
   lastName: string;
 };
@@ -13,4 +13,12 @@ export type ConversationType = {
   firstName: string;
   lastName: string;
   lastMessageSent: string;
+};
+
+export type UserType = {
+  id: number;
+  email: string;
+  username: string;
+  firstName: string;
+  lastName: string;
 };

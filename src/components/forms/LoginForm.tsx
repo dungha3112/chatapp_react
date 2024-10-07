@@ -1,18 +1,30 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, InputContainer, InputField, InputLabel } from "../../styles";
 import styles from "./index.module.scss";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { LoginType } from "../../utils/types";
+import { UserCredentialsParams } from "../../utils/types";
+import { postLoginApi } from "../../utils/api";
+import { useState } from "react";
 
 const LoginForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginType>();
+  } = useForm<UserCredentialsParams>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<LoginType> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<UserCredentialsParams> = async (data) => {
+    try {
+      setLoading(true);
+      await postLoginApi(data);
+      navigate("/");
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
   };
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -35,7 +47,7 @@ const LoginForm = () => {
       </InputContainer>
 
       <Button className={styles.button} type="submit">
-        Login Now
+        {loading ? "Loading ..." : "Login Now"}
       </Button>
       <div className={styles.footer}>
         <span>You don't have the account?</span>
