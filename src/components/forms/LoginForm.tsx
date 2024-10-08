@@ -4,7 +4,8 @@ import styles from "./index.module.scss";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { UserCredentialsParams } from "../../utils/types";
 import { postLoginApi } from "../../utils/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../utils/hooks/useAuth";
 
 const LoginForm = () => {
   const {
@@ -14,6 +15,8 @@ const LoginForm = () => {
   } = useForm<UserCredentialsParams>();
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  const { user } = useAuth();
 
   const onSubmit: SubmitHandler<UserCredentialsParams> = async (data) => {
     try {
@@ -26,6 +29,10 @@ const LoginForm = () => {
       console.log(error);
     }
   };
+  useEffect(() => {
+    if (user) return navigate("/");
+  }, [navigate, user]);
+
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <InputContainer>

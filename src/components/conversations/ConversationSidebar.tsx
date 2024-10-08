@@ -1,13 +1,11 @@
+import { useState } from "react";
+import { FiEdit } from "react-icons/fi";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   ConversationHeaderSidebar,
   ConversationSidebarContainer,
-  ConversationSidebarItem,
   ConversationSidebarStyle,
 } from "../../styles/conversations";
-import { FiEdit } from "react-icons/fi";
-import styles from "./index.module.scss";
-import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
 import CreateConversationModal from "../modals/CreateConversationModal";
 
 const ConversationSidebar = () => {
@@ -17,7 +15,7 @@ const ConversationSidebar = () => {
 
   return (
     <ConversationSidebarStyle>
-      {showModal && <CreateConversationModal />}
+      {showModal && <CreateConversationModal setShowModal={setShowModal} />}
       <ConversationHeaderSidebar>
         <h1>Conversations</h1>
         <div onClick={() => setShowModal(true)}>

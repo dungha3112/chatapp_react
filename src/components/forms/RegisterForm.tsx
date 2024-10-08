@@ -1,10 +1,10 @@
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Button, InputContainer, InputField, InputLabel } from "../../styles";
-import styles from "./index.module.scss";
-import { Link, useNavigate } from "react-router-dom";
-import { CreateUserParams } from "../../utils/types";
-import { postRegisterApi } from "../../utils/api";
 import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, InputContainer, InputField, InputLabel } from "../../styles";
+import { postRegisterApi } from "../../utils/api";
+import { CreateUserParams } from "../../utils/types";
+import styles from "./index.module.scss";
 
 const RegisterForm = () => {
   const {

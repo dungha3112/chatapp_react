@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { PageProps } from "./styleTypes";
+import { InputContainerProps, PageProps } from "./styleTypes";
+import { fadeInUpwards } from "./keyframes";
 
-export const InputContainer = styled.div`
-  background-color: #131313;
+export const InputContainer = styled.div<InputContainerProps>`
+  background-color: ${(prop) => prop.backgroundColor || "#131313"};
   padding: 12px 16px;
   border-radius: 10px;
   width: 100%;
@@ -10,7 +11,7 @@ export const InputContainer = styled.div`
 
 export const InputField = styled.input`
   font-family: "Inter";
-  background-color: #131313;
+  background-color: inherit;
   outline: none;
   border: none;
   color: #fff;
@@ -22,9 +23,9 @@ export const InputField = styled.input`
 
 export const InputLabel = styled.label`
   display: block;
-  font-size: 14px;
-  font-weight: bold;
   color: #8f8f8f;
+  font-size: 14px;
+  margin: 4px 0;
 `;
 
 export const Button = styled.button`
@@ -60,4 +61,49 @@ export const OverlayStyle = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 9999;
+`;
+
+type ModalProps = Partial<{
+  showModal: boolean;
+}>;
+
+export const ModalContainerStyle = styled.div<ModalProps>`
+  position: relative;
+  background-color: #121212;
+  width: 650px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  animation: ${fadeInUpwards} 500ms ease;
+`;
+
+export const ModalHeaderStyle = styled.header`
+  width: 100%;
+  padding: 0 24px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 28px;
+  & h2 {
+    font-weight: 500;
+    margin: 0;
+  }
+`;
+
+export const ModalContentBodyStyle = styled.div`
+  padding: 24px;
+  position: relative;
+`;
+
+export const TextField = styled.textarea`
+  font-family: "Inter";
+  outline: none;
+  border: none;
+  background-color: inherit;
+  color: #fff;
+  font-size: 18px;
+  width: 100%;
+  padding: 0;
+  margin: 4px 0;
+  resize: none;
 `;
