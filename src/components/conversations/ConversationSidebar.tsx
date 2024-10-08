@@ -5,19 +5,22 @@ import {
   ConversationSidebarStyle,
 } from "../../styles/conversations";
 import { FiEdit } from "react-icons/fi";
-// import conversations from "../../__mocks/conversations";
 import styles from "./index.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import CreateConversationModal from "../modals/CreateConversationModal";
 
 const ConversationSidebar = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
     <ConversationSidebarStyle>
+      {showModal && <CreateConversationModal />}
       <ConversationHeaderSidebar>
         <h1>Conversations</h1>
-        <div>
+        <div onClick={() => setShowModal(true)}>
           <FiEdit size={24} />
         </div>
       </ConversationHeaderSidebar>

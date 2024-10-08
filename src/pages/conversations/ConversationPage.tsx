@@ -1,9 +1,12 @@
 import { Page } from "../../styles";
 import ConversationSidebar from "../../components/conversations/ConversationSidebar";
 import { Outlet, useParams } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../utils/contexts/AuthContext";
 
 const ConversationPage = () => {
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
 
   return (
     <Page display="flex" justifyContent="space-between" alignItems="center">
@@ -20,7 +23,7 @@ const ConversationPage = () => {
             width: "100%",
           }}
         >
-          New a conversation
+          Hi {user?.firstName} {user?.lastName}
         </div>
       )}
     </Page>

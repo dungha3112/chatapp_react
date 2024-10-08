@@ -1,12 +1,12 @@
+import { ReactNode, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import ConversationPage from "./pages/conversations/ConversationPage";
 import ConversationChanelPage from "./pages/conversations/ConversationChanelPage";
-import { ReactNode, useState } from "react";
+import ConversationPage from "./pages/conversations/ConversationPage";
 import { AuthContext } from "./utils/contexts/AuthContext";
 import { UserType } from "./utils/types";
-import { useAuth } from "./utils/hooks/useAuth";
 
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -14,14 +14,19 @@ const router = createBrowserRouter([
 
   {
     path: "/",
-    element: <ConversationPage />,
+    element: (
+      <AuthenticatedRoute>
+        <ConversationPage />
+      </AuthenticatedRoute>
+    ),
     children: [
       { path: "/conversation/:id", element: <ConversationChanelPage /> },
     ],
   },
 ]);
+
 const AppWithProviders = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuth();
+  const [user, setUser] = useState<UserType>();
 
   return (
     <AuthContext.Provider value={{ user, updateAuthUser: setUser }}>

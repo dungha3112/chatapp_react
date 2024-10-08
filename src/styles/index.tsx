@@ -48,3 +48,16 @@ export const Page = styled.div<PageProps>`
   justify-content: ${({ justifyContent }) => justifyContent};
   align-items: ${({ alignItems }) => alignItems};
 `;
+
+export const OverlayStyle = styled.div`
+  height: 100%;
+  width: 100%;
+  background-color: #000000e3;
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+`;
