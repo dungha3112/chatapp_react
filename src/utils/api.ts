@@ -1,5 +1,10 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { CreateUserParams, UserCredentialsParams, UserType } from "./types";
+import {
+  ConversationType,
+  CreateUserParams,
+  UserCredentialsParams,
+  UserType,
+} from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
 
@@ -17,3 +22,6 @@ export const postLoginApi = (data: UserCredentialsParams) => {
 };
 
 export const getStatusApi = () => axiosClient.get<UserType>("auth/status");
+
+export const getConversationsApi = () =>
+  axiosClient.get<ConversationType[]>("conversations");

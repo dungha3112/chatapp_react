@@ -10,9 +10,17 @@ export type CreateUserParams = UserCredentialsParams & {
 
 export type ConversationType = {
   id: number;
-  firstName: string;
-  lastName: string;
-  lastMessageSent: string;
+  createdAt: string;
+  lastMessageSentAt: string;
+  lastMessageSent: MessageType;
+};
+
+export type MessageType = {
+  id: number;
+  content: string;
+  createdAt: string;
+  author: UserType;
+  conversation: ConversationType;
 };
 
 export type UserType = {
