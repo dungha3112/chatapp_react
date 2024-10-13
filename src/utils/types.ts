@@ -13,6 +13,8 @@ export type ConversationType = {
   createdAt: string;
   lastMessageSentAt: string;
   lastMessageSent: MessageType;
+  creator: UserType;
+  recipient: UserType;
 };
 
 export type MessageType = {
