@@ -22,7 +22,6 @@ export type MessageType = {
   content: string;
   createdAt: string;
   author: UserType;
-  conversation: ConversationType;
 };
 
 export type UserType = {

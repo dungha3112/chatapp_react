@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import {
   ConversationType,
   CreateUserParams,
+  MessageType,
   UserCredentialsParams,
   UserType,
 } from "./types";
@@ -13,15 +14,19 @@ const axiosClient = axios.create({
   withCredentials: true,
 } as AxiosRequestConfig);
 
-export const postRegisterApi = (data: CreateUserParams) => {
-  return axiosClient.post("auth/register", data);
+export const postRegisterApi = async (data: CreateUserParams) => {
+  return await axiosClient.post("auth/register", data);
 };
 
-export const postLoginApi = (data: UserCredentialsParams) => {
-  return axiosClient.post("auth/login", data);
+export const postLoginApi = async (data: UserCredentialsParams) => {
+  return await axiosClient.post("auth/login", data);
 };
 
-export const getStatusApi = () => axiosClient.get<UserType>("auth/status");
+export const getStatusApi = async () =>
+  await axiosClient.get<UserType>("auth/status");
 
-export const getConversationsApi = () =>
-  axiosClient.get<ConversationType[]>("conversations");
+export const getConversationsApi = async () =>
+  await axiosClient.get<ConversationType[]>("conversations");
+
+export const getMessagesByConversationId = async (id: number) =>
+  await axiosClient.get<MessageType[]>(`conversations/${id}/messages`);
