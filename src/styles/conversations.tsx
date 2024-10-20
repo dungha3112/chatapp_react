@@ -56,5 +56,6 @@ export const ConversationSidebarItem = styled.div`
 
 export const ConversationChanelPageStyle = styled.div`
   height: 100%;
+  width: 100%;
   margin-left: ${WIDTH_SIDE_BAR}px;
 `;

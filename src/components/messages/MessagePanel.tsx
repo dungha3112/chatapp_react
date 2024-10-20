@@ -2,11 +2,13 @@ import React from "react";
 import { MessagePanelStyle } from "../../styles/messages";
 import MessageContainer from "./MessageContainer";
 import MessageInputFiled from "./MessageInputFiled";
+import { MessageType } from "../../utils/types";
 
-const MessagePanel = () => {
+type Props = { messages: MessageType[] };
+const MessagePanel = ({ messages }: Props) => {
   return (
     <MessagePanelStyle>
-      <MessageContainer />
+      <MessageContainer messages={messages} />
 
       <MessageInputFiled />
     </MessagePanelStyle>
