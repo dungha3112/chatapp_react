@@ -31,6 +31,7 @@ export const ConversationHeaderSidebar = styled.header`
   height: 80px;
   padding: 0 18px;
   border-bottom: 1px solid #5454543d;
+  border-right: 1px solid #5454543d;
 
   & h1 {
     font-weight: 500;

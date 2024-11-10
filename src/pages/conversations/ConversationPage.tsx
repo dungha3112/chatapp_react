@@ -17,13 +17,14 @@ const ConversationPage = () => {
         <div
           style={{
             marginLeft: "250px",
-            justifyContent: "center",
             display: "flex",
-            alignItems: "center",
             width: "100%",
+            justifyContent: "center",
           }}
         >
-          Hi {user?.firstName} {user?.lastName}
+          <div>
+            Hi {user?.firstName} {user?.lastName}
+          </div>
         </div>
       )}
     </Page>

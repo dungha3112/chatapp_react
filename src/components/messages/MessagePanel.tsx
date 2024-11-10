@@ -1,16 +1,26 @@
-import React from "react";
-import { MessagePanelStyle } from "../../styles/messages";
+import {
+  MessagePanelBody,
+  MessagePanelFooter,
+  MessagePanelStyle,
+} from "../../styles/messages";
+import { MessageType } from "../../utils/types";
 import MessageContainer from "./MessageContainer";
 import MessageInputFiled from "./MessageInputFiled";
-import { MessageType } from "../../utils/types";
+import MessagePanelHeader from "./MessagePanelHeader";
 
 type Props = { messages: MessageType[] };
 const MessagePanel = ({ messages }: Props) => {
   return (
     <MessagePanelStyle>
-      <MessageContainer messages={messages} />
+      <MessagePanelHeader />
 
-      <MessageInputFiled />
+      <MessagePanelBody>
+        <MessageContainer messages={messages} />
+      </MessagePanelBody>
+
+      <MessagePanelFooter>
+        <MessageInputFiled />
+      </MessagePanelFooter>
     </MessagePanelStyle>
   );
 };

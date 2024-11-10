@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import MessagePanel from "../../components/messages/MessagePanel";
 import { ConversationChanelPageStyle } from "../../styles/conversations";
 import { getMessagesByConversationId } from "../../utils/api";
-import MessagePanel from "../../components/messages/MessagePanel";
 import { MessageType } from "../../utils/types";
 
 const ConversationChanelPage = () => {
