@@ -14,6 +14,7 @@ export const MessagePanelHeaderStyle = styled.div`
   width: 100%;
   flex-shrink: 0;
   border-bottom: 1px solid #49494925;
+  background-color: #151515;
   display: flex;
   align-items: center;
   justify-content: space-between;

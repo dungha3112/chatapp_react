@@ -16,7 +16,7 @@ export const ConversationSidebarStyle = styled.aside`
     height: 5px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #151515;
+    background-color: #101010;
     border-radius: 10px;
   }
 `;

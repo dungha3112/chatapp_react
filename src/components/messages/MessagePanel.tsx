@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   MessagePanelBody,
   MessagePanelFooter,
@@ -10,6 +11,13 @@ import MessagePanelHeader from "./MessagePanelHeader";
 
 type Props = { messages: MessageType[] };
 const MessagePanel = ({ messages }: Props) => {
+  const [content, setContent] = useState("");
+
+  const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(123);
+  };
+
   return (
     <MessagePanelStyle>
       <MessagePanelHeader />
@@ -19,7 +27,11 @@ const MessagePanel = ({ messages }: Props) => {
       </MessagePanelBody>
 
       <MessagePanelFooter>
-        <MessageInputFiled />
+        <MessageInputFiled
+          content={content}
+          setContent={setContent}
+          sendMessage={sendMessage}
+        />
       </MessagePanelFooter>
     </MessagePanelStyle>
   );

@@ -31,3 +31,8 @@ export type UserType = {
   firstName: string;
   lastName: string;
 };
+
+export type MessageEventPayload = {
+  message: MessageType;
+  conversation: ConversationType;
+};
