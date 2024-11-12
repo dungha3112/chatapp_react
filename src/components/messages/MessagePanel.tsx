@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   MessagePanelBody,
   MessagePanelFooter,
   MessagePanelStyle,
 } from "../../styles/messages";
+import { postMessageApi } from "../../utils/api";
 import { MessageType } from "../../utils/types";
 import MessageContainer from "./MessageContainer";
 import MessageInputFiled from "./MessageInputFiled";
@@ -12,10 +14,17 @@ import MessagePanelHeader from "./MessagePanelHeader";
 type Props = { messages: MessageType[] };
 const MessagePanel = ({ messages }: Props) => {
   const [content, setContent] = useState("");
+  const { id } = useParams();
 
-  const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+  const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(123);
+    if (!id || !content) return;
+    try {
+      await postMessageApi(content, parseInt(id));
+      setContent("");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

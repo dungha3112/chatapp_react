@@ -30,3 +30,6 @@ export const getConversationsApi = async () =>
 
 export const getMessagesByConversationId = async (id: number) =>
   await axiosClient.get<MessageType[]>(`conversations/${id}/messages`);
+
+export const postMessageApi = async (content: string, id: number) =>
+  await axiosClient.post(`conversations/${id}/messages`, { content });
