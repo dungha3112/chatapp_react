@@ -7,12 +7,17 @@ import {
   TextField,
 } from "../../styles";
 import styles from "./index.module.scss";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store";
+import { addConversation } from "../../store/conversationSlice";
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>;
 };
 
 const CreateConversationForm = ({ setShowModal }: Props) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };

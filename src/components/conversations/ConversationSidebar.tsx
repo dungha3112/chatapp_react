@@ -1,19 +1,19 @@
 import { useContext, useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { AppDispatch, RootState } from "../../store";
+import { fetchConversationsThunk } from "../../store/conversationSlice";
 import {
   ConversationHeaderSidebar,
   ConversationSidebarContainer,
   ConversationSidebarItem,
   ConversationSidebarStyle,
 } from "../../styles/conversations";
-import CreateConversationModal from "../modals/CreateConversationModal";
-import { ConversationType } from "../../utils/types";
-import { getConversationsApi } from "../../utils/api";
-import styles from "./index.module.scss";
 import { AuthContext } from "../../utils/contexts/AuthContext";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store";
+import { ConversationType } from "../../utils/types";
+import CreateConversationModal from "../modals/CreateConversationModal";
+import styles from "./index.module.scss";
 
 const ConversationSidebar = () => {
   const { user } = useContext(AuthContext);
@@ -25,19 +25,15 @@ const ConversationSidebar = () => {
   );
   const dispatch = useDispatch<AppDispatch>();
 
-  // const [conversations, setConversation] = useState<ConversationType[]>([]);
-
   const getDisplayUser = (conversation: ConversationType) => {
     return conversation.creator.id === user?.id
       ? conversation.recipient
       : conversation.creator;
   };
 
-  // useEffect(() => {
-  //   getConversationsApi()
-  //     .then((res) => setConversation(res.data))
-  //     .catch((err) => console.log(err));
-  // }, []);
+  useEffect(() => {
+    dispatch(fetchConversationsThunk());
+  }, [dispatch]);
 
   return (
     <ConversationSidebarStyle>
