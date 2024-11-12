@@ -9,7 +9,7 @@ const ConversationPage = () => {
   const { user } = useContext(AuthContext);
 
   return (
-    <Page display="flex" justifyContent="space-between" alignItems="center">
+    <Page $display="flex" $justifyContent="space-between" $alignItems="center">
       <ConversationSidebar />
       {id ? (
         <Outlet />

@@ -19,13 +19,13 @@ const CreateConversationForm = ({ setShowModal }: Props) => {
 
   return (
     <form className={styles.createConversationForm} onSubmit={onSubmit}>
-      <InputContainer backgroundColor="#161616">
+      <InputContainer $backgroundColor="#161616">
         <InputLabel htmlFor="username">Recipient</InputLabel>
         <InputField id="username" />
       </InputContainer>
 
       <InputContainer
-        backgroundColor="#161616"
+        $backgroundColor="#161616"
         className={styles.messageOptions}
       >
         <InputLabel htmlFor="message">Message (optional)</InputLabel>

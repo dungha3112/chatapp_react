@@ -3,7 +3,7 @@ import { InputContainerProps, PageProps } from "./styleTypes";
 import { fadeInUpwards } from "./keyframes";
 
 export const InputContainer = styled.div<InputContainerProps>`
-  background-color: ${(prop) => prop.backgroundColor || "#131313"};
+  background-color: ${({ $backgroundColor }) => $backgroundColor || "#131313"};
   padding: 12px 16px;
   border-radius: 10px;
   width: 100%;
@@ -45,9 +45,9 @@ export const Button = styled.button`
 export const Page = styled.div<PageProps>`
   height: 100%;
   background-color: #1a1a1a;
-  display: ${({ display }) => display};
-  justify-content: ${({ justifyContent }) => justifyContent};
-  align-items: ${({ alignItems }) => alignItems};
+  display: ${({ $display }) => $display};
+  justify-content: ${({ $justifyContent }) => $justifyContent};
+  align-items: ${({ $alignItems }) => $alignItems};
 `;
 
 export const OverlayStyle = styled.div`

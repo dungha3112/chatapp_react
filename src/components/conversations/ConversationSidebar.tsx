@@ -12,14 +12,20 @@ import { ConversationType } from "../../utils/types";
 import { getConversationsApi } from "../../utils/api";
 import styles from "./index.module.scss";
 import { AuthContext } from "../../utils/contexts/AuthContext";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store";
 
 const ConversationSidebar = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { id } = useParams();
   const [showModal, setShowModal] = useState<boolean>(false);
+  const { conversations } = useSelector(
+    (state: RootState) => state.conversation
+  );
+  const dispatch = useDispatch<AppDispatch>();
 
-  const [conversations, setConversation] = useState<ConversationType[]>([]);
+  // const [conversations, setConversation] = useState<ConversationType[]>([]);
 
   const getDisplayUser = (conversation: ConversationType) => {
     return conversation.creator.id === user?.id
@@ -27,11 +33,11 @@ const ConversationSidebar = () => {
       : conversation.creator;
   };
 
-  useEffect(() => {
-    getConversationsApi()
-      .then((res) => setConversation(res.data))
-      .catch((err) => console.log(err));
-  }, []);
+  // useEffect(() => {
+  //   getConversationsApi()
+  //     .then((res) => setConversation(res.data))
+  //     .catch((err) => console.log(err));
+  // }, []);
 
   return (
     <ConversationSidebarStyle>

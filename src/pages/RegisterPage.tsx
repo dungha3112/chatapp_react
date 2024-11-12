@@ -13,7 +13,7 @@ const RegisterPage = () => {
   }, [navigate, user]);
 
   return (
-    <Page display="flex" justifyContent="center" alignItems="center">
+    <Page $display="flex" $justifyContent="center" $alignItems="center">
       <RegisterForm />
     </Page>
   );

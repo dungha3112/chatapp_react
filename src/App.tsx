@@ -6,8 +6,10 @@ import RegisterPage from "./pages/RegisterPage";
 import ConversationChanelPage from "./pages/conversations/ConversationChanelPage";
 import ConversationPage from "./pages/conversations/ConversationPage";
 import { AuthContext } from "./utils/contexts/AuthContext";
-import { UserType } from "./utils/types";
 import { socket, SocketContext } from "./utils/contexts/SocketContext";
+import { UserType } from "./utils/types";
+import { Provider as ReduxProvider } from "react-redux";
+import { store } from "./store";
 
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -30,9 +32,13 @@ const AppWithProviders = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserType>();
 
   return (
-    <AuthContext.Provider value={{ user, updateAuthUser: setUser }}>
-      <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
-    </AuthContext.Provider>
+    <ReduxProvider store={store}>
+      <AuthContext.Provider value={{ user, updateAuthUser: setUser }}>
+        <SocketContext.Provider value={socket}>
+          {children}
+        </SocketContext.Provider>
+      </AuthContext.Provider>
+    </ReduxProvider>
   );
 };
 

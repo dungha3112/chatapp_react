@@ -13,7 +13,7 @@ const LoginPage = () => {
   }, [navigate, user]);
 
   return (
-    <Page display="flex" justifyContent="center" alignItems="center">
+    <Page $display="flex" $justifyContent="center" $alignItems="center">
       <LoginForm />
     </Page>
   );
