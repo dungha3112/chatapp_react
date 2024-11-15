@@ -32,6 +32,13 @@ export type MessageType = {
   content: string;
   createdAt: string;
   author: UserType;
+  conversation: ConversationMessage;
+};
+
+//ConversationMessage
+export type ConversationMessage = {
+  id: number;
+  messages: MessageType[];
 };
 
 //UserType
@@ -47,4 +54,10 @@ export type UserType = {
 export type MessageEventPayload = {
   message: MessageType;
   conversation: ConversationType;
+};
+
+// FetchMessagePayload
+export type FetchMessagePayload = {
+  id: number;
+  messages: MessageType[];
 };

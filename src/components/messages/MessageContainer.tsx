@@ -1,4 +1,7 @@
+import moment from "moment";
 import { useContext, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import {
   MessageContainerStyle,
   MessageItemAvatar,
@@ -7,16 +10,21 @@ import {
   MessageItemDetails,
   MessageItemHeader,
 } from "../../styles/messages";
-import { MessageType } from "../../utils/types";
-import moment from "moment";
 import { AuthContext } from "../../utils/contexts/AuthContext";
+import { useParams } from "react-router-dom";
 
-type Props = { messages: MessageType[] };
-const MessageContainer = ({ messages }: Props) => {
+const MessageContainer = () => {
   const { user } = useContext(AuthContext);
+  const { id } = useParams();
+
+  const conversationMessages = useSelector((state: RootState) => state.message);
+
+  const message = conversationMessages.messages.find(
+    (m) => m.id === parseInt(id!)
+  );
 
   const formatMessages = () => {
-    return messages.map((m, index, arr) => {
+    return message?.messages.map((m, index, arr) => {
       const current = arr[index];
       const next = arr[index + 1];
 
@@ -79,10 +87,8 @@ const MessageContainer = ({ messages }: Props) => {
   };
 
   useEffect(() => {
-    if (messages.length > 0) {
-      formatMessages();
-    }
-  }, [messages]);
+    formatMessages();
+  }, []);
 
   return <MessageContainerStyle>{formatMessages()}</MessageContainerStyle>;
 };

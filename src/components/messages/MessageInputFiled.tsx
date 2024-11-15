@@ -3,6 +3,7 @@ import {
   MessageInputContainer,
   MessageInputStyle,
 } from "../../styles/messages";
+import styles from "./index.module.scss";
 
 type Props = {
   content: string;
@@ -13,7 +14,7 @@ type Props = {
 const MessageInputFiled = ({ content, setContent, sendMessage }: Props) => {
   return (
     <MessageInputContainer>
-      <form onSubmit={sendMessage}>
+      <form onSubmit={sendMessage} className={styles.form}>
         <MessageInputStyle
           value={content}
           onChange={(e) => setContent(e.target.value)}

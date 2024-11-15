@@ -6,13 +6,11 @@ import {
   MessagePanelStyle,
 } from "../../styles/messages";
 import { postMessageApi } from "../../utils/api";
-import { MessageType } from "../../utils/types";
 import MessageContainer from "./MessageContainer";
 import MessageInputFiled from "./MessageInputFiled";
 import MessagePanelHeader from "./MessagePanelHeader";
 
-type Props = { messages: MessageType[] };
-const MessagePanel = ({ messages }: Props) => {
+const MessagePanel = () => {
   const [content, setContent] = useState("");
   const { id } = useParams();
 
@@ -32,7 +30,7 @@ const MessagePanel = ({ messages }: Props) => {
       <MessagePanelHeader />
 
       <MessagePanelBody>
-        <MessageContainer messages={messages} />
+        <MessageContainer />
       </MessagePanelBody>
 
       <MessagePanelFooter>

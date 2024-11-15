@@ -1,11 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import conversationReducer from "./conversationSlice";
+import messageReducer from "./messages/messageSlice";
 
 export const store = configureStore({
-  reducer: { conversation: conversationReducer },
+  reducer: {
+    conversation: conversationReducer,
+    message: messageReducer,
+  },
   middleware(getDefaultMiddleware) {
     return getDefaultMiddleware({ serializableCheck: false });
   },
+  devTools: true,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

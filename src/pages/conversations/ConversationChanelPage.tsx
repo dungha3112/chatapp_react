@@ -1,44 +1,44 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import MessagePanel from "../../components/messages/MessagePanel";
+import { AppDispatch } from "../../store";
+import { updateConversation } from "../../store/conversationSlice";
+import { addMessage } from "../../store/messages/messageSlice";
+import { fetchMessagesThunk } from "../../store/messages/messageThunk";
 import { ConversationChanelPageStyle } from "../../styles/conversations";
-import { getMessagesByConversationId } from "../../utils/api";
-import { MessageEventPayload, MessageType } from "../../utils/types";
 import { SocketContext } from "../../utils/contexts/SocketContext";
+import { MessageEventPayload } from "../../utils/types";
 
 const ConversationChanelPage = () => {
   const socket = useContext(SocketContext);
+  const dispatch = useDispatch<AppDispatch>();
 
   const { id } = useParams();
-  const [messages, setMessages] = useState<MessageType[]>([]);
 
   useEffect(() => {
     if (id) {
-      getMessagesByConversationId(parseInt(id))
-        .then((res) => setMessages(res.data))
-        .catch((err) => console.log(err));
+      dispatch(fetchMessagesThunk(parseInt(id)));
     }
-  }, [id]);
+  }, [id, dispatch]);
 
   useEffect(() => {
     socket.on("connected", () => {
       console.log("Connected ...");
     });
     socket.on("createMessageToClientSide", (payload: MessageEventPayload) => {
-      console.log(payload);
-      if (parseInt(id!) === payload.conversation.id) {
-        setMessages((prev) => [payload.message, ...prev]);
-      }
+      dispatch(addMessage(payload));
+      dispatch(updateConversation(payload.conversation));
     });
     return () => {
       socket.off("connected");
       socket.off("createMessageToClientSide");
     };
-  }, [socket, id]);
+  }, [socket, dispatch]);
 
   return (
     <ConversationChanelPageStyle>
-      <MessagePanel messages={messages} />
+      <MessagePanel />
     </ConversationChanelPageStyle>
   );
 };

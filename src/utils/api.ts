@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import {
   ConversationType,
   CreateUserParams,
-  MessageType,
+  FetchMessagePayload,
   UserCredentialsParams,
   UserType,
 } from "./types";
@@ -28,8 +28,8 @@ export const getStatusApi = async () =>
 export const getConversationsApi = async () =>
   await axiosClient.get<ConversationType[]>("conversations");
 
-export const getMessagesByConversationId = async (id: number) =>
-  await axiosClient.get<MessageType[]>(`conversations/${id}/messages`);
+export const getMessagesByConversationIdApi = async (id: number) =>
+  await axiosClient.get<FetchMessagePayload>(`conversations/${id}/messages`);
 
 export const postMessageApi = async (content: string, id: number) =>
   await axiosClient.post(`conversations/${id}/messages`, { content });
