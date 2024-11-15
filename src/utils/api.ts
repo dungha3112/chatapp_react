@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import {
+  CreateConversationParams,
   ConversationType,
   CreateUserParams,
   FetchMessagePayload,
@@ -31,5 +32,8 @@ export const getConversationsApi = async () =>
 export const getMessagesByConversationIdApi = async (id: number) =>
   await axiosClient.get<FetchMessagePayload>(`conversations/${id}/messages`);
 
-export const postMessageApi = async (content: string, id: number) =>
+export const postNewMessageApi = async (content: string, id: number) =>
   await axiosClient.post(`conversations/${id}/messages`, { content });
+
+export const postNewConversationApi = async (data: CreateConversationParams) =>
+  await axiosClient.post<ConversationType>(`conversations/`, data);

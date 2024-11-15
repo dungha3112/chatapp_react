@@ -23,6 +23,12 @@ const ConversationChanelPage = () => {
   }, [id, dispatch]);
 
   useEffect(() => {
+    socket.emit("onConversationJoin", {
+      conversationId: parseInt(id!),
+    });
+  }, [socket, id]);
+
+  useEffect(() => {
     socket.on("connected", () => {
       console.log("Connected ...");
     });

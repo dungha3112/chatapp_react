@@ -5,7 +5,7 @@ import {
   MessagePanelFooter,
   MessagePanelStyle,
 } from "../../styles/messages";
-import { postMessageApi } from "../../utils/api";
+import { postNewMessageApi } from "../../utils/api";
 import MessageContainer from "./MessageContainer";
 import MessageInputFiled from "./MessageInputFiled";
 import MessagePanelHeader from "./MessagePanelHeader";
@@ -18,7 +18,7 @@ const MessagePanel = () => {
     e.preventDefault();
     if (!id || !content) return;
     try {
-      await postMessageApi(content, parseInt(id));
+      await postNewMessageApi(content, parseInt(id));
       setContent("");
     } catch (error) {
       console.log(error);

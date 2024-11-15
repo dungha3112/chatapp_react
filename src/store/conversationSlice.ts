@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ConversationType } from "../utils/types";
-import { getConversationsApi } from "../utils/api";
+import { ConversationType, CreateConversationParams } from "../utils/types";
+import { getConversationsApi, postNewConversationApi } from "../utils/api";
 
 export interface ConversationsState {
   conversations: ConversationType[];
@@ -16,6 +16,13 @@ export const fetchConversationsThunk = createAsyncThunk(
   "conversations/fetch",
   async () => {
     return await getConversationsApi();
+  }
+);
+
+export const createConversationThunk = createAsyncThunk(
+  "conversations/create",
+  async (data: CreateConversationParams) => {
+    return await postNewConversationApi(data);
   }
 );
 
@@ -45,6 +52,9 @@ export const conversationSlice = createSlice({
       .addCase(fetchConversationsThunk.fulfilled, (state, action) => {
         state.conversations = action.payload.data;
         state.loading = false;
+      })
+      .addCase(createConversationThunk.fulfilled, (state, action) => {
+        state.conversations.unshift(action.payload.data);
       });
   },
 });
