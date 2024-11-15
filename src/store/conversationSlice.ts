@@ -22,7 +22,11 @@ export const fetchConversationsThunk = createAsyncThunk(
 export const createConversationThunk = createAsyncThunk(
   "conversations/create",
   async (data: CreateConversationParams) => {
-    return await postNewConversationApi(data);
+    try {
+      return await postNewConversationApi(data);
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
   }
 );
 

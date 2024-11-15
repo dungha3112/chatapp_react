@@ -29,23 +29,15 @@ const CreateConversationForm = ({ setShowModal }: Props) => {
   const navigate = useNavigate();
 
   const onSubmit = async (data: CreateConversationParams) => {
-    return dispatch(createConversationThunk(data))
+    return await dispatch(createConversationThunk(data))
       .unwrap()
       .then(({ data }) => {
         setShowModal(false);
         navigate(`/conversation/${data.id}`);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
-
-    // try {
-    //   const res = await dispatch(createConversationThunk(data)).unwrap();
-    //   navigate(`/conversation/${res.data.id}`);
-    //   setShowModal(false);
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   return (

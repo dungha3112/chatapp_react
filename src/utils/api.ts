@@ -35,5 +35,9 @@ export const getMessagesByConversationIdApi = async (id: number) =>
 export const postNewMessageApi = async (content: string, id: number) =>
   await axiosClient.post(`conversations/${id}/messages`, { content });
 
-export const postNewConversationApi = async (data: CreateConversationParams) =>
-  await axiosClient.post<ConversationType>(`conversations/`, data);
+export const postNewConversationApi = async (
+  data: CreateConversationParams
+) => {
+  const res = await axiosClient.post<ConversationType>(`conversations/`, data);
+  return res;
+};
