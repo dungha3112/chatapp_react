@@ -3,7 +3,6 @@ import { FiEdit } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
-import { fetchConversationsThunk } from "../../store/conversationSlice";
 import {
   ConversationHeaderSidebar,
   ConversationSidebarContainer,
@@ -14,6 +13,7 @@ import { AuthContext } from "../../utils/contexts/AuthContext";
 import { ConversationType } from "../../utils/types";
 import CreateConversationModal from "../modals/CreateConversationModal";
 import styles from "./index.module.scss";
+import { fetchConversationsThunk } from "../../store/conversations/conversationThunk";
 
 const ConversationSidebar = () => {
   const { user } = useContext(AuthContext);

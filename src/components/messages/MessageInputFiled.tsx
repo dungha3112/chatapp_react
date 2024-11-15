@@ -9,18 +9,25 @@ type Props = {
   content: string;
   setContent: Dispatch<SetStateAction<string>>;
   sendMessage: (e: React.FormEvent<HTMLFormElement>) => void;
+  sendTypingStatus: () => void;
 };
 
-const MessageInputFiled = ({ content, setContent, sendMessage }: Props) => {
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {};
-
+const MessageInputFiled = ({
+  content,
+  setContent,
+  sendMessage,
+  sendTypingStatus,
+}: Props) => {
+  const changeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setContent(e.target.value);
+  };
   return (
     <MessageInputContainer>
       <form onSubmit={sendMessage} className={styles.form}>
         <MessageInputStyle
           value={content}
-          onChange={(e) => setContent(e.target.value)}
-          onKeyDown={handleOnKeyDown}
+          onChange={changeContent}
+          onKeyDown={sendTypingStatus}
         />
       </form>
     </MessageInputContainer>

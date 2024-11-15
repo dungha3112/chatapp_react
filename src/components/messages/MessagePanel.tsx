@@ -10,7 +10,11 @@ import MessageContainer from "./MessageContainer";
 import MessageInputFiled from "./MessageInputFiled";
 import MessagePanelHeader from "./MessagePanelHeader";
 
-const MessagePanel = () => {
+type Props = {
+  sendTypingStatus: () => void;
+  // isRecipientTyping: boolean;
+};
+const MessagePanel = ({ sendTypingStatus }: Props) => {
   const [content, setContent] = useState("");
   const { id } = useParams();
 
@@ -38,6 +42,7 @@ const MessagePanel = () => {
           content={content}
           setContent={setContent}
           sendMessage={sendMessage}
+          sendTypingStatus={sendTypingStatus}
         />
       </MessagePanelFooter>
     </MessagePanelStyle>

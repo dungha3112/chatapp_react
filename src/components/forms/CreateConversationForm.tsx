@@ -9,10 +9,10 @@ import {
 import styles from "./index.module.scss";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store";
-import { createConversationThunk } from "../../store/conversationSlice";
 import { useForm } from "react-hook-form";
 import { CreateConversationParams } from "../../utils/types";
 import { useNavigate } from "react-router-dom";
+import { createConversationThunk } from "../../store/conversations/conversationThunk";
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>;

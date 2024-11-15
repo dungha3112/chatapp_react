@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import MessagePanel from "../../components/messages/MessagePanel";
 import { AppDispatch } from "../../store";
-import { updateConversation } from "../../store/conversationSlice";
+import { updateConversation } from "../../store/conversations/conversationSlice";
 import { addMessage } from "../../store/messages/messageSlice";
 import { fetchMessagesThunk } from "../../store/messages/messageThunk";
 import { ConversationChanelPageStyle } from "../../styles/conversations";
@@ -42,9 +42,11 @@ const ConversationChanelPage = () => {
     };
   }, [socket, dispatch]);
 
+  const sendTypingStatus = () => {};
+
   return (
     <ConversationChanelPageStyle>
-      <MessagePanel />
+      <MessagePanel sendTypingStatus={sendTypingStatus} />
     </ConversationChanelPageStyle>
   );
 };

@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import conversationReducer from "./conversationSlice";
+import conversationReducer from "./conversations/conversationSlice";
 import messageReducer from "./messages/messageSlice";
 
 export const store = configureStore({

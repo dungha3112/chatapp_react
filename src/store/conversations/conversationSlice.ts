@@ -1,6 +1,10 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ConversationType, CreateConversationParams } from "../utils/types";
-import { getConversationsApi, postNewConversationApi } from "../utils/api";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "..";
+import { ConversationType } from "../../utils/types";
+import {
+  createConversationThunk,
+  fetchConversationsThunk,
+} from "./conversationThunk";
 
 export interface ConversationsState {
   conversations: ConversationType[];
@@ -11,24 +15,6 @@ const initialState: ConversationsState = {
   conversations: [],
   loading: false,
 };
-
-export const fetchConversationsThunk = createAsyncThunk(
-  "conversations/fetch",
-  async () => {
-    return await getConversationsApi();
-  }
-);
-
-export const createConversationThunk = createAsyncThunk(
-  "conversations/create",
-  async (data: CreateConversationParams) => {
-    try {
-      return await postNewConversationApi(data);
-    } catch (error: any) {
-      throw new Error(error.response.data.message);
-    }
-  }
-);
 
 export const conversationSlice = createSlice({
   name: "conversations",
@@ -62,6 +48,16 @@ export const conversationSlice = createSlice({
       });
   },
 });
+
+const selectConversations = (state: RootState) =>
+  state.conversation.conversations;
+const selectConversationId = (state: RootState, id: number) => id;
+
+export const selectConversationById = createSelector(
+  [selectConversations, selectConversationId],
+  (conversations, conversationId) =>
+    conversations.find((c) => c.id === conversationId)
+);
 
 export const { addConversation, updateConversation } =
   conversationSlice.actions;
