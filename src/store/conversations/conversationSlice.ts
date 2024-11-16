@@ -21,7 +21,7 @@ export const conversationSlice = createSlice({
   initialState,
   reducers: {
     addConversation: (state, action: PayloadAction<ConversationType>) => {
-      state.conversations.push(action.payload);
+      state.conversations.unshift(action.payload);
     },
     updateConversation: (state, action: PayloadAction<ConversationType>) => {
       const conversation = action.payload;
