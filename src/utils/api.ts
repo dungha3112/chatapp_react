@@ -41,3 +41,13 @@ export const postNewConversationApi = async (
   const res = await axiosClient.post<ConversationType>(`conversations/`, data);
   return res;
 };
+
+export const deleteMessageApi = async (
+  conversationId: number,
+  messageId: number
+) => {
+  const res = await axiosClient.delete(
+    `conversations/${conversationId}/messages/${messageId}`
+  );
+  return res;
+};

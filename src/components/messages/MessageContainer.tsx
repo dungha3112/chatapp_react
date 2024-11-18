@@ -23,6 +23,10 @@ const MessageContainer = () => {
     (m) => m.id === parseInt(id!)
   );
 
+  const onContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+  };
+
   const formatMessages = () => {
     return message?.messages.map((m, index, arr) => {
       const current = arr[index];
@@ -30,7 +34,7 @@ const MessageContainer = () => {
 
       if (arr.length === index + 1) {
         return (
-          <MessageItemContainer key={m.id}>
+          <MessageItemContainer onContextMenu={onContextMenu} key={m.id}>
             <MessageItemAvatar />
             <MessageItemDetails>
               <MessageItemHeader>
@@ -55,13 +59,17 @@ const MessageContainer = () => {
 
       if (next.author.id === current.author.id) {
         return (
-          <MessageItemContainer key={m.id} style={{ padding: "0 0 0 60px" }}>
+          <MessageItemContainer
+            onContextMenu={onContextMenu}
+            key={m.id}
+            style={{ padding: "0 0 0 60px" }}
+          >
             <MessageItemContent>{m.content}</MessageItemContent>
           </MessageItemContainer>
         );
       } else {
         return (
-          <MessageItemContainer key={m.id}>
+          <MessageItemContainer onContextMenu={onContextMenu} key={m.id}>
             <MessageItemAvatar />
             <MessageItemDetails>
               <MessageItemHeader>
