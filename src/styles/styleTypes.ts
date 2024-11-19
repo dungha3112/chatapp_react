@@ -7,3 +7,8 @@ export type PageProps = Partial<{
 export type InputContainerProps = Partial<{
   $backgroundColor: string;
 }>;
+
+export type ContextMenuProps = Partial<{
+  $top: number;
+  $left: number;
+}>;

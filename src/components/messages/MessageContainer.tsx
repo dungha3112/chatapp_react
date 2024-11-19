@@ -1,6 +1,7 @@
 import moment from "moment";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { RootState } from "../../store";
 import {
   MessageContainerStyle,
@@ -11,11 +12,20 @@ import {
   MessageItemHeader,
 } from "../../styles/messages";
 import { AuthContext } from "../../utils/contexts/AuthContext";
-import { useParams } from "react-router-dom";
+import { MessageContextMenu } from "../../utils/contexts/MessageContextMenu";
+import { MessageType } from "../../utils/types";
+import SelectedMessageContextMenu from "../context-menu/SelectedMessageContextMenu";
 
 const MessageContainer = () => {
   const { user } = useContext(AuthContext);
   const { id } = useParams();
+  const [showMenu, setShowMenu] = useState<boolean>(false);
+  const [points, setPoints] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+
+  const [selectMessage, setSelectMessage] = useState<MessageType | null>(null);
 
   const conversationMessages = useSelector((state: RootState) => state.message);
 
@@ -23,8 +33,14 @@ const MessageContainer = () => {
     (m) => m.id === parseInt(id!)
   );
 
-  const onContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const onContextMenu = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    mess: MessageType
+  ) => {
     e.preventDefault();
+    setShowMenu(true);
+    setPoints({ x: e.pageX, y: e.pageY });
+    setSelectMessage(mess);
   };
 
   const formatMessages = () => {
@@ -34,7 +50,10 @@ const MessageContainer = () => {
 
       if (arr.length === index + 1) {
         return (
-          <MessageItemContainer onContextMenu={onContextMenu} key={m.id}>
+          <MessageItemContainer
+            onContextMenu={(e) => onContextMenu(e, m)}
+            key={m.id}
+          >
             <MessageItemAvatar />
             <MessageItemDetails>
               <MessageItemHeader>
@@ -60,7 +79,7 @@ const MessageContainer = () => {
       if (next.author.id === current.author.id) {
         return (
           <MessageItemContainer
-            onContextMenu={onContextMenu}
+            onContextMenu={(e) => onContextMenu(e, m)}
             key={m.id}
             style={{ padding: "0 0 0 60px" }}
           >
@@ -69,7 +88,10 @@ const MessageContainer = () => {
         );
       } else {
         return (
-          <MessageItemContainer onContextMenu={onContextMenu} key={m.id}>
+          <MessageItemContainer
+            onContextMenu={(e) => onContextMenu(e, m)}
+            key={m.id}
+          >
             <MessageItemAvatar />
             <MessageItemDetails>
               <MessageItemHeader>
@@ -98,7 +120,23 @@ const MessageContainer = () => {
     formatMessages();
   }, []);
 
-  return <MessageContainerStyle>{formatMessages()}</MessageContainerStyle>;
+  useEffect(() => {
+    const handleClick = () => setShowMenu(false);
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, []);
+
+  return (
+    <MessageContextMenu.Provider
+      value={{ message: selectMessage, setMessage: setSelectMessage }}
+    >
+      <MessageContainerStyle>
+        {formatMessages()}
+
+        {showMenu && <SelectedMessageContextMenu points={points} />}
+      </MessageContainerStyle>
+    </MessageContextMenu.Provider>
+  );
 };
 
 export default MessageContainer;

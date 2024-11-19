@@ -30,22 +30,24 @@ const MessagePanel = ({ sendTypingStatus }: Props) => {
   };
 
   return (
-    <MessagePanelStyle>
-      <MessagePanelHeader />
+    <div style={{ height: "100%", position: "relative" }}>
+      <MessagePanelStyle>
+        <MessagePanelHeader />
 
-      <MessagePanelBody>
-        <MessageContainer />
-      </MessagePanelBody>
+        <MessagePanelBody>
+          <MessageContainer />
+        </MessagePanelBody>
 
-      <MessagePanelFooter>
-        <MessageInputFiled
-          content={content}
-          setContent={setContent}
-          sendMessage={sendMessage}
-          sendTypingStatus={sendTypingStatus}
-        />
-      </MessagePanelFooter>
-    </MessagePanelStyle>
+        <MessagePanelFooter>
+          <MessageInputFiled
+            content={content}
+            setContent={setContent}
+            sendMessage={sendMessage}
+            sendTypingStatus={sendTypingStatus}
+          />
+        </MessagePanelFooter>
+      </MessagePanelStyle>
+    </div>
   );
 };
 

@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const MessagePanelStyle = styled.div`
   background: inherit;
   height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;
@@ -22,8 +23,8 @@ export const MessagePanelHeaderStyle = styled.div`
 
 export const MessageContainerStyle = styled.div`
   height: 100%;
-  padding: 10px 0;
   box-sizing: border-box;
+  padding: 10px 0;
   display: flex;
   flex-direction: column-reverse;
   overflow-y: scroll;
@@ -77,6 +78,7 @@ export const MessageItemContainer = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
+  word-break: break-word;
 `;
 
 export const MessageItemAvatar = styled.div`

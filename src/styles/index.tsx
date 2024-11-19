@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { InputContainerProps, PageProps } from "./styleTypes";
+import styled, { css } from "styled-components";
+import { ContextMenuProps, InputContainerProps, PageProps } from "./styleTypes";
 import { fadeInUpwards } from "./keyframes";
 
 export const InputContainer = styled.div<InputContainerProps>`
@@ -106,4 +106,35 @@ export const TextField = styled.textarea`
   padding: 0;
   margin: 4px 0;
   resize: none;
+`;
+
+export const ContextMenuSyle = styled.div<ContextMenuProps>`
+  border-radius: 4px;
+  position: absolute;
+  width: 200px;
+  background-color: #161616;
+  ${({ $left, $top }) => css`
+    top: ${$top}px;
+    left: ${$left}px;
+  `}
+  transition: ease-in-out 0.3s;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  ul li {
+    padding: 10px 12px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    &:hover {
+      cursor: pointer;
+      transition: ease-in-out 0.2s;
+      background-color: #000;
+    }
+  }
 `;
