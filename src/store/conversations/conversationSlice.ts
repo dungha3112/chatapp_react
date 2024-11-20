@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
-import { ConversationType } from "../../utils/types";
+import { ConversationType, DeleteMessageResponse } from "../../utils/types";
 import {
   createConversationThunk,
   fetchConversationsThunk,
@@ -32,6 +32,10 @@ export const conversationSlice = createSlice({
       state.conversations.splice(index, 1);
       state.conversations.unshift(conversation);
     },
+    updateMessageConversation: (
+      state,
+      action: PayloadAction<DeleteMessageResponse>
+    ) => {},
   },
 
   extraReducers: (builder) => {
@@ -59,7 +63,10 @@ export const selectConversationById = createSelector(
     conversations.find((c) => c.id === conversationId)
 );
 
-export const { addConversation, updateConversation } =
-  conversationSlice.actions;
+export const {
+  addConversation,
+  updateConversation,
+  updateMessageConversation,
+} = conversationSlice.actions;
 
 export default conversationSlice.reducer;

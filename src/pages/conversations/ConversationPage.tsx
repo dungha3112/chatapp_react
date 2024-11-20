@@ -9,10 +9,12 @@ import { AppDispatch } from "../../store";
 import {
   addConversation,
   updateConversation,
+  updateMessageConversation,
 } from "../../store/conversations/conversationSlice";
-import { addMessage } from "../../store/messages/messageSlice";
+import { addMessage, deleteMessage } from "../../store/messages/messageSlice";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import { ConversationType, MessageEventPayload } from "../../utils/types";
+
 const ConversationPage = () => {
   const { user } = useContext(AuthContext);
 
@@ -34,20 +36,31 @@ const ConversationPage = () => {
       console.log("Connected ...");
     });
 
-    //sendConversationToClientSide
-    socket.on("sendConversationToClientSide", (payload: ConversationType) => {
-      dispatch(addConversation(payload));
-    });
+    //onConversationCreateToClientSide
+    socket.on(
+      "onConversationCreateToClientSide",
+      (payload: ConversationType) => {
+        dispatch(addConversation(payload));
+      }
+    );
 
-    //sendMessageToClientSide
-    socket.on("sendMessageToClientSide", (payload: MessageEventPayload) => {
+    //onMessageCreateToClientSide
+    socket.on("onMessageCreateToClientSide", (payload: MessageEventPayload) => {
       dispatch(addMessage(payload));
       dispatch(updateConversation(payload.conversation));
     });
+
+    //onMessageDeleteToClientSide
+    socket.on("onMessageDeleteToClientSide", (payload) => {
+      dispatch(deleteMessage(payload));
+      // dispatch(updateMessageConversation(payload));
+    });
+
     return () => {
       socket.off("connected");
-      socket.off("sendConversationToClientSide");
-      socket.off("sendMessageToClientSide");
+      socket.off("onConversationCreateToClientSide");
+      socket.off("onMessageCreateToClientSide");
+      socket.off("onMessageDeleteToClientSide");
     };
   }, [socket, dispatch]);
 
