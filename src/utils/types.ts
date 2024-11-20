@@ -61,3 +61,9 @@ export type FetchMessagePayload = {
   id: number;
   messages: MessageType[];
 };
+
+// deleteMessageParams
+export type DeleteMessageParams = {
+  conversationId: number;
+  messageId: number;
+};

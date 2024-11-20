@@ -6,6 +6,7 @@ import {
   FetchMessagePayload,
   UserCredentialsParams,
   UserType,
+  DeleteMessageParams,
 } from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
@@ -42,10 +43,10 @@ export const postNewConversationApi = async (
   return res;
 };
 
-export const deleteMessageApi = async (
-  conversationId: number,
-  messageId: number
-) => {
+export const deleteMessageApi = async ({
+  conversationId,
+  messageId,
+}: DeleteMessageParams) => {
   const res = await axiosClient.delete(
     `conversations/${conversationId}/messages/${messageId}`
   );

@@ -112,7 +112,8 @@ export const ContextMenuSyle = styled.div<ContextMenuProps>`
   border-radius: 4px;
   position: absolute;
   width: 200px;
-  background-color: #161616;
+  position: fixed;
+  background-color: #252525;
   ${({ $left, $top }) => css`
     top: ${$top}px;
     left: ${$left}px;
