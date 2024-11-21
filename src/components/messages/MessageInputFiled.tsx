@@ -20,17 +20,25 @@ const MessageInputFiled = ({
 }: Props) => {
   const changeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
     setContent(e.target.value);
+    sendTypingStatus();
   };
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // e.preventDefault();
+  };
+
   return (
-    <MessageInputContainer>
-      <form onSubmit={sendMessage} className={styles.form}>
-        <MessageInputStyle
-          value={content}
-          onChange={changeContent}
-          onKeyDown={sendTypingStatus}
-        />
-      </form>
-    </MessageInputContainer>
+    <>
+      <MessageInputContainer>
+        <form onSubmit={sendMessage} className={styles.form}>
+          <MessageInputStyle
+            value={content}
+            onChange={changeContent}
+            onKeyDown={onKeyDown}
+          />
+        </form>
+      </MessageInputContainer>
+    </>
   );
 };
 

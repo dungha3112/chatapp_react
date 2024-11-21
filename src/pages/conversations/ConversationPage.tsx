@@ -9,7 +9,6 @@ import { AppDispatch } from "../../store";
 import {
   addConversation,
   updateConversation,
-  updateMessageConversation,
 } from "../../store/conversations/conversationSlice";
 import { addMessage, deleteMessage } from "../../store/messages/messageSlice";
 import { SocketContext } from "../../utils/contexts/SocketContext";
@@ -24,19 +23,10 @@ const ConversationPage = () => {
   const { id: conversationId } = useParams();
 
   useEffect(() => {
-    if (conversationId) {
-      socket.emit("onConversationJoin", {
-        conversationId: parseInt(conversationId),
-      });
-    }
-  }, [socket, conversationId]);
-
-  useEffect(() => {
     socket.on("connected", () => {
       console.log("Connected ...");
     });
 
-    //onConversationCreateToClientSide
     socket.on(
       "onConversationCreateToClientSide",
       (payload: ConversationType) => {
@@ -44,13 +34,11 @@ const ConversationPage = () => {
       }
     );
 
-    //onMessageCreateToClientSide
     socket.on("onMessageCreateToClientSide", (payload: MessageEventPayload) => {
       dispatch(addMessage(payload));
       dispatch(updateConversation(payload.conversation));
     });
 
-    //onMessageDeleteToClientSide
     socket.on("onMessageDeleteToClientSide", (payload) => {
       dispatch(deleteMessage(payload));
       // dispatch(updateMessageConversation(payload));
@@ -62,7 +50,7 @@ const ConversationPage = () => {
       socket.off("onMessageCreateToClientSide");
       socket.off("onMessageDeleteToClientSide");
     };
-  }, [socket, dispatch]);
+  }, [socket, dispatch, conversationId]);
 
   return (
     <Page $display="flex" $justifyContent="space-between" $alignItems="center">
