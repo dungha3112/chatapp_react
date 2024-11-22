@@ -40,6 +40,8 @@ const ConversationPage = () => {
     });
 
     socket.on("onMessageDeleteToClientSide", (payload) => {
+      console.log("Message Deleted", payload);
+
       dispatch(deleteMessage(payload));
       // dispatch(updateMessageConversation(payload));
     });

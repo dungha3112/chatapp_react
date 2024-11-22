@@ -6,15 +6,17 @@ import { AppDispatch } from "../../store";
 import { fetchMessagesThunk } from "../../store/messages/messageThunk";
 import { ConversationChanelPageStyle } from "../../styles/conversations";
 import { SocketContext } from "../../utils/contexts/SocketContext";
+import { AuthContext } from "../../utils/contexts/AuthContext";
 
 const ConversationChanelPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const socket = useContext(SocketContext);
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
 
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
-  const [isTyping, setIsTyping] = useState(false);
-  const [isRecipientTyping, setIsRecipientTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
+  const [isRecipientTyping, setIsRecipientTyping] = useState<boolean>(false);
 
   useEffect(() => {
     if (!id) return;
@@ -27,25 +29,30 @@ const ConversationChanelPage = () => {
     socket.emit("onConversationJoin", { conversationId: parseInt(id) });
 
     socket.on("userLeaveToClientSide", () => {
-      console.log("userLeaveToClientSide");
+      console.log("userLeave ");
     });
 
     socket.on("userJoinToClientSide", () => {
-      console.log("userJoinToClientSide");
+      console.log("userJoin ");
     });
 
-    socket.on("onTypingStopToClientSide", () => {
-      console.log("user stop typing ...");
-      setIsRecipientTyping(false);
+    socket.on("onTypingStartToClientSide", (payload) => {
+      if (parseInt(id) === parseInt(payload.conversationId)) {
+        console.log("user start typing ...", payload, user?.id);
+        if (user?.id !== payload.userId) {
+          setIsRecipientTyping(true);
+        }
+      }
     });
 
-    socket.on("onTypingStartToClientSide", () => {
-      console.log("user typing ...");
-      setIsRecipientTyping(true);
+    socket.on("onTypingStopToClientSide", (payload) => {
+      if (parseInt(id) === parseInt(payload.conversationId)) {
+        console.log("user stop typing ...", payload, user?.id);
+        setIsRecipientTyping(false);
+      }
     });
 
     return () => {
-      socket.off("onConversationJoin");
       socket.emit("onConversationLeave", {
         conversationId: parseInt(id),
       });
@@ -56,7 +63,7 @@ const ConversationChanelPage = () => {
       socket.off("onTypingStartToClientSide");
       socket.off("onTypingStopToClientSide");
     };
-  }, [id, socket]);
+  }, [id, socket, user?.id]);
 
   const sendTypingStatus = () => {
     if (!id) return;
@@ -65,13 +72,13 @@ const ConversationChanelPage = () => {
       clearTimeout(timer);
       setTimer(
         setTimeout(() => {
-          setIsTyping(false);
           socket.emit("onTypingStop", { conversationId: parseInt(id) });
-        }, 2000)
+          setIsTyping(false);
+        }, 500)
       );
     } else {
-      setIsTyping(true);
       socket.emit("onTypingStart", { conversationId: parseInt(id) });
+      setIsTyping(true);
     }
   };
 

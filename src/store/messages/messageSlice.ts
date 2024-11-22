@@ -61,9 +61,11 @@ export const messageSlice = createSlice({
         );
         if (!conversationMessages) return;
 
-        conversationMessages.messages.findIndex((m) => m.id === messageId);
+        const messageIndex = conversationMessages.messages.findIndex(
+          (m) => m.id === messageId
+        );
 
-        conversationMessages.messages.splice(messageId, 1);
+        conversationMessages.messages.splice(messageIndex, 1);
       });
   },
 });

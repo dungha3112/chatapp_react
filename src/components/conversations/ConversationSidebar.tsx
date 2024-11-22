@@ -3,6 +3,7 @@ import { FiEdit } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
+import { fetchConversationsThunk } from "../../store/conversations/conversationThunk";
 import {
   ConversationHeaderSidebar,
   ConversationSidebarContainer,
@@ -13,13 +14,14 @@ import { AuthContext } from "../../utils/contexts/AuthContext";
 import { ConversationType } from "../../utils/types";
 import CreateConversationModal from "../modals/CreateConversationModal";
 import styles from "./index.module.scss";
-import { fetchConversationsThunk } from "../../store/conversations/conversationThunk";
 
 const ConversationSidebar = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id: conversationId } = useParams();
+
   const [showModal, setShowModal] = useState<boolean>(false);
+
   const { conversations } = useSelector(
     (state: RootState) => state.conversation
   );
@@ -50,7 +52,9 @@ const ConversationSidebar = () => {
           <ConversationSidebarItem
             key={conversation.id}
             onClick={() => navigate(`/conversation/${conversation.id}`)}
-            className={parseInt(id!) === conversation.id ? "actived" : ""}
+            className={
+              parseInt(conversationId!) === conversation.id ? "actived" : ""
+            }
           >
             <div className={styles.conversationAvatar}></div>
             <div>

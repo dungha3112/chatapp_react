@@ -9,7 +9,7 @@ type Props = {
   content: string;
   setContent: Dispatch<SetStateAction<string>>;
   sendMessage: (e: React.FormEvent<HTMLFormElement>) => void;
-  sendTypingStatus: () => void;
+  sendTypingStatus: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 const MessageInputFiled = ({
@@ -32,9 +32,10 @@ const MessageInputFiled = ({
       <MessageInputContainer>
         <form onSubmit={sendMessage} className={styles.form}>
           <MessageInputStyle
+            placeholder="Write to ..."
             value={content}
             onChange={changeContent}
-            onKeyDown={onKeyDown}
+            // onKeyDown={sendTypingStatus}
           />
         </form>
       </MessageInputContainer>

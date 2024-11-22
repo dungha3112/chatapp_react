@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   MessagePanelBody,
   MessagePanelFooter,
   MessagePanelStyle,
+  MessageTypingStatusStyle,
 } from "../../styles/messages";
 import { postNewMessageApi } from "../../utils/api";
 import MessageContainer from "./MessageContainer";
 import MessageInputFiled from "./MessageInputFiled";
 import MessagePanelHeader from "./MessagePanelHeader";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { selectConversationById } from "../../store/conversations/conversationSlice";
+import { getRecipientFromConversation } from "../../utils/helpers";
+import { AuthContext } from "../../utils/contexts/AuthContext";
 
 type Props = {
   sendTypingStatus: () => void;
@@ -17,6 +23,14 @@ type Props = {
 const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
   const [content, setContent] = useState("");
   const { id } = useParams();
+
+  const { user } = useContext(AuthContext);
+
+  const conversation = useSelector((state: RootState) =>
+    selectConversationById(state, parseInt(id!))
+  );
+
+  const recipient = getRecipientFromConversation(conversation, user);
 
   const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,7 +44,7 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
   };
 
   return (
-    <div style={{ height: "100%", position: "relative" }}>
+    <>
       <MessagePanelStyle>
         <MessagePanelHeader />
 
@@ -45,10 +59,15 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
             sendMessage={sendMessage}
             sendTypingStatus={sendTypingStatus}
           />
-          <div>{isRecipientTyping ? "typing..." : ""}</div>
+
+          <MessageTypingStatusStyle>
+            {isRecipientTyping
+              ? `${recipient?.firstName} ${recipient?.lastName} is typing...`
+              : ""}
+          </MessageTypingStatusStyle>
         </MessagePanelFooter>
       </MessagePanelStyle>
-    </div>
+    </>
   );
 };
 

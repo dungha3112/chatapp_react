@@ -53,6 +53,15 @@ export const MessagePanelFooter = styled.div`
   margin-top: 0;
 `;
 
+export const MessageTypingStatusStyle = styled.div`
+  width: 100%;
+  margin-top: 10px;
+  height: 20px;
+  font-size: 13px;
+  font-style: italic;
+  color: #555555;
+`;
+
 export const MessageInputContainer = styled.div`
   background-color: #101010;
   border-radius: 10px;
