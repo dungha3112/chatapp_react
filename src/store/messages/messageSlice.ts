@@ -3,8 +3,13 @@ import {
   ConversationMessage,
   DeleteMessageResponse,
   MessageEventPayload,
+  MessageType,
 } from "../../utils/types";
-import { deleteMessageThunk, fetchMessagesThunk } from "./messageThunk";
+import {
+  deleteMessageThunk,
+  fetchMessagesThunk,
+  editMessageThunk,
+} from "./messageThunk";
 
 export interface MessagesState {
   messages: ConversationMessage[];
@@ -28,6 +33,7 @@ export const messageSlice = createSlice({
       if (!conversationMessages) return;
       conversationMessages.messages.unshift(message);
     },
+
     deleteMessage: (state, action: PayloadAction<DeleteMessageResponse>) => {
       const { conversationId, messageId } = action.payload;
       const conversationMessages = state.messages.find(
@@ -39,6 +45,19 @@ export const messageSlice = createSlice({
         (m) => m.id === messageId
       );
       conversationMessages.messages.splice(messageIndex, 1);
+    },
+
+    editMessage: (state, action: PayloadAction<MessageType>) => {
+      const message = action.payload;
+      const conversationMessage = state.messages.find(
+        (cm) => cm.id === message.conversation.id
+      );
+      if (!conversationMessage) return;
+
+      const messageIndex = conversationMessage.messages.findIndex(
+        (m) => m.id === message.id
+      );
+      conversationMessage.messages[messageIndex] = message;
     },
   },
   extraReducers: (builder) => {
@@ -66,10 +85,23 @@ export const messageSlice = createSlice({
         );
 
         conversationMessages.messages.splice(messageIndex, 1);
+      })
+      .addCase(editMessageThunk.fulfilled, (state, action) => {
+        const message = action.payload.data;
+        const conversationId = message.conversation.id;
+        const conversationMessage = state.messages.find(
+          (cm) => cm.id === conversationId
+        );
+        if (!conversationMessage) return;
+
+        const messageIndex = conversationMessage.messages.findIndex(
+          (m) => m.id === message.id
+        );
+        conversationMessage.messages.splice(messageIndex, 1);
       });
   },
 });
 
-export const { addMessage, deleteMessage } = messageSlice.actions;
+export const { addMessage, deleteMessage, editMessage } = messageSlice.actions;
 
 export default messageSlice.reducer;

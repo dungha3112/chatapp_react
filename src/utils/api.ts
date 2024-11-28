@@ -8,6 +8,8 @@ import {
   UserType,
   DeleteMessageParams,
   DeleteMessageResponse,
+  EditMessageParams,
+  MessageType,
 } from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
@@ -53,3 +55,13 @@ export const deleteMessageApi = async ({
   );
   return res;
 };
+
+export const editMessageApi = async ({
+  conversationId,
+  messageId,
+  content,
+}: EditMessageParams) =>
+  await axiosClient.patch<MessageType>(
+    `/conversations/${conversationId}/messages/${messageId}`,
+    content
+  );

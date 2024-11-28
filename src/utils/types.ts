@@ -72,4 +72,11 @@ export type DeleteMessageParams = {
 export type DeleteMessageResponse = {
   conversationId: number;
   messageId: number;
-}
+};
+
+// EditMessageParams
+export type EditMessageParams = {
+  conversationId: number;
+  messageId: number;
+  content: string;
+};

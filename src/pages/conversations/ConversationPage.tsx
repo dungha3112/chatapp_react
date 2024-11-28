@@ -10,7 +10,11 @@ import {
   addConversation,
   updateConversation,
 } from "../../store/conversations/conversationSlice";
-import { addMessage, deleteMessage } from "../../store/messages/messageSlice";
+import {
+  addMessage,
+  deleteMessage,
+  editMessage,
+} from "../../store/messages/messageSlice";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import { ConversationType, MessageEventPayload } from "../../utils/types";
 
@@ -44,6 +48,11 @@ const ConversationPage = () => {
 
       dispatch(deleteMessage(payload));
       // dispatch(updateMessageConversation(payload));
+    });
+
+    socket.on("onMessageEditToClientSide", (payload) => {
+      console.log("Message Edit", payload);
+      dispatch(editMessage(payload));
     });
 
     return () => {

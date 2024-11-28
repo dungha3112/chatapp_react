@@ -26,6 +26,7 @@ const MessageContainer = () => {
   });
 
   const [selectMessage, setSelectMessage] = useState<MessageType | null>(null);
+  const [isEditMessage, setIsEditMessage] = useState<boolean>(false);
 
   const conversationMessages = useSelector((state: RootState) => state.message);
 
@@ -70,7 +71,11 @@ const MessageContainer = () => {
                 </span>
               </MessageItemHeader>
 
-              <MessageItemContent>{m.content}</MessageItemContent>
+              {isEditMessage && messageContext?.id === m.id ? (
+                <input placeholder="edit message ..." />
+              ) : (
+                <MessageItemContent>{m.content}</MessageItemContent>
+              )}
             </MessageItemDetails>
           </MessageItemContainer>
         );
@@ -83,7 +88,11 @@ const MessageContainer = () => {
             key={m.id}
             style={{ padding: "0 0 0 60px" }}
           >
-            <MessageItemContent>{m.content}</MessageItemContent>
+            {isEditMessage ? (
+              <input placeholder="edit message ..." />
+            ) : (
+              <MessageItemContent>{m.content}</MessageItemContent>
+            )}
           </MessageItemContainer>
         );
       } else {
@@ -108,7 +117,11 @@ const MessageContainer = () => {
                 </span>
               </MessageItemHeader>
 
-              <MessageItemContent>{m.content}</MessageItemContent>
+              {isEditMessage ? (
+                <input placeholder="edit message ..." />
+              ) : (
+                <MessageItemContent>{m.content}</MessageItemContent>
+              )}
             </MessageItemDetails>
           </MessageItemContainer>
         );
@@ -128,7 +141,13 @@ const MessageContainer = () => {
 
   return (
     <MessageContextMenu.Provider
-      value={{ message: selectMessage, setMessage: setSelectMessage }}
+      value={{
+        message: selectMessage,
+        setMessage: setSelectMessage,
+        setIsEditMessage: setIsEditMessage,
+        editMessage: selectMessage,
+        setEditMessage: setSelectMessage,
+      }}
     >
       <MessageContainerStyle>
         {formatMessages()}
