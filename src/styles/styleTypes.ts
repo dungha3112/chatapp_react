@@ -12,3 +12,7 @@ export type ContextMenuProps = Partial<{
   $top: number;
   $left: number;
 }>;
+
+export type ConversationSelectedProps = Partial<{
+  $selected: boolean;
+}>;

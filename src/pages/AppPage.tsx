@@ -1,23 +1,23 @@
 import { useContext, useEffect } from "react";
-import { AuthContext } from "../../utils/contexts/AuthContext";
-import { SocketContext } from "../../utils/contexts/SocketContext";
-import { AppDispatch } from "../../store";
 import { useDispatch } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
-import { ConversationType, MessageEventPayload } from "../../utils/types";
+import ConversationSidebar from "../components/conversations/ConversationSidebar";
+import { AppDispatch } from "../store";
 import {
   addConversation,
   updateConversation,
-} from "../../store/conversations/conversationSlice";
+} from "../store/conversations/conversationSlice";
 import {
   addMessage,
   deleteMessage,
   editMessage,
-} from "../../store/messages/messageSlice";
-import { Page } from "../../styles";
-import ConversationSidebar from "../../components/conversations/ConversationSidebar";
+} from "../store/messages/messageSlice";
+import { Page } from "../styles";
+import { AuthContext } from "../utils/contexts/AuthContext";
+import { SocketContext } from "../utils/contexts/SocketContext";
+import { ConversationType, MessageEventPayload } from "../utils/types";
 
-const ConversationPage = () => {
+const AppPage = () => {
   const { user } = useContext(AuthContext);
 
   const socket = useContext(SocketContext);
@@ -85,4 +85,4 @@ const ConversationPage = () => {
   );
 };
 
-export default ConversationPage;
+export default AppPage;

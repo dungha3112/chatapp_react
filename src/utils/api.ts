@@ -10,6 +10,7 @@ import {
   DeleteMessageResponse,
   EditMessageParams,
   MessageType,
+  GroupType,
 } from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
@@ -65,3 +66,6 @@ export const editMessageApi = async ({
     `/conversations/${conversationId}/messages/${messageId}`,
     content
   );
+
+export const getGroupsApi = async () =>
+  await axiosClient.get<GroupType[]>("/groups");

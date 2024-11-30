@@ -20,6 +20,15 @@ export type ConversationType = {
   recipient: UserType;
 };
 
+// selected conversation type
+export type SelectedConversationType = "group" | "private";
+
+// ConversationChatType
+export type ConversationChatType = {
+  type: SelectedConversationType;
+  lable: string;
+};
+
 //CreateConversationParams
 export type CreateConversationParams = {
   email: string;
@@ -79,4 +88,16 @@ export type EditMessageParams = {
   conversationId: number;
   messageId: number;
   content: string;
+};
+
+// GroupType
+export type GroupType = {
+  id: number;
+  title: string;
+  users: UserType[];
+  owner: UserType;
+  messages: MessageType[];
+  createdAt: string;
+  lastMessageSentAt: string;
+  lastMessageSent: MessageType;
 };

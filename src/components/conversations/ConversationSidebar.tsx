@@ -1,39 +1,37 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
 import { fetchConversationsThunk } from "../../store/conversations/conversationThunk";
 import {
   ConversationHeaderSidebar,
   ConversationSidebarContainer,
-  ConversationSidebarItem,
   ConversationSidebarStyle,
 } from "../../styles/conversations";
-import { AuthContext } from "../../utils/contexts/AuthContext";
-import { ConversationType } from "../../utils/types";
 import CreateConversationModal from "../modals/CreateConversationModal";
-import styles from "./index.module.scss";
+
+import { fetchGroupsThunk } from "../../store/groups/groupThunk";
+import ConversationSelected from "./ConversationSelected";
+import { ConversationSibarItem } from "./ConversationSibarItem";
+import GroupItem from "../groups/GroupItem";
 
 const ConversationSidebar = () => {
-  const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const { id: conversationId } = useParams();
+  const currentChatType = useSelector(
+    (state: RootState) => state.selectedConversationType.type
+  );
 
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const { conversations } = useSelector(
     (state: RootState) => state.conversation
   );
+
+  const groups = useSelector((state: RootState) => state.group.groups);
+
   const dispatch = useDispatch<AppDispatch>();
 
-  const getDisplayUser = (conversation: ConversationType) => {
-    return conversation.creator.id === user?.id
-      ? conversation.recipient
-      : conversation.creator;
-  };
-
   useEffect(() => {
+    dispatch(fetchGroupsThunk());
     dispatch(fetchConversationsThunk());
   }, [dispatch]);
 
@@ -48,29 +46,17 @@ const ConversationSidebar = () => {
       </ConversationHeaderSidebar>
 
       <ConversationSidebarContainer>
-        {conversations.map((conversation) => (
-          <ConversationSidebarItem
-            key={conversation.id}
-            onClick={() => navigate(`/conversation/${conversation.id}`)}
-            className={
-              parseInt(conversationId!) === conversation.id ? "actived" : ""
-            }
-          >
-            <div className={styles.conversationAvatar}></div>
-            <div>
-              <span className={styles.conversationName}>
-                {getDisplayUser(conversation).firstName +
-                  " " +
-                  getDisplayUser(conversation).lastName}
-              </span>
-              <span className={styles.conversationMessage}>
-                {conversation.lastMessageSent.content.length >= 25
-                  ? conversation.lastMessageSent.content.slice(0, 25) + " ..."
-                  : conversation.lastMessageSent.content}
-              </span>
-            </div>
-          </ConversationSidebarItem>
-        ))}
+        <ConversationSelected />
+        <section>
+          {currentChatType === "private"
+            ? conversations.map((conversation) => (
+                <ConversationSibarItem
+                  conversation={conversation}
+                  key={conversation.id}
+                />
+              ))
+            : groups.map((group) => <GroupItem group={group} key={group.id} />)}
+        </section>
       </ConversationSidebarContainer>
     </ConversationSidebarStyle>
   );

@@ -10,11 +10,39 @@ import { socket, SocketContext } from "./utils/contexts/SocketContext";
 import { UserType } from "./utils/types";
 import { Provider as ReduxProvider } from "react-redux";
 import { store } from "./store";
+import GroupChanelPage from "./pages/groups/GroupChanelPage";
+import AppPage from "./pages/AppPage";
+import GroupPage from "./pages/groups/GroupPage";
 
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
 
+  // {
+  //   path: "/",
+  //   element: (
+  //     <AuthenticatedRoute>
+  //       <AppPage />
+  //     </AuthenticatedRoute>
+  //   ),
+  //   children: [
+  //     {
+  //       path: "/conversation",
+  //       element: <ConversationPage />,
+  //       children: [
+  //         {
+  //           path: "/conversation/:id",
+  //           element: <ConversationChanelPage />,
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       path: "/group",
+  //       element: <GroupPage />,
+  //       children: [{ path: "/group/:id", element: <GroupChanelPage /> }],
+  //     },
+  //   ],
+  // },
   {
     path: "/",
     element: (
@@ -23,7 +51,15 @@ const router = createBrowserRouter([
       </AuthenticatedRoute>
     ),
     children: [
-      { path: "/conversation/:id", element: <ConversationChanelPage /> },
+      {
+        path: "/conversation/:id",
+        element: <ConversationChanelPage />,
+      },
+      {
+        path: "/group",
+        element: <GroupPage />,
+        children: [{ path: "/group/:id", element: <GroupChanelPage /> }],
+      },
     ],
   },
 ]);
