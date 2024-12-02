@@ -44,30 +44,28 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
   };
 
   return (
-    <>
-      <MessagePanelStyle>
-        <MessagePanelHeader />
+    <MessagePanelStyle>
+      <MessagePanelHeader />
 
-        <MessagePanelBody>
-          <MessageContainer />
-        </MessagePanelBody>
+      <MessagePanelBody>
+        <MessageContainer />
+      </MessagePanelBody>
 
-        <MessagePanelFooter>
-          <MessageInputFiled
-            content={content}
-            setContent={setContent}
-            sendMessage={sendMessage}
-            sendTypingStatus={sendTypingStatus}
-          />
+      <MessagePanelFooter>
+        <MessageInputFiled
+          content={content}
+          setContent={setContent}
+          sendMessage={sendMessage}
+          sendTypingStatus={sendTypingStatus}
+        />
 
-          <MessageTypingStatusStyle>
-            {isRecipientTyping
-              ? `${recipient?.firstName} ${recipient?.lastName} is typing...`
-              : ""}
-          </MessageTypingStatusStyle>
-        </MessagePanelFooter>
-      </MessagePanelStyle>
-    </>
+        <MessageTypingStatusStyle>
+          {isRecipientTyping
+            ? `${recipient?.firstName} ${recipient?.lastName} is typing...`
+            : ""}
+        </MessageTypingStatusStyle>
+      </MessagePanelFooter>
+    </MessagePanelStyle>
   );
 };
 

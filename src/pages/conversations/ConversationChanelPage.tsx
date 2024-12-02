@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import MessagePanel from "../../components/messages/MessagePanel";
 import { AppDispatch } from "../../store";
 import { fetchMessagesThunk } from "../../store/messages/messageThunk";
-import { ConversationChanelPageStyle } from "../../styles/conversations";
+import { ConversationChannelPageStyle } from "../../styles/conversations";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 
@@ -83,12 +83,12 @@ const ConversationChanelPage = () => {
   };
 
   return (
-    <ConversationChanelPageStyle>
+    <ConversationChannelPageStyle>
       <MessagePanel
         sendTypingStatus={sendTypingStatus}
         isRecipientTyping={isRecipientTyping}
       />
-    </ConversationChanelPageStyle>
+    </ConversationChannelPageStyle>
   );
 };
 

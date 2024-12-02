@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FiEdit } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store";
-import { fetchConversationsThunk } from "../../store/conversations/conversationThunk";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import {
   ConversationHeaderSidebar,
   ConversationSidebarContainer,
@@ -10,10 +9,9 @@ import {
 } from "../../styles/conversations";
 import CreateConversationModal from "../modals/CreateConversationModal";
 
-import { fetchGroupsThunk } from "../../store/groups/groupThunk";
+import GroupItem from "../groups/GroupItem";
 import ConversationSelected from "./ConversationSelected";
 import { ConversationSibarItem } from "./ConversationSibarItem";
-import GroupItem from "../groups/GroupItem";
 
 const ConversationSidebar = () => {
   const currentChatType = useSelector(
@@ -27,13 +25,6 @@ const ConversationSidebar = () => {
   );
 
   const groups = useSelector((state: RootState) => state.group.groups);
-
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(fetchGroupsThunk());
-    dispatch(fetchConversationsThunk());
-  }, [dispatch]);
 
   return (
     <ConversationSidebarStyle>

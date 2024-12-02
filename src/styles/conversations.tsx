@@ -48,8 +48,6 @@ export const ConversationSidebarItemStyle = styled.div`
   gap: 10px;
   padding: 8px 16px;
   border-bottom: 1px solid #5454543d;
-  border-top: 1px solid #5454543d;
-
   cursor: pointer;
 
   &.actived {
@@ -57,7 +55,7 @@ export const ConversationSidebarItemStyle = styled.div`
   }
 `;
 
-export const ConversationChanelPageStyle = styled.div`
+export const ConversationChannelPageStyle = styled.div`
   height: 100%;
   width: 100%;
   margin-left: ${WIDTH_SIDE_BAR}px;
@@ -73,24 +71,27 @@ export const ConversationSelectedStyle = styled.div`
   justify-content: center;
   gap: 10px;
   padding: 20px 0;
-  /* background-color: #0f0f0f;
-  border-bottom: 1px solid #c1c1c1; */
+  background-color: #0f0f0f;
+  border-bottom: 1px solid #5454543d;
 `;
 
 export const ConversationSelectedItem = styled.div<ConversationSelectedProps>`
-  padding: 10px 20px;
-  border-radius: 20px;
+  padding: 12px 28px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 13px;
   transition: 0.3s ease;
   border: 1px solid #5454543d;
   font-weight: bold;
+  background-color: #212121;
   ${(props) =>
     props.$selected &&
     css`
-      background-color: #b1b1b1;
+      background-color: #414141;
+      color: #292929;
     `}
   &:hover {
-    background-color: #b1b1b1;
+    background-color: #414141;
+    color: #292929;
   }
 `;

@@ -28,18 +28,16 @@ const MessageInputFiled = ({
   };
 
   return (
-    <>
-      <MessageInputContainer>
-        <form onSubmit={sendMessage} className={styles.form}>
-          <MessageInputStyle
-            placeholder="Write to ..."
-            value={content}
-            onChange={changeContent}
-            // onKeyDown={sendTypingStatus}
-          />
-        </form>
-      </MessageInputContainer>
-    </>
+    <MessageInputContainer>
+      <form onSubmit={sendMessage} className={styles.form}>
+        <MessageInputStyle
+          placeholder="Write to ..."
+          value={content}
+          onChange={changeContent}
+          // onKeyDown={sendTypingStatus}
+        />
+      </form>
+    </MessageInputContainer>
   );
 };
 

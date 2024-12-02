@@ -1,21 +1,23 @@
 import { useContext, useEffect } from "react";
-import { AuthContext } from "../../utils/contexts/AuthContext";
-import { SocketContext } from "../../utils/contexts/SocketContext";
-import { AppDispatch } from "../../store";
 import { useDispatch } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
-import { ConversationType, MessageEventPayload } from "../../utils/types";
+import ConversationSidebar from "../../components/conversations/ConversationSidebar";
+import { AppDispatch } from "../../store";
 import {
   addConversation,
   updateConversation,
 } from "../../store/conversations/conversationSlice";
+import { fetchConversationsThunk } from "../../store/conversations/conversationThunk";
 import {
   addMessage,
   deleteMessage,
   editMessage,
 } from "../../store/messages/messageSlice";
 import { Page } from "../../styles";
-import ConversationSidebar from "../../components/conversations/ConversationSidebar";
+import { AuthContext } from "../../utils/contexts/AuthContext";
+import { SocketContext } from "../../utils/contexts/SocketContext";
+import { ConversationType, MessageEventPayload } from "../../utils/types";
+import { updateType } from "../../store/selectedSlice";
 
 const ConversationPage = () => {
   const { user } = useContext(AuthContext);
@@ -23,7 +25,12 @@ const ConversationPage = () => {
   const socket = useContext(SocketContext);
   const dispatch = useDispatch<AppDispatch>();
 
-  const { id: conversationId } = useParams();
+  const { id } = useParams();
+
+  useEffect(() => {
+    dispatch(updateType("private"));
+    dispatch(fetchConversationsThunk());
+  }, [dispatch]);
 
   useEffect(() => {
     socket.on("connected", () => {
@@ -60,27 +67,24 @@ const ConversationPage = () => {
       socket.off("onMessageCreateToClientSide");
       socket.off("onMessageDeleteToClientSide");
     };
-  }, [socket, dispatch, conversationId]);
+  }, [socket, dispatch]);
 
   return (
     <Page $display="flex" $justifyContent="space-between" $alignItems="center">
       <ConversationSidebar />
-      {conversationId ? (
-        <Outlet />
-      ) : (
+      {!id && (
         <div
           style={{
-            marginLeft: "250px",
+            marginLeft: "280px",
             display: "flex",
             width: "100%",
             justifyContent: "center",
           }}
         >
-          <div>
-            Hi {user?.firstName} {user?.lastName}
-          </div>
+          Hi {user?.firstName + " " + user?.lastName} conversation
         </div>
       )}
+      <Outlet />
     </Page>
   );
 };

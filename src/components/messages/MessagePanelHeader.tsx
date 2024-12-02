@@ -17,8 +17,8 @@ const MessagePanelHeader = () => {
 
   const displayName =
     conversation?.creator.id === user?.id
-      ? conversation?.recipient.email
-      : conversation?.creator.email;
+      ? `${conversation?.recipient.firstName} ${conversation?.recipient.lastName}`
+      : `${conversation?.creator.firstName} ${conversation?.creator.lastName}`;
 
   return <MessagePanelHeaderStyle>{displayName}</MessagePanelHeaderStyle>;
 };
