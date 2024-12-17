@@ -3,15 +3,19 @@ import { ConversationSidebarItemStyle } from "../../styles/conversations";
 import { getRecipientFromConversation } from "../../utils/helpers";
 import { ConversationType } from "../../utils/types";
 import styles from "./index.module.scss";
+import { AuthContext } from "../../utils/contexts/AuthContext";
+import { useContext } from "react";
 
 type Props = {
   conversation: ConversationType;
 };
 export const ConversationSibarItem = ({ conversation }: Props) => {
   const { id: conversationId } = useParams();
+  const { user } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
-  const getDisplayUser = getRecipientFromConversation(conversation);
+  const getDisplayUser = getRecipientFromConversation(conversation, user);
 
   return (
     <ConversationSidebarItemStyle

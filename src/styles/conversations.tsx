@@ -49,8 +49,13 @@ export const ConversationSidebarItemStyle = styled.div`
   padding: 8px 16px;
   border-bottom: 1px solid #5454543d;
   cursor: pointer;
+  transition: 0.3s ease;
 
   &.actived {
+    background-color: #151515;
+  }
+
+  &:hover {
     background-color: #151515;
   }
 `;
