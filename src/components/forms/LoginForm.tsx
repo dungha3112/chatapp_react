@@ -22,7 +22,7 @@ const LoginForm = () => {
     try {
       setLoading(true);
       await postLoginApi(data);
-      navigate("/");
+      navigate("/conversation");
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -30,7 +30,7 @@ const LoginForm = () => {
     }
   };
   useEffect(() => {
-    if (user) return navigate("/");
+    if (user) return navigate("/conversation");
   }, [navigate, user]);
 
   return (
