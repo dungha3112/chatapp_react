@@ -41,7 +41,7 @@ export type MessageType = {
   content: string;
   createdAt: string;
   author: UserType;
-  conversation: ConversationMessage;
+  conversation: ConversationType;
 };
 
 //ConversationMessage
@@ -90,14 +90,43 @@ export type EditMessageParams = {
   content: string;
 };
 
+/**
+ * Group
+ */
+
+export type GroupMessage = {
+  id: number;
+  messages: GroupMessageType[];
+};
+
+// GroupMessageType
+export type GroupMessageType = {
+  id: number;
+  content: string;
+  createdAt: string;
+  author: UserType;
+  group: GroupType;
+};
 // GroupType
 export type GroupType = {
   id: number;
   title: string;
   users: UserType[];
   owner: UserType;
-  messages: MessageType[];
+  messages: GroupMessageType[];
   createdAt: string;
   lastMessageSentAt: string;
-  lastMessageSent: MessageType;
+  lastMessageSent: GroupMessageType;
+};
+
+// GroupMessageEventPayload
+export type GroupMessageEventPayload = {
+  message: GroupMessageType;
+  group: GroupType;
+};
+
+// FetchGroupMessagePayload
+export type FetchGroupMessagePayload = {
+  id: number;
+  messages: GroupMessageType[];
 };

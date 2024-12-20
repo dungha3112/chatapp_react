@@ -11,6 +11,7 @@ import {
   EditMessageParams,
   MessageType,
   GroupType,
+  FetchGroupMessagePayload,
 } from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
@@ -69,3 +70,6 @@ export const editMessageApi = async ({
 
 export const getGroupsApi = async () =>
   await axiosClient.get<GroupType[]>("/groups");
+
+export const fetchGroupMessagesApi = async (id: number) =>
+  await axiosClient.get<FetchGroupMessagePayload>(`/groups/${id}/messages`);
