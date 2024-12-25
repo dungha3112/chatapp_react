@@ -1,44 +1,48 @@
 import { useContext } from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { AppDispatch } from "../../store";
+import { AppDispatch, RootState } from "../../store";
 import { deleteMessageThunk } from "../../store/messages/messageThunk";
 import { ContextMenuSyle } from "../../styles";
 import { AuthContext } from "../../utils/contexts/AuthContext";
-import { MessageContextMenu } from "../../utils/contexts/MessageContextMenu";
+import {
+  handleSetIsEditingMessage,
+  handleSetMessageBegingEdited,
+} from "../../store/messageContainerSlice";
 
 type Props = {
   points: { x: number; y: number };
 };
 const SelectedMessageContextMenu = ({ points }: Props) => {
-  const { message, setEditMessage, setIsEditMessage } =
-    useContext(MessageContextMenu);
+  const { messageBegingEdited } = useSelector(
+    (state: RootState) => state.messageContainer
+  );
   const { user } = useContext(AuthContext);
 
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
 
   const handleDeleteMessage = async () => {
-    if (!message || !id) return;
+    if (!messageBegingEdited || !id) return;
 
     await dispatch(
       deleteMessageThunk({
         conversationId: parseInt(id),
-        messageId: message.id,
+        messageId: messageBegingEdited.id,
       })
     );
   };
 
   const handleEditMessage = async () => {
-    if (!message || !id) return;
-    setIsEditMessage(true);
-    setEditMessage(message);
+    if (!messageBegingEdited || !id) return;
+    dispatch(handleSetMessageBegingEdited(messageBegingEdited));
+    dispatch(handleSetIsEditingMessage(true));
   };
 
   return (
     <>
-      {user?.id === message?.author.id && (
+      {user?.id === messageBegingEdited?.author.id && (
         <ContextMenuSyle $left={points.x} $top={points.y}>
           <ul>
             <li onClick={handleDeleteMessage}>

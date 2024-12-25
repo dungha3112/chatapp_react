@@ -13,7 +13,7 @@ const ConversationSelected = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const currentChatType = useSelector(
+  const conversationType = useSelector(
     (state: RootState) => state.selectedConversationType.type
   );
 
@@ -30,7 +30,7 @@ const ConversationSelected = () => {
     <ConversationSelectedStyle>
       {chatTypes.map((chat) => (
         <ConversationSelectedItem
-          $selected={chat.type === currentChatType}
+          $selected={chat.type === conversationType}
           key={chat.type}
           className="item"
           onClick={() => handleSelectType(chat.type)}

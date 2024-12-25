@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { MessageItemContentProps } from "./styleTypes";
 
 export const MessagePanelStyle = styled.div`
   background: inherit;
@@ -113,4 +114,29 @@ export const MessageItemHeader = styled.div`
   }
 `;
 
-export const MessageItemContent = styled.div``;
+export const MessageItemContent = styled.div<MessageItemContentProps>`
+  ${({ $padding }) => css`
+    padding: ${$padding};
+  `}
+`;
+
+export const EditMessageInputField = styled.input`
+  outline: none;
+  border: none;
+  background-color: #222;
+  color: #bababa;
+  font-family: "Inter";
+  box-sizing: border-box;
+  font-size: 15px;
+  padding: 18px 22px;
+  border-radius: 5px;
+  margin: 4px 0;
+  width: 100%;
+`;
+
+export const EditMessageActionsContainer = styled.div`
+  font-size: 12px;
+  & span {
+    color: #1d77ff;
+  }
+`;

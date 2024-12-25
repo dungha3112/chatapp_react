@@ -14,7 +14,7 @@ import ConversationSelected from "./ConversationSelected";
 import { ConversationSibarItem } from "./ConversationSibarItem";
 
 const ConversationSidebar = () => {
-  const currentChatType = useSelector(
+  const conversationType = useSelector(
     (state: RootState) => state.selectedConversationType.type
   );
 
@@ -39,7 +39,7 @@ const ConversationSidebar = () => {
       <ConversationSidebarContainer>
         <ConversationSelected />
         <section>
-          {currentChatType === "private"
+          {conversationType === "private"
             ? conversations.map((conversation) => (
                 <ConversationSibarItem
                   conversation={conversation}

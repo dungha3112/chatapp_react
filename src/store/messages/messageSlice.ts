@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "..";
 import {
   ConversationMessage,
   DeleteMessageResponse,
@@ -7,8 +8,8 @@ import {
 } from "../../utils/types";
 import {
   deleteMessageThunk,
-  fetchMessagesThunk,
   editMessageThunk,
+  fetchMessagesThunk,
 } from "./messageThunk";
 
 export interface MessagesState {
@@ -101,6 +102,13 @@ export const messageSlice = createSlice({
       });
   },
 });
+
+const selectConversationMessages = (state: RootState) => state.message.messages;
+const selectConversationMessageId = (state: RootState, id: number) => id;
+export const selectConversationMessage = createSelector(
+  [selectConversationMessages, selectConversationMessageId],
+  (conversationMessages, id) => conversationMessages.find((cm) => cm.id === id)
+);
 
 export const { addMessage, deleteMessage, editMessage } = messageSlice.actions;
 

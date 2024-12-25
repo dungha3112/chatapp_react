@@ -11,7 +11,7 @@ const MessagePanelHeader = () => {
   const { id: conversationId } = useParams();
 
   const { user } = useContext(AuthContext);
-  const currentChatType = useSelector(
+  const conversationType = useSelector(
     (state: RootState) => state.selectedConversationType.type
   );
 
@@ -31,7 +31,7 @@ const MessagePanelHeader = () => {
       : `${conversation?.creator.firstName} ${conversation?.creator.lastName}`;
 
   const groupTitle = group?.title || "Group";
-  const headerTitle = currentChatType === "group" ? groupTitle : displayName;
+  const headerTitle = conversationType === "group" ? groupTitle : displayName;
 
   return <MessagePanelHeaderStyle>{headerTitle}</MessagePanelHeaderStyle>;
 };

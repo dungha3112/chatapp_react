@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GroupMessage, GroupMessageEventPayload } from "../../utils/types";
 import { fetchGroupMessagesThunk } from "./groupMessageThunk";
+import { RootState } from "..";
 
 export interface GroupMessagesState {
   messages: GroupMessage[];
@@ -26,7 +27,6 @@ export const groupMessagesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchGroupMessagesThunk.fulfilled, (state, action) => {
       const { id } = action.payload.data;
-      console.log(action.payload.data);
 
       const index = state.messages.findIndex((gm) => gm.id === id);
       const exists = state.messages.find((gm) => gm.id === id);
@@ -37,6 +37,14 @@ export const groupMessagesSlice = createSlice({
     });
   },
 });
+
+const selectGroupMessages = (state: RootState) => state.groupMessages.messages;
+const selectGroupMessageId = (state: RootState, id: number) => id;
+
+export const selectGroupMessage = createSelector(
+  [selectGroupMessages, selectGroupMessageId],
+  (groupMessages, id) => groupMessages.find((gm) => gm.id === id)
+);
 
 export const { addGroupMessage } = groupMessagesSlice.actions;
 export default groupMessagesSlice.reducer;
