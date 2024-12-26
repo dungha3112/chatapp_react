@@ -29,6 +29,14 @@ export const messageContainerSlice = createSlice({
     handleSetIsEditingMessage: (state, action: PayloadAction<boolean>) => {
       state.isEditingMessage = action.payload;
     },
+
+    handleSetMessageContentBegingEdited: (
+      state,
+      action: PayloadAction<string>
+    ) => {
+      if (state.messageBegingEdited)
+        state.messageBegingEdited.content = action.payload;
+    },
   },
 });
 
@@ -36,6 +44,8 @@ export const {
   handleSelectedMessage,
   handleSetMessageBegingEdited,
   handleSetIsEditingMessage,
+
+  handleSetMessageContentBegingEdited,
 } = messageContainerSlice.actions;
 
 export default messageContainerSlice.reducer;

@@ -2,7 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
-import { selectGroupMessage } from "../../store/groupMessage/groupMessageSlice";
+import {
+  handleSelectedMessage,
+  handleSetIsEditingMessage,
+  handleSetMessageBegingEdited,
+  handleSetMessageContentBegingEdited,
+} from "../../store/messageContainerSlice";
 import { selectConversationMessage } from "../../store/messages/messageSlice";
 import {
   MessageContainerStyle,
@@ -26,15 +31,12 @@ const MessageContainer = () => {
     y: 0,
   });
 
-  const { isEditingMessage, selectedMessage, messageBegingEdited } =
-    useSelector((state: RootState) => state.messageContainer);
+  const { isEditingMessage, messageBegingEdited } = useSelector(
+    (state: RootState) => state.messageContainer
+  );
 
   const conversationMessage = useSelector((state: RootState) =>
     selectConversationMessage(state, parseInt(id!))
-  );
-
-  const groupMessages = useSelector((state: RootState) =>
-    selectGroupMessage(state, parseInt(id!))
   );
 
   const conversationType = useSelector(
@@ -42,17 +44,47 @@ const MessageContainer = () => {
   );
 
   const onEditMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isEditingMessage) return;
+    if (!messageBegingEdited) return;
+    dispatch(handleSetMessageContentBegingEdited(e.target.value));
   };
+
+  useEffect(() => {
+    const handleClick = () => setShowMenu(false);
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
+      if (e.key === "Escape") {
+        dispatch(handleSetIsEditingMessage(false));
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    return () => {
+      console.log("Unmuseting ...");
+    };
+  }, [id]);
 
   const onContextMenu = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     mess: MessageType
   ) => {
     e.preventDefault();
-    setShowMenu(true);
-    setPoints({ x: e.pageX, y: e.pageY });
-    // setSelectMessage(mess);
+
+    if (mess.author.id === user?.id) {
+      setShowMenu(true);
+      setPoints({ x: e.pageX, y: e.pageY });
+      dispatch(handleSelectedMessage(mess));
+      dispatch(handleSetMessageBegingEdited(mess));
+    }
   };
 
   const mapMessages = (
@@ -78,6 +110,7 @@ const MessageContainer = () => {
         />
       );
     }
+
     if (currentMessage.author.id === nextMessage.author.id) {
       return (
         <MessageItemContainer
@@ -122,7 +155,6 @@ const MessageContainer = () => {
   return (
     <MessageContainerStyle>
       {formatMessages()}
-
       {showMenu && <SelectedMessageContextMenu points={points} />}
     </MessageContainerStyle>
   );

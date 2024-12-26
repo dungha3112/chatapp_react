@@ -3,46 +3,44 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
+import { handleSetIsEditingMessage } from "../../store/messageContainerSlice";
 import { deleteMessageThunk } from "../../store/messages/messageThunk";
 import { ContextMenuSyle } from "../../styles";
 import { AuthContext } from "../../utils/contexts/AuthContext";
-import {
-  handleSetIsEditingMessage,
-  handleSetMessageBegingEdited,
-} from "../../store/messageContainerSlice";
 
 type Props = {
   points: { x: number; y: number };
 };
 const SelectedMessageContextMenu = ({ points }: Props) => {
-  const { messageBegingEdited } = useSelector(
+  const { selectedMessage } = useSelector(
     (state: RootState) => state.messageContainer
   );
+
   const { user } = useContext(AuthContext);
 
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
 
   const handleDeleteMessage = async () => {
-    if (!messageBegingEdited || !id) return;
+    if (!selectedMessage || !id) return;
 
     await dispatch(
       deleteMessageThunk({
         conversationId: parseInt(id),
-        messageId: messageBegingEdited.id,
+        messageId: selectedMessage.id,
       })
     );
   };
 
   const handleEditMessage = async () => {
-    if (!messageBegingEdited || !id) return;
-    dispatch(handleSetMessageBegingEdited(messageBegingEdited));
+    if (!selectedMessage || !id) return;
     dispatch(handleSetIsEditingMessage(true));
+    // dispatch(handleSetMessageBegingEdited(selectedMessage));
   };
 
   return (
     <>
-      {user?.id === messageBegingEdited?.author.id && (
+      {user?.id === selectedMessage?.author.id && (
         <ContextMenuSyle $left={points.x} $top={points.y}>
           <ul>
             <li onClick={handleDeleteMessage}>

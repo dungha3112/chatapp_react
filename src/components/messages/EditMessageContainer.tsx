@@ -32,7 +32,6 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // if (!id || !messageBegingEdited) return;
 
     const params = {
       conversationId: parseInt(id),

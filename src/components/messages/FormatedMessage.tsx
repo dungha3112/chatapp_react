@@ -30,7 +30,7 @@ const FormatedMessage = ({
   );
 
   return (
-    <MessageItemContainer>
+    <MessageItemContainer onContextMenu={onContextMenu}>
       <MessageItemAvatar />
       <MessageItemDetails>
         <span
