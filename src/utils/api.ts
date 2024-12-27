@@ -65,7 +65,7 @@ export const editMessageApi = async ({
 }: EditMessageParams) =>
   await axiosClient.patch<MessageType>(
     `/conversations/${conversationId}/messages/${messageId}`,
-    content
+    { content }
   );
 
 export const getGroupsApi = async () =>

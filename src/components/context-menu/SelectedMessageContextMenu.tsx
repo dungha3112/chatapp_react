@@ -3,7 +3,10 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
-import { handleSetIsEditingMessage } from "../../store/messageContainerSlice";
+import {
+  handleSetIsEditingMessage,
+  handleSetMessageBegingEdited,
+} from "../../store/messageContainerSlice";
 import { deleteMessageThunk } from "../../store/messages/messageThunk";
 import { ContextMenuSyle } from "../../styles";
 import { AuthContext } from "../../utils/contexts/AuthContext";
@@ -35,7 +38,7 @@ const SelectedMessageContextMenu = ({ points }: Props) => {
   const handleEditMessage = async () => {
     if (!selectedMessage || !id) return;
     dispatch(handleSetIsEditingMessage(true));
-    // dispatch(handleSetMessageBegingEdited(selectedMessage));
+    dispatch(handleSetMessageBegingEdited(selectedMessage));
   };
 
   return (

@@ -41,7 +41,7 @@ export type MessageType = {
   content: string;
   createdAt: string;
   author: UserType;
-  conversation: ConversationType;
+  // conversation?: ConversationType;
 };
 
 //ConversationMessage
@@ -105,7 +105,7 @@ export type GroupMessageType = {
   content: string;
   createdAt: string;
   author: UserType;
-  group: GroupType;
+  // group?: GroupType;
 };
 // GroupType
 export type GroupType = {

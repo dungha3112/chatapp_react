@@ -2,12 +2,12 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
-import {
-  EditMessageInputField,
-  EditMessageActionsContainer,
-} from "../../styles/messages";
-import { editMessageThunk } from "../../store/messages/messageThunk";
 import { handleSetIsEditingMessage } from "../../store/messageContainerSlice";
+import { editMessageThunk } from "../../store/messages/messageThunk";
+import {
+  EditMessageActionsContainer,
+  EditMessageInputField,
+} from "../../styles/messages";
 
 type Props = {
   onEditMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -15,7 +15,7 @@ type Props = {
 
 const EditMessageContainer = ({ onEditMessageChange }: Props) => {
   const { id } = useParams();
-  const { messageBegingEdited } = useSelector(
+  const { messageBegingEdited, isEditingMessage } = useSelector(
     (state: RootState) => state.messageContainer
   );
 
@@ -55,6 +55,7 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
         <EditMessageInputField
           value={messageBegingEdited.content}
           onChange={onEditMessageChange}
+          autoFocus={isEditingMessage}
         />
 
         <EditMessageActionsContainer>

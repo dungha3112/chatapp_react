@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { MessageType } from "../utils/types";
+import { GroupMessageType, MessageType } from "../utils/types";
 
 export interface MessageContainerState {
-  selectedMessage?: MessageType;
-  messageBegingEdited?: MessageType;
+  selectedMessage?: MessageType | GroupMessageType;
+  messageBegingEdited?: MessageType | GroupMessageType;
   isEditingMessage: boolean;
 }
 
@@ -30,12 +30,18 @@ export const messageContainerSlice = createSlice({
       state.isEditingMessage = action.payload;
     },
 
-    handleSetMessageContentBegingEdited: (
+    handleUpdateMessageContentBegingEdited: (
       state,
       action: PayloadAction<string>
     ) => {
       if (state.messageBegingEdited)
         state.messageBegingEdited.content = action.payload;
+    },
+
+    handleResetMessageContainter: (state) => {
+      state.isEditingMessage = false;
+      state.messageBegingEdited = undefined;
+      state.selectedMessage = undefined;
     },
   },
 });
@@ -45,7 +51,8 @@ export const {
   handleSetMessageBegingEdited,
   handleSetIsEditingMessage,
 
-  handleSetMessageContentBegingEdited,
+  handleUpdateMessageContentBegingEdited,
+  handleResetMessageContainter,
 } = messageContainerSlice.actions;
 
 export default messageContainerSlice.reducer;

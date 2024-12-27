@@ -7,14 +7,14 @@ import {
   MessageItemHeader,
 } from "../../styles/messages";
 import moment from "moment";
-import { MessageType, UserType } from "../../utils/types";
+import { GroupMessageType, MessageType, UserType } from "../../utils/types";
 import EditMessageContainer from "./EditMessageContainer";
 import { RootState } from "../../store";
 import { useSelector } from "react-redux";
 
 type Props = {
   user?: UserType;
-  message: MessageType;
+  message: MessageType | GroupMessageType;
   onContextMenu: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   onEditMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };

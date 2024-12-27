@@ -98,7 +98,7 @@ export const messageSlice = createSlice({
         const messageIndex = conversationMessage.messages.findIndex(
           (m) => m.id === message.id
         );
-        conversationMessage.messages.splice(messageIndex, 1);
+        conversationMessage.messages[messageIndex] = message;
       });
   },
 });

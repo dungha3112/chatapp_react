@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
+import { selectGroupMessage } from "../../store/groupMessage/groupMessageSlice";
 import {
+  handleResetMessageContainter,
   handleSelectedMessage,
   handleSetIsEditingMessage,
-  handleSetMessageBegingEdited,
-  handleSetMessageContentBegingEdited,
+  handleUpdateMessageContentBegingEdited,
 } from "../../store/messageContainerSlice";
 import { selectConversationMessage } from "../../store/messages/messageSlice";
 import {
@@ -15,7 +16,7 @@ import {
   MessageItemContent,
 } from "../../styles/messages";
 import { AuthContext } from "../../utils/contexts/AuthContext";
-import { MessageType } from "../../utils/types";
+import { GroupMessageType, MessageType } from "../../utils/types";
 import SelectedMessageContextMenu from "../context-menu/SelectedMessageContextMenu";
 import EditMessageContainer from "./EditMessageContainer";
 import FormatedMessage from "./FormatedMessage";
@@ -39,30 +40,36 @@ const MessageContainer = () => {
     selectConversationMessage(state, parseInt(id!))
   );
 
+  const groupMessage = useSelector((state: RootState) =>
+    selectGroupMessage(state, parseInt(id!))
+  );
+
   const conversationType = useSelector(
     (state: RootState) => state.selectedConversationType.type
   );
 
   const onEditMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!messageBegingEdited) return;
-    dispatch(handleSetMessageContentBegingEdited(e.target.value));
+    if (!isEditingMessage) return;
+    dispatch(handleUpdateMessageContentBegingEdited(e.target.value));
   };
 
   useEffect(() => {
     const handleClick = () => setShowMenu(false);
     window.addEventListener("click", handleClick);
-    return () => window.removeEventListener("click", handleClick);
+
+    return () => {
+      console.log("UnClick ...");
+      window.removeEventListener("click", handleClick);
+    };
   }, []);
 
   useEffect(() => {
-    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
-      if (e.key === "Escape") {
-        dispatch(handleSetIsEditingMessage(false));
-      }
-    };
+    const handleKeyDown = (e: globalThis.KeyboardEvent) =>
+      e.key === "Escape" && dispatch(handleSetIsEditingMessage(false));
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
+      console.log("Removing keydown listenner ...");
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [dispatch]);
@@ -70,27 +77,27 @@ const MessageContainer = () => {
   useEffect(() => {
     return () => {
       console.log("Unmuseting ...");
+
+      dispatch(handleResetMessageContainter());
     };
-  }, [id]);
+  }, [id, dispatch]);
 
   const onContextMenu = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     mess: MessageType
   ) => {
     e.preventDefault();
+    if (mess.author.id !== user?.id) return;
 
-    if (mess.author.id === user?.id) {
-      setShowMenu(true);
-      setPoints({ x: e.pageX, y: e.pageY });
-      dispatch(handleSelectedMessage(mess));
-      dispatch(handleSetMessageBegingEdited(mess));
-    }
+    setShowMenu(true);
+    setPoints({ x: e.pageX, y: e.pageY });
+    dispatch(handleSelectedMessage(mess));
   };
 
   const mapMessages = (
-    m: MessageType,
+    m: MessageType | GroupMessageType,
     index: number,
-    messages: MessageType[]
+    messages: MessageType[] | GroupMessageType[]
   ) => {
     const nextIndex = index + 1;
     const currentMessage = messages[index];
@@ -139,7 +146,7 @@ const MessageContainer = () => {
       return conversationMessage?.messages.map(mapMessages);
     }
 
-    return [];
+    return groupMessage?.messages.map(mapMessages);
   };
 
   useEffect(() => {
