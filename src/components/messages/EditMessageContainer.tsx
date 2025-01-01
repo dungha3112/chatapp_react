@@ -8,6 +8,8 @@ import {
   EditMessageActionsContainer,
   EditMessageInputField,
 } from "../../styles/messages";
+import { editOrDeleteLastMessageConversation } from "../../store/conversations/conversationSlice";
+import { MessageType } from "../../utils/types";
 
 type Props = {
   onEditMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -43,6 +45,15 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
         .unwrap()
         .finally(() => {
           dispatch(handleSetIsEditingMessage(false));
+
+          dispatch(
+            editOrDeleteLastMessageConversation({
+              isEdit: true,
+              messages: [],
+              conversationId: parseInt(id),
+              message: messageBegingEdited as MessageType,
+            })
+          );
         });
     } else {
       dispatch(handleSetIsEditingMessage(false));

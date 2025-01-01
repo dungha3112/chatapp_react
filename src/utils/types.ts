@@ -10,6 +10,9 @@ export type CreateUserParams = UserCredentialsParams & {
   lastName: string;
 };
 
+/**
+ * CONVERSATION
+ */
 //ConversationType
 export type ConversationType = {
   id: number;
@@ -35,13 +38,24 @@ export type CreateConversationParams = {
   message: string;
 };
 
+// delete OR Edit last message conversation
+export type EditOrDeleteLastMessageConversationResponse = {
+  isEdit: boolean;
+  messages?: MessageType[];
+  conversationId: number;
+  message: MessageType;
+};
+
+/**
+ * MESSAGE
+ */
 //MessageType
 export type MessageType = {
   id: number;
   content: string;
   createdAt: string;
   author: UserType;
-  // conversation?: ConversationType;
+  conversation?: ConversationType;
 };
 
 //ConversationMessage
@@ -90,6 +104,14 @@ export type EditMessageParams = {
   content: string;
 };
 
+// EditMessageResponse
+export type EditMessageResponse = {
+  conversationId: number;
+  userId: number;
+  content: string;
+  messageId: number;
+};
+
 /**
  * Group
  */
@@ -105,7 +127,7 @@ export type GroupMessageType = {
   content: string;
   createdAt: string;
   author: UserType;
-  // group?: GroupType;
+  group?: GroupType;
 };
 // GroupType
 export type GroupType = {

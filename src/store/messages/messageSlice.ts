@@ -2,7 +2,6 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 import {
   ConversationMessage,
-  DeleteMessageResponse,
   MessageEventPayload,
   MessageType,
 } from "../../utils/types";
@@ -35,8 +34,12 @@ export const messageSlice = createSlice({
       conversationMessages.messages.unshift(message);
     },
 
-    deleteMessage: (state, action: PayloadAction<DeleteMessageResponse>) => {
-      const { conversationId, messageId } = action.payload;
+    deleteMessage: (state, action: PayloadAction<MessageType>) => {
+      // const { content, messageId, conversationId, userId } = action.payload;
+      console.log(action.payload);
+      const conversationId = action.payload.conversation?.id;
+      const messageId = action.payload.id;
+
       const conversationMessages = state.messages.find(
         (cm) => cm.id === conversationId
       );
@@ -49,16 +52,21 @@ export const messageSlice = createSlice({
     },
 
     editMessage: (state, action: PayloadAction<MessageType>) => {
-      const message = action.payload;
+      // const { content, messageId, conversationId, userId } = action.payload;
+
+      const conversationId = action.payload.conversation?.id;
+      const messageId = action.payload.id;
+      const content = action.payload.content;
+
       const conversationMessage = state.messages.find(
-        (cm) => cm.id === message.conversation.id
+        (cm) => cm.id === conversationId
       );
       if (!conversationMessage) return;
 
       const messageIndex = conversationMessage.messages.findIndex(
-        (m) => m.id === message.id
+        (m) => m.id === messageId
       );
-      conversationMessage.messages[messageIndex] = message;
+      conversationMessage.messages[messageIndex].content = content;
     },
   },
   extraReducers: (builder) => {
@@ -89,7 +97,7 @@ export const messageSlice = createSlice({
       })
       .addCase(editMessageThunk.fulfilled, (state, action) => {
         const message = action.payload.data;
-        const conversationId = message.conversation.id;
+        const conversationId = message.conversation?.id;
         const conversationMessage = state.messages.find(
           (cm) => cm.id === conversationId
         );

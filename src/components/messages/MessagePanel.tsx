@@ -1,20 +1,23 @@
 import React, { useContext, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { RootState } from "../../store";
+import { selectConversationById } from "../../store/conversations/conversationSlice";
 import {
   MessagePanelBody,
   MessagePanelFooter,
   MessagePanelStyle,
   MessageTypingStatusStyle,
 } from "../../styles/messages";
-import { postNewMessageApi } from "../../utils/api";
+import {
+  postNewConversationMessageApi,
+  postNewGroupMessageApi,
+} from "../../utils/api";
+import { AuthContext } from "../../utils/contexts/AuthContext";
+import { getRecipientFromConversation } from "../../utils/helpers";
 import MessageContainer from "./MessageContainer";
 import MessageInputFiled from "./MessageInputFiled";
 import MessagePanelHeader from "./MessagePanelHeader";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { selectConversationById } from "../../store/conversations/conversationSlice";
-import { getRecipientFromConversation } from "../../utils/helpers";
-import { AuthContext } from "../../utils/contexts/AuthContext";
 
 type Props = {
   sendTypingStatus: () => void;
@@ -26,6 +29,10 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
 
   const { user } = useContext(AuthContext);
 
+  const conversationType = useSelector(
+    (state: RootState) => state.selectedConversationType.type
+  );
+
   const conversation = useSelector((state: RootState) =>
     selectConversationById(state, parseInt(id!))
   );
@@ -35,11 +42,20 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
   const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!id || !content) return;
-    try {
-      await postNewMessageApi(content, parseInt(id));
-      setContent("");
-    } catch (error) {
-      console.log(error);
+    if (conversationType === "private") {
+      try {
+        await postNewConversationMessageApi(content, parseInt(id));
+        setContent("");
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await postNewGroupMessageApi(content, parseInt(id));
+        setContent("");
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

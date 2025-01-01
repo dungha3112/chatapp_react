@@ -9,7 +9,7 @@ import { Page } from "../../styles";
 import GroupChanelPage from "./GroupChanelPage";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import { GroupMessageEventPayload, GroupType } from "../../utils/types";
-import { addGroup } from "../../store/groups/groupSlice";
+import { addGroup, updateGroup } from "../../store/groups/groupSlice";
 import { addGroupMessage } from "../../store/groupMessage/groupMessageSlice";
 import { fetchGroupMessagesThunk } from "../../store/groupMessage/groupMessageThunk";
 
@@ -30,6 +30,7 @@ const GroupPage = () => {
 
     socket.on("onGroupMessageToClient", (payload: GroupMessageEventPayload) => {
       dispatch(addGroupMessage(payload));
+      dispatch(updateGroup(payload.group));
     });
 
     return () => {

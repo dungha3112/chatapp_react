@@ -21,6 +21,11 @@ const axiosClient = axios.create({
   withCredentials: true,
 } as AxiosRequestConfig);
 
+/**
+ * Auth api
+ * @param data
+ * @returns
+ */
 export const postRegisterApi = async (data: CreateUserParams) => {
   return await axiosClient.post("auth/register", data);
 };
@@ -29,17 +34,19 @@ export const postLoginApi = async (data: UserCredentialsParams) => {
   return await axiosClient.post("auth/login", data);
 };
 
+/**
+ * User Api
+ * @returns
+ */
 export const getStatusApi = async () =>
   await axiosClient.get<UserType>("auth/status");
 
+/**
+ * CONVERSATION API
+ * @returns
+ */
 export const getConversationsApi = async () =>
   await axiosClient.get<ConversationType[]>("conversations");
-
-export const getMessagesByConversationIdApi = async (id: number) =>
-  await axiosClient.get<FetchMessagePayload>(`conversations/${id}/messages`);
-
-export const postNewMessageApi = async (content: string, id: number) =>
-  await axiosClient.post(`conversations/${id}/messages`, { content });
 
 export const postNewConversationApi = async (
   data: CreateConversationParams
@@ -47,6 +54,20 @@ export const postNewConversationApi = async (
   const res = await axiosClient.post<ConversationType>(`conversations/`, data);
   return res;
 };
+
+/**
+ * MESSAGE API
+ * @param id
+ * @returns
+ */
+
+export const postNewConversationMessageApi = async (
+  content: string,
+  id: number
+) => await axiosClient.post(`conversations/${id}/messages`, { content });
+
+export const getMessagesByConversationIdApi = async (id: number) =>
+  await axiosClient.get<FetchMessagePayload>(`conversations/${id}/messages`);
 
 export const deleteMessageApi = async ({
   conversationId,
@@ -68,8 +89,16 @@ export const editMessageApi = async ({
     { content }
   );
 
+/**
+ * GROUP API
+ * @returns
+ */
+
 export const getGroupsApi = async () =>
   await axiosClient.get<GroupType[]>("/groups");
 
 export const fetchGroupMessagesApi = async (id: number) =>
   await axiosClient.get<FetchGroupMessagePayload>(`/groups/${id}/messages`);
+
+export const postNewGroupMessageApi = async (content: string, id: number) =>
+  await axiosClient.post(`/groups/${id}/messages`, { content });

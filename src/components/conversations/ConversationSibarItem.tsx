@@ -29,9 +29,9 @@ export const ConversationSibarItem = ({ conversation }: Props) => {
           {getDisplayUser?.firstName + " " + getDisplayUser?.lastName}
         </span>
         <span className={styles.conversationMessage}>
-          {conversation.lastMessageSent.content.length >= 25
-            ? conversation.lastMessageSent.content.slice(0, 25) + " ..."
-            : conversation.lastMessageSent.content}
+          {conversation.lastMessageSent?.content.length >= 25
+            ? conversation.lastMessageSent?.content.slice(0, 25) + " ..."
+            : conversation.lastMessageSent?.content}
         </span>
       </div>
     </ConversationSidebarItemStyle>

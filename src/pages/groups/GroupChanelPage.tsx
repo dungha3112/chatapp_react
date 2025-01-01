@@ -7,41 +7,26 @@ import { ConversationChannelPageStyle } from "../../styles/conversations";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 
-const ConversationChanelPage = () => {
+const GroupChanelPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const socket = useContext(SocketContext);
   const { id } = useParams();
   const { user } = useContext(AuthContext);
 
-  const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
-  const [isTyping, setIsTyping] = useState<boolean>(false);
   const [isRecipientTyping, setIsRecipientTyping] = useState<boolean>(false);
 
   useEffect(() => {
     if (!id) return;
-  }, [id, dispatch]);
+    const groupId: number = parseInt(id);
+    socket.emit("onGroupJoin", { groupId });
 
-  useEffect(() => {
-    if (!id) return;
-
-    return () => {};
-  }, [id, socket, user?.id]);
+    return () => {
+      socket.emit("onGroupLeave", { groupId });
+    };
+  }, [id, socket]);
 
   const sendTypingStatus = () => {
     if (!id) return;
-
-    if (isTyping) {
-      clearTimeout(timer);
-      setTimer(
-        setTimeout(() => {
-          socket.emit("onTypingStop", { conversationId: parseInt(id) });
-          setIsTyping(false);
-        }, 500)
-      );
-    } else {
-      socket.emit("onTypingStart", { conversationId: parseInt(id) });
-      setIsTyping(true);
-    }
   };
 
   return (
@@ -54,4 +39,4 @@ const ConversationChanelPage = () => {
   );
 };
 
-export default ConversationChanelPage;
+export default GroupChanelPage;

@@ -18,6 +18,13 @@ export const groupsSlice = createSlice({
     addGroup: (state, action: PayloadAction<GroupType>) => {
       state.groups.unshift(action.payload);
     },
+
+    updateGroup: (state, action: PayloadAction<GroupType>) => {
+      const group = action.payload;
+      const index = state.groups.findIndex((g) => g.id === group.id);
+      state.groups.splice(index, 1);
+      state.groups.unshift(group);
+    },
   },
 
   extraReducers(builder) {
@@ -35,5 +42,5 @@ export const selectGroupById = createSelector(
   (groups, groupId) => groups.find((g) => g.id === groupId)
 );
 
-export const { addGroup } = groupsSlice.actions;
+export const { addGroup, updateGroup } = groupsSlice.actions;
 export default groupsSlice.reducer;

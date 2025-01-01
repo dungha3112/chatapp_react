@@ -1,6 +1,9 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
-import { ConversationType, DeleteMessageResponse } from "../../utils/types";
+import {
+  ConversationType,
+  EditOrDeleteLastMessageConversationResponse,
+} from "../../utils/types";
 import {
   createConversationThunk,
   fetchConversationsThunk,
@@ -32,10 +35,36 @@ export const conversationSlice = createSlice({
       state.conversations.splice(index, 1);
       state.conversations.unshift(conversation);
     },
-    updateMessageConversation: (
+    editOrDeleteLastMessageConversation: (
       state,
-      action: PayloadAction<DeleteMessageResponse>
-    ) => {},
+      action: PayloadAction<EditOrDeleteLastMessageConversationResponse>
+    ) => {
+      console.log("editOrDeleteLastMessageConversation", action.payload);
+
+      const { isEdit, messages, message, conversationId } = action.payload;
+
+      const conversation = state.conversations.find(
+        (c) => c.id === conversationId
+      );
+
+      const index = state.conversations.findIndex(
+        (c) => c.id === conversationId
+      );
+
+      const isLastMessageSent = conversation?.lastMessageSent.id === message.id;
+
+      if (!isLastMessageSent) return;
+      if (isEdit) {
+        console.log("edit message last sent conversation");
+
+        state.conversations[index].lastMessageSent = message;
+      } else {
+        if (!messages) return;
+        console.log("delete message last sent conversation");
+
+        state.conversations[index].lastMessageSent = messages[1];
+      }
+    },
   },
 
   extraReducers: (builder) => {
@@ -66,7 +95,7 @@ export const selectConversationById = createSelector(
 export const {
   addConversation,
   updateConversation,
-  updateMessageConversation,
+  editOrDeleteLastMessageConversation,
 } = conversationSlice.actions;
 
 export default conversationSlice.reducer;
