@@ -4,8 +4,9 @@ import styles from "./index.module.scss";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { UserCredentialsParams } from "../../utils/types";
 import { postLoginApi } from "../../utils/api";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAuth } from "../../utils/hooks/useAuth";
+import { SocketContext } from "../../utils/contexts/SocketContext";
 
 const LoginForm = () => {
   const {
@@ -15,6 +16,7 @@ const LoginForm = () => {
   } = useForm<UserCredentialsParams>();
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const socket = useContext(SocketContext);
 
   const { user } = useAuth();
 
@@ -22,6 +24,7 @@ const LoginForm = () => {
     try {
       setLoading(true);
       await postLoginApi(data);
+      socket.connect();
       navigate("/conversation");
       setLoading(false);
     } catch (error) {

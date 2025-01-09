@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
-import ConversationSidebar from "../../components/conversations/ConversationSidebar";
+import ConversationSidebar from "../../components/sidebars/ConversationSidebar";
 import { AppDispatch } from "../../store";
 import { fetchGroupsThunk } from "../../store/groups/groupThunk";
 import { updateType } from "../../store/selectedSlice";
@@ -45,7 +45,7 @@ const GroupPage = () => {
 
   return (
     <Page $display="flex" $justifyContent="space-between" $alignItems="center">
-      <ConversationSidebar />
+      {/* <ConversationSidebar /> */}
       {!groupId && <GroupChanelPage />}
       <Outlet />
     </Page>

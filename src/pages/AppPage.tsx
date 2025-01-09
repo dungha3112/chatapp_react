@@ -1,11 +1,15 @@
 import { Outlet } from "react-router-dom";
+import UserSidebar from "../components/sidebars/UserSidebar";
+import { Page } from "../styles";
+import ConversationSidebar from "../components/sidebars/ConversationSidebar";
 
 const AppPage = () => {
   return (
-    <div>
-      Hi
+    <Page>
+      {/* <UserSidebar /> */}
+      <ConversationSidebar />
       <Outlet />
-    </div>
+    </Page>
   );
 };
 

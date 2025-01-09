@@ -139,3 +139,11 @@ export const ContextMenuSyle = styled.div<ContextMenuProps>`
     }
   }
 `;
+
+export const UserAvatarContainer = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: #fff000;
+`;

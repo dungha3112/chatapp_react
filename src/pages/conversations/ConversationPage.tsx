@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
-import ConversationSidebar from "../../components/conversations/ConversationSidebar";
+import ConversationSidebar from "../../components/sidebars/ConversationSidebar";
 import { AppDispatch, RootState } from "../../store";
 import {
   addConversation,
@@ -44,6 +44,9 @@ const ConversationPage = () => {
   useEffect(() => {
     socket.on("connected", () => {
       console.log("Connected ...");
+    });
+    socket.on("disconnected", () => {
+      console.log("disconnected ...");
     });
 
     socket.on(
@@ -88,6 +91,7 @@ const ConversationPage = () => {
 
     return () => {
       socket.off("connected");
+      socket.off("disconnected");
       socket.off("onConversationCreateToClientSide");
       socket.off("onMessageCreateToClientSide");
 
@@ -98,7 +102,7 @@ const ConversationPage = () => {
 
   return (
     <Page $display="flex" $justifyContent="space-between" $alignItems="center">
-      <ConversationSidebar />
+      {/* <ConversationSidebar /> */}
       {!id && (
         <div
           style={{

@@ -10,8 +10,8 @@ import {
 import CreateConversationModal from "../modals/CreateConversationModal";
 
 import GroupItem from "../groups/GroupItem";
-import ConversationSelected from "./ConversationSelected";
-import { ConversationSibarItem } from "./ConversationSibarItem";
+import ConversationSelected from "../conversations/ConversationSelected";
+import { ConversationSibarItem } from "../conversations/ConversationSibarItem";
 
 const ConversationSidebar = () => {
   const conversationType = useSelector(
