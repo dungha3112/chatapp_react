@@ -1,6 +1,6 @@
 form {
   width: 800px;
-  margin: 0 8px;
+  // margin: 0 8px;
 }
 
 .nameFieldRow {
@@ -37,4 +37,40 @@ form {
 
 .messageOptions {
   margin: 8px 0;
+}
+
+.conversationTypeForm {
+  display: flex;
+  gap: 10px;
+  user-select: none;
+  padding-bottom: 24px;
+}
+
+.radio {
+  display: none;
+  &:hover + .radioLabel::before {
+    background-color: #000;
+  }
+  &:checked + .radioLabel::before {
+    content: "\2714";
+    color: #000;
+    background-color: rgb(222, 222, 222);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.radioLabel {
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  &::before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    border: 1px solid #2b09ff;
+    border-radius: 5px;
+  }
 }

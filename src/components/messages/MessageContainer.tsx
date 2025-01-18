@@ -40,6 +40,10 @@ const MessageContainer = () => {
     selectConversationMessage(state, parseInt(id!))
   );
 
+  const isMessageLoading = useSelector(
+    (state: RootState) => state.message.loading
+  );
+
   const groupMessage = useSelector((state: RootState) =>
     selectGroupMessage(state, parseInt(id!))
   );
@@ -158,6 +162,8 @@ const MessageContainer = () => {
     window.addEventListener("click", handleClick);
     return () => window.removeEventListener("click", handleClick);
   }, []);
+
+  if (isMessageLoading) return <div>Loading ...</div>;
 
   return (
     <MessageContainerStyle>

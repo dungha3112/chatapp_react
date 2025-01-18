@@ -71,16 +71,21 @@ export const messageSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchMessagesThunk.pending, (state, action) => {
+        state.loading = true;
+      })
       .addCase(fetchMessagesThunk.fulfilled, (state, action) => {
         const { id } = action.payload.data;
         const index = state.messages.findIndex((cm) => cm.id === id);
         const exists = state.messages.find((cm) => cm.id === id);
+
         if (exists) {
           console.log("exists");
           state.messages[index] = action.payload.data;
         } else {
           state.messages.push(action.payload.data);
         }
+        state.loading = false;
       })
       .addCase(deleteMessageThunk.fulfilled, (state, action) => {
         const { conversationId, messageId } = action.payload.data;

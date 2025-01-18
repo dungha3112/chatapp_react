@@ -100,3 +100,11 @@ export const ConversationSelectedItem = styled.div<ConversationSelectedProps>`
     color: #292929;
   }
 `;
+
+export const RecipentResultContainer = styled.div`
+  position: relative;
+  height: 200px;
+  width: 100%;
+  /* z-index: 999; */
+  background-color: #000;
+`;
