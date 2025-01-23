@@ -102,3 +102,6 @@ export const fetchGroupMessagesApi = async (id: number) =>
 
 export const postNewGroupMessageApi = async (content: string, id: number) =>
   await axiosClient.post(`/groups/${id}/messages`, { content });
+
+export const searchUsersApi = async (query: string) =>
+  await axiosClient.get<UserType[]>(`/users/search?query=${query}`);

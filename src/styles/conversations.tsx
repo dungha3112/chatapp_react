@@ -101,10 +101,52 @@ export const ConversationSelectedItem = styled.div<ConversationSelectedProps>`
   }
 `;
 
-export const RecipentResultContainer = styled.div`
-  position: relative;
-  height: 200px;
-  width: 100%;
-  /* z-index: 999; */
-  background-color: #000;
+export const RecipientResultContainer = styled.div`
+  position: absolute;
+  background-color: #161616;
+  right: 0;
+  left: 0;
+  margin: 0 24px;
+  overflow: scroll;
+  height: 135px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const RecipientResultItem = styled.div`
+  padding: 20px 10px;
+  border: 1px solid #161616;
+  transition: 0.5s background-color ease-in-out;
+  user-select: none;
+  &:hover {
+    background-color: #292929;
+    border: 1px solid #22222278;
+    cursor: pointer;
+  }
+`;
+
+export const SelectedRecipientPillStyle = styled.div`
+  margin-top: 10px;
+  background-color: #111;
+  user-select: none;
+  padding: 6px 10px;
+  width: fit-content;
+  border-radius: 15px;
+  & .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  & .icon {
+    font-size: 22px;
+    cursor: pointer;
+    color: #656565;
+    transition: 0.5s color ease-in-out;
+    &:hover {
+      color: #f90e22;
+    }
+  }
 `;

@@ -26,6 +26,7 @@ export const InputLabel = styled.label`
   color: #8f8f8f;
   font-size: 14px;
   margin: 4px 0;
+  transition: 1s time-out ease-in-out;
 `;
 
 export const Button = styled.button`
