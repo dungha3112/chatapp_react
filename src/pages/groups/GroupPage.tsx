@@ -1,20 +1,22 @@
 import { useContext, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
-import ConversationSidebar from "../../components/sidebars/ConversationSidebar";
 import { AppDispatch } from "../../store";
-import { fetchGroupsThunk } from "../../store/groups/groupThunk";
-import { updateType } from "../../store/selectedSlice";
-import { Page } from "../../styles";
-import GroupChanelPage from "./GroupChanelPage";
-import { SocketContext } from "../../utils/contexts/SocketContext";
-import { GroupMessageEventPayload, GroupType } from "../../utils/types";
-import { addGroup, updateGroup } from "../../store/groups/groupSlice";
 import { addGroupMessage } from "../../store/groupMessage/groupMessageSlice";
 import { fetchGroupMessagesThunk } from "../../store/groupMessage/groupMessageThunk";
+import { addGroup, updateGroup } from "../../store/groups/groupSlice";
+import { fetchGroupsThunk } from "../../store/groups/groupThunk";
+import { updateType } from "../../store/selectedSlice";
+
+import { AuthContext } from "../../utils/contexts/AuthContext";
+import { SocketContext } from "../../utils/contexts/SocketContext";
+import { GroupMessageEventPayload, GroupType } from "../../utils/types";
+import ConversationSidebar from "../../components/sidebars/ConversationSidebar";
 
 const GroupPage = () => {
-  const { id: groupId } = useParams();
+  const { user } = useContext(AuthContext);
+
+  const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const socket = useContext(SocketContext);
 
@@ -40,15 +42,26 @@ const GroupPage = () => {
   }, [socket, dispatch]);
 
   useEffect(() => {
-    if (groupId) dispatch(fetchGroupMessagesThunk(parseInt(groupId)));
-  }, [dispatch, groupId]);
+    if (id) dispatch(fetchGroupMessagesThunk(parseInt(id)));
+  }, [dispatch, id]);
 
   return (
-    <Page $display="flex" $justifyContent="space-between" $alignItems="center">
-      {/* <ConversationSidebar /> */}
-      {!groupId && <GroupChanelPage />}
+    <>
+      <ConversationSidebar />
+      {!id && (
+        <div
+          style={{
+            marginLeft: "280px",
+            display: "flex",
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          Hi {user?.firstName + " " + user?.lastName} groups ...
+        </div>
+      )}
       <Outlet />
-    </Page>
+    </>
   );
 };
 

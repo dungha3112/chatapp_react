@@ -16,7 +16,6 @@ import {
   selectConversationMessage,
 } from "../../store/messages/messageSlice";
 import { updateType } from "../../store/selectedSlice";
-import { Page } from "../../styles";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import {
@@ -101,8 +100,9 @@ const ConversationPage = () => {
   }, [conversationMessage?.messages, dispatch, socket]);
 
   return (
-    <Page $display="flex" $justifyContent="space-between" $alignItems="center">
-      {/* <ConversationSidebar /> */}
+    <>
+      <ConversationSidebar />
+
       {!id && (
         <div
           style={{
@@ -112,11 +112,11 @@ const ConversationPage = () => {
             justifyContent: "center",
           }}
         >
-          Hi {user?.firstName + " " + user?.lastName} conversation
+          Hi {user?.firstName + " " + user?.lastName} conversations
         </div>
       )}
       <Outlet />
-    </Page>
+    </>
   );
 };
 

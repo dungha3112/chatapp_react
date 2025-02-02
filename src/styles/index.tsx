@@ -45,10 +45,16 @@ export const Button = styled.button`
 
 export const Page = styled.div<PageProps>`
   height: 100%;
+  width: 100%;
   background-color: #1a1a1a;
   display: ${({ $display }) => $display};
   justify-content: ${({ $justifyContent }) => $justifyContent};
   align-items: ${({ $alignItems }) => $alignItems};
+`;
+
+export const LayoutPage = styled.div`
+  height: 100%;
+  display: flex;
 `;
 
 export const OverlayStyle = styled.div`
@@ -141,10 +147,9 @@ export const ContextMenuSyle = styled.div<ContextMenuProps>`
   }
 `;
 
-export const UserAvatarContainer = styled.div`
+export const UserAvatarContainer = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;
   cursor: pointer;
-  background-color: #fff000;
 `;

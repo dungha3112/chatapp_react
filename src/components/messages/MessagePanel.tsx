@@ -33,6 +33,10 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
     (state: RootState) => state.selectedConversationType.type
   );
 
+  const { errorMessage, loading: isLoadingMessage } = useSelector(
+    (state: RootState) => state.message
+  );
+
   const conversation = useSelector((state: RootState) =>
     selectConversationById(state, parseInt(id!))
   );
@@ -59,29 +63,33 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
     }
   };
 
+  if (isLoadingMessage) return <div>Loading conversation message ..</div>;
+  if (errorMessage) return <div>{errorMessage}</div>;
   return (
-    <MessagePanelStyle>
-      <MessagePanelHeader />
+    <>
+      <MessagePanelStyle>
+        <MessagePanelHeader />
 
-      <MessagePanelBody>
-        <MessageContainer />
-      </MessagePanelBody>
+        <MessagePanelBody>
+          <MessageContainer />
+        </MessagePanelBody>
 
-      <MessagePanelFooter>
-        <MessageInputFiled
-          content={content}
-          setContent={setContent}
-          sendMessage={sendMessage}
-          sendTypingStatus={sendTypingStatus}
-        />
+        <MessagePanelFooter>
+          <MessageInputFiled
+            content={content}
+            setContent={setContent}
+            sendMessage={sendMessage}
+            sendTypingStatus={sendTypingStatus}
+          />
 
-        <MessageTypingStatusStyle>
-          {isRecipientTyping
-            ? `${recipient?.firstName} ${recipient?.lastName} is typing...`
-            : ""}
-        </MessageTypingStatusStyle>
-      </MessagePanelFooter>
-    </MessagePanelStyle>
+          <MessageTypingStatusStyle>
+            {isRecipientTyping
+              ? `${recipient?.firstName} ${recipient?.lastName} is typing...`
+              : ""}
+          </MessageTypingStatusStyle>
+        </MessagePanelFooter>
+      </MessagePanelStyle>
+    </>
   );
 };
 

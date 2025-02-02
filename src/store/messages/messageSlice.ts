@@ -14,11 +14,13 @@ import {
 export interface MessagesState {
   messages: ConversationMessage[];
   loading: boolean;
+  errorMessage: string;
 }
 
 const initialState: MessagesState = {
   messages: [],
   loading: false,
+  errorMessage: "",
 };
 
 export const messageSlice = createSlice({
@@ -73,6 +75,10 @@ export const messageSlice = createSlice({
     builder
       .addCase(fetchMessagesThunk.pending, (state, action) => {
         state.loading = true;
+      })
+      .addCase(fetchMessagesThunk.rejected, (state, action) => {
+        state.errorMessage = String(action.error.message);
+        state.loading = false;
       })
       .addCase(fetchMessagesThunk.fulfilled, (state, action) => {
         const { id } = action.payload.data;

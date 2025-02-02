@@ -5,7 +5,7 @@ import { updateType } from "../../store/selectedSlice";
 import {
   ConversationSelectedItem,
   ConversationSelectedStyle,
-} from "../../styles/conversations";
+} from "../../styles/conversationSidebar";
 import { chatTypes } from "../../utils/constants";
 import { SelectedConversationType } from "../../utils/types";
 

@@ -8,7 +8,13 @@ import { DeleteMessageParams, EditMessageParams } from "../../utils/types";
 
 export const fetchMessagesThunk = createAsyncThunk(
   "messages/fetch",
-  async (id: number) => await getMessagesByConversationIdApi(id)
+  async (id: number) => {
+    try {
+      return await getMessagesByConversationIdApi(id);
+    } catch (error: any) {
+      throw error.response.data.message;
+    }
+  }
 );
 
 export const deleteMessageThunk = createAsyncThunk(

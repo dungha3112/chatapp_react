@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import MessagePanel from "../../components/messages/MessagePanel";
 import { AppDispatch } from "../../store";
-import { ConversationChannelPageStyle } from "../../styles/conversations";
+import { ConversationChannelPageStyle } from "../../styles/conversation";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 

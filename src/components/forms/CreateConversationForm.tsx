@@ -3,22 +3,13 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../store";
 import { createConversationThunk } from "../../store/conversations/conversationThunk";
-import {
-  Button,
-  InputContainer,
-  InputField,
-  InputLabel,
-  TextField,
-} from "../../styles";
-import {
-  RecipientResultContainer,
-  RecipientResultItem,
-} from "../../styles/conversations";
+import { Button, InputContainer, InputLabel, TextField } from "../../styles";
 import { searchUsersApi } from "../../utils/api";
 import useDebounce from "../../utils/hooks/useDebounce";
 import { SelectedConversationType, UserType } from "../../utils/types";
+import RecipientField from "../recipients/RecipientField";
+import RecipientResultsContainer from "../recipients/RecipientResultsContainer";
 import styles from "./index.module.scss";
-import SelectedRecipientChip from "../recipients/SelectedRecipientChip";
 
 type Props = {
   type: SelectedConversationType;
@@ -28,10 +19,9 @@ type Props = {
 const CreateConversationForm = ({ setShowModal, type }: Props) => {
   const [query, setQuery] = useState<string>("");
   const [message, setMessage] = useState<string>("");
-  const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
   const [selectedUser, setSelectedUser] = useState<UserType>();
+  const [selectedUsers, setSelectedUsers] = useState<UserType[]>([]);
 
-  const debounceMessage = useDebounce(message, 1000);
   const debounceQuery = useDebounce(query, 1000);
 
   const [searching, setSearching] = useState<boolean>(false);
@@ -75,44 +65,32 @@ const CreateConversationForm = ({ setShowModal, type }: Props) => {
     setUserResults([]);
   };
 
+  const handleMultipleUserSelect = (user: UserType) => {
+    const exists = selectedUsers.find((u) => u.id === user.id);
+
+    if (!exists) setSelectedUsers((prev) => [...prev, user]);
+  };
+
   return (
     <form className={styles.createConversationForm} onSubmit={onSubmit}>
-      <section>
-        <InputContainer $backgroundColor="#161616">
-          <InputLabel htmlFor="username">
-            {searching ? "Search ..." : "Recipient"}
-          </InputLabel>
-
-          {!selectedUser ? (
-            <InputField
-              id="username"
-              value={query}
-              autoComplete="off"
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          ) : (
-            <SelectedRecipientChip
-              user={selectedUser}
-              setSelectedUser={setSelectedUser}
-            />
-          )}
-        </InputContainer>
-      </section>
+      <RecipientField
+        query={query}
+        searching={searching}
+        selectedUser={selectedUser}
+        setQuery={setQuery}
+        setSelectedUser={setSelectedUser}
+      />
 
       {!selectedUser &&
         !searching &&
         userResults.length > 0 &&
         debounceQuery && (
-          <RecipientResultContainer>
-            {userResults.map((user) => (
-              <RecipientResultItem
-                key={user.id}
-                onClick={() => handleUserSelect(user)}
-              >
-                <span>{user.email}</span>
-              </RecipientResultItem>
-            ))}
-          </RecipientResultContainer>
+          <RecipientResultsContainer
+            handleUserSelect={handleUserSelect}
+            userResults={userResults}
+            type={type}
+            handleMultipleUserSelect={handleMultipleUserSelect}
+          />
         )}
 
       <section>

@@ -1,15 +1,14 @@
 import { Outlet } from "react-router-dom";
 import UserSidebar from "../components/sidebars/UserSidebar";
-import { Page } from "../styles";
-import ConversationSidebar from "../components/sidebars/ConversationSidebar";
+import { LayoutPage } from "../styles";
 
 const AppPage = () => {
   return (
-    <Page>
-      {/* <UserSidebar /> */}
-      <ConversationSidebar />
+    <LayoutPage>
+      <UserSidebar />
+
       <Outlet />
-    </Page>
+    </LayoutPage>
   );
 };
 

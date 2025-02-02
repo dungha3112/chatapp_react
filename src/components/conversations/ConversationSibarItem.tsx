@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { ConversationSidebarItemStyle } from "../../styles/conversations";
+import { ConversationSidebarItemStyle } from "../../styles/conversationSidebar";
 import { getRecipientFromConversation } from "../../utils/helpers";
 import { ConversationType } from "../../utils/types";
 import styles from "./index.module.scss";

@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
-import { SelectedRecipientPillStyle } from "../../styles/conversations";
+import { CiCircleRemove } from "react-icons/ci";
 import { UserType } from "../../utils/types";
-import { CiCircleCheck, CiCircleRemove } from "react-icons/ci";
+import { SelectedRecipientPillStyle } from "../../styles/recipients";
 
 type Props = {
   user: UserType;
@@ -12,7 +12,6 @@ const SelectedRecipientChip = ({ user, setSelectedUser }: Props) => {
     <SelectedRecipientPillStyle>
       <div className="container">
         <span>{user.email}</span>
-        {/* <CiCircleCheck fontSize={22} color="#2b09ff" /> */}
         <CiCircleRemove
           className="icon"
           onClick={() => setSelectedUser(undefined)}

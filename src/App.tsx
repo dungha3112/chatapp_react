@@ -25,14 +25,22 @@ const router = createBrowserRouter([
         <AppPage />
       </AuthenticatedRoute>
     ),
+    // children: [
+    //   { path: "/groups", element: <GroupPage /> },
+    //   { path: "/group/:id", element: <GroupChanelPage /> },
+
+    //   { path: "/conversations", element: <ConversationPage /> },
+    //   { path: "/conversation/:id", element: <ConversationChanelPage /> },
+    // ],
     children: [
       {
-        path: "/group",
+        path: "/groups",
         element: <GroupPage />,
         children: [{ path: ":id", element: <GroupChanelPage /> }],
       },
+
       {
-        path: "/conversation",
+        path: "/conversations",
         element: <ConversationPage />,
         children: [{ path: ":id", element: <ConversationChanelPage /> }],
       },

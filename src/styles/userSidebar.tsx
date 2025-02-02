@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { SidebarItemProps } from "./styleTypes";
 
 export const UserSidebarStyle = styled.div`
   height: 100%;
@@ -43,4 +44,16 @@ export const UserSidebarScrollableContainer = styled(ScrollableContainer)`
 
 export const UserSidebarFooterStyle = styled.footer`
   padding: 18px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+export const UserSidebarItemStyle = styled.div<SidebarItemProps>`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background-color: ${({ $active }) => $active && "#bb00ff"};
 `;

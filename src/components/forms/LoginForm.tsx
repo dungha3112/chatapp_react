@@ -25,7 +25,7 @@ const LoginForm = () => {
       setLoading(true);
       await postLoginApi(data);
       socket.connect();
-      navigate("/conversation");
+      navigate("/conversations");
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -33,7 +33,7 @@ const LoginForm = () => {
     }
   };
   useEffect(() => {
-    if (user) return navigate("/conversation");
+    if (user) return navigate("/conversations");
   }, [navigate, user]);
 
   return (

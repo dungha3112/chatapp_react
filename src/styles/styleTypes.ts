@@ -20,3 +20,7 @@ export type ConversationSelectedProps = Partial<{
 export type MessageItemContentProps = Partial<{
   $padding: string;
 }>;
+
+export type SidebarItemProps = Partial<{
+  $active: boolean;
+}>;
