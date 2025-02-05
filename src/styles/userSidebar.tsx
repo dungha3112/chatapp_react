@@ -9,13 +9,14 @@ export const UserSidebarStyle = styled.div`
   align-items: center;
   flex-direction: column;
   overflow-y: scroll;
+  user-select: none;
   &::-webkit-scrollbar {
     display: none;
   }
 `;
 
 export const UserSidebarHeaderStyle = styled.header`
-  height: 90px;
+  height: 80px;
   width: 100%;
   display: flex;
   align-items: center;

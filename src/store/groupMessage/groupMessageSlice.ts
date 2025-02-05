@@ -6,11 +6,13 @@ import { RootState } from "..";
 export interface GroupMessagesState {
   messages: GroupMessage[];
   loading: boolean;
+  errorMessage: string;
 }
 
 const initialState: GroupMessagesState = {
   messages: [],
   loading: false,
+  errorMessage: "",
 };
 
 export const groupMessagesSlice = createSlice({
@@ -28,8 +30,12 @@ export const groupMessagesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchGroupMessagesThunk.pending, (state, action) => {
+      .addCase(fetchGroupMessagesThunk.pending, (state) => {
         state.loading = true;
+      })
+      .addCase(fetchGroupMessagesThunk.rejected, (state, action) => {
+        state.errorMessage = String(action.error.message);
+        state.loading = false;
       })
       .addCase(fetchGroupMessagesThunk.fulfilled, (state, action) => {
         const { id } = action.payload.data;

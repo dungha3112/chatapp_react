@@ -5,10 +5,12 @@ import { RootState } from "..";
 
 export interface GroupState {
   groups: GroupType[];
+  loading: boolean;
 }
 
 const initialState: GroupState = {
   groups: [],
+  loading: false,
 };
 
 export const groupsSlice = createSlice({
@@ -28,8 +30,12 @@ export const groupsSlice = createSlice({
   },
 
   extraReducers(builder) {
+    builder.addCase(fetchGroupsThunk.pending, (state) => {
+      state.loading = true;
+    });
     builder.addCase(fetchGroupsThunk.fulfilled, (state, action) => {
       state.groups = action.payload.data;
+      state.loading = false;
     });
   },
 });

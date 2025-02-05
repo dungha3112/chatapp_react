@@ -7,15 +7,12 @@ import { fetchGroupMessagesThunk } from "../../store/groupMessage/groupMessageTh
 import { addGroup, updateGroup } from "../../store/groups/groupSlice";
 import { fetchGroupsThunk } from "../../store/groups/groupThunk";
 import { updateType } from "../../store/selectedSlice";
-
-import { AuthContext } from "../../utils/contexts/AuthContext";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import { GroupMessageEventPayload, GroupType } from "../../utils/types";
 import ConversationSidebar from "../../components/sidebars/ConversationSidebar";
+import ConversationPanel from "../../components/conversations/ConversationPanel";
 
 const GroupPage = () => {
-  const { user } = useContext(AuthContext);
-
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const socket = useContext(SocketContext);
@@ -48,18 +45,7 @@ const GroupPage = () => {
   return (
     <>
       <ConversationSidebar />
-      {!id && (
-        <div
-          style={{
-            marginLeft: "280px",
-            display: "flex",
-            width: "100%",
-            justifyContent: "center",
-          }}
-        >
-          Hi {user?.firstName + " " + user?.lastName} groups ...
-        </div>
-      )}
+      {!id && <ConversationPanel />}
       <Outlet />
     </>
   );

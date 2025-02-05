@@ -16,16 +16,15 @@ import {
   selectConversationMessage,
 } from "../../store/messages/messageSlice";
 import { updateType } from "../../store/selectedSlice";
-import { AuthContext } from "../../utils/contexts/AuthContext";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import {
   ConversationType,
   MessageEventPayload,
   MessageType,
 } from "../../utils/types";
+import ConversationPanel from "../../components/conversations/ConversationPanel";
 
 const ConversationPage = () => {
-  const { user } = useContext(AuthContext);
   const { id } = useParams();
 
   const socket = useContext(SocketContext);
@@ -102,19 +101,7 @@ const ConversationPage = () => {
   return (
     <>
       <ConversationSidebar />
-
-      {!id && (
-        <div
-          style={{
-            marginLeft: "280px",
-            display: "flex",
-            width: "100%",
-            justifyContent: "center",
-          }}
-        >
-          Hi {user?.firstName + " " + user?.lastName} conversations
-        </div>
-      )}
+      {!id && <ConversationPanel />}
       <Outlet />
     </>
   );

@@ -125,7 +125,7 @@ const MessageContainer = () => {
           onContextMenu={(e) => onContextMenu(e, m)}
         >
           {isEditingMessage && m.id === messageBegingEdited?.id ? (
-            <MessageItemContent $padding="0 0 0 60px">
+            <MessageItemContent $padding="0 0 0 0">
               <EditMessageContainer
                 onEditMessageChange={onEditMessageChange}
                 key={m.id}

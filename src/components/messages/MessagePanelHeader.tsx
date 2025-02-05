@@ -33,7 +33,12 @@ const MessagePanelHeader = () => {
   const groupTitle = group?.title || "Group";
   const headerTitle = conversationType === "group" ? groupTitle : displayName;
 
-  return <MessagePanelHeaderStyle>{headerTitle}</MessagePanelHeaderStyle>;
+  return (
+    <MessagePanelHeaderStyle>
+      <div>{headerTitle}</div>
+      <div>{headerTitle}</div>
+    </MessagePanelHeaderStyle>
+  );
 };
 
 export default MessagePanelHeader;

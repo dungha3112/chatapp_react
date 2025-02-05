@@ -3,5 +3,11 @@ import { fetchGroupMessagesApi } from "../../utils/api";
 
 export const fetchGroupMessagesThunk = createAsyncThunk(
   "groupMessages/fetch",
-  (id: number) => fetchGroupMessagesApi(id)
+  async (id: number) => {
+    try {
+      return await fetchGroupMessagesApi(id);
+    } catch (error: any) {
+      throw error.response.data.message;
+    }
+  }
 );

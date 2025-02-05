@@ -26,8 +26,8 @@ export type ConversationType = {
 // selected conversation type
 export type SelectedConversationType = "group" | "private";
 
-// ConversationChatType
-export type ConversationChatType = {
+// ConversationChatTypeData
+export type ConversationChatTypeData = {
   type: SelectedConversationType;
   lable: string;
 };

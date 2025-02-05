@@ -33,9 +33,13 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
     (state: RootState) => state.selectedConversationType.type
   );
 
-  const { errorMessage, loading: isLoadingMessage } = useSelector(
-    (state: RootState) => state.message
-  );
+  const {
+    errorMessage: errorConversationMessage,
+    loading: isLoadingConversationMessage,
+  } = useSelector((state: RootState) => state.message);
+
+  const { errorMessage: errorGroupMessage, loading: isLoadingGroupMessage } =
+    useSelector((state: RootState) => state.groupMessages);
 
   const conversation = useSelector((state: RootState) =>
     selectConversationById(state, parseInt(id!))
@@ -63,8 +67,11 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
     }
   };
 
-  if (isLoadingMessage) return <div>Loading conversation message ..</div>;
-  if (errorMessage) return <div>{errorMessage}</div>;
+  if (isLoadingConversationMessage || isLoadingGroupMessage)
+    return <div>Loading message ..</div>;
+  if (errorConversationMessage) return <div>{errorConversationMessage}</div>;
+  if (errorGroupMessage) return <div>{errorGroupMessage}</div>;
+
   return (
     <>
       <MessagePanelStyle>
@@ -75,18 +82,17 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
         </MessagePanelBody>
 
         <MessagePanelFooter>
+          <MessageTypingStatusStyle>
+            {isRecipientTyping &&
+              `${recipient?.firstName} ${recipient?.lastName} is typing...`}
+          </MessageTypingStatusStyle>
+
           <MessageInputFiled
             content={content}
             setContent={setContent}
             sendMessage={sendMessage}
             sendTypingStatus={sendTypingStatus}
           />
-
-          <MessageTypingStatusStyle>
-            {isRecipientTyping
-              ? `${recipient?.firstName} ${recipient?.lastName} is typing...`
-              : ""}
-          </MessageTypingStatusStyle>
         </MessagePanelFooter>
       </MessagePanelStyle>
     </>

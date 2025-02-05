@@ -14,7 +14,7 @@ const GroupItem = ({ group }: Props) => {
   return (
     <ConversationSidebarItemStyle
       key={group.id}
-      onClick={() => navigate(`/group/${group.id}`)}
+      onClick={() => navigate(`/groups/${group.id}`)}
       className={parseInt(conversationId!) === group.id ? "actived" : ""}
     >
       <div className={styles.groupAvatar}></div>

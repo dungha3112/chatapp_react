@@ -38,7 +38,7 @@ const ConversationChanelPage = () => {
 
     socket.on("onTypingStartToClientSide", (payload) => {
       if (parseInt(id) === parseInt(payload.conversationId)) {
-        console.log("user start typing ...", payload, user?.id);
+        console.log("user start typing ...", payload);
         if (user?.id !== payload.userId) {
           setIsRecipientTyping(true);
         }
@@ -46,8 +46,10 @@ const ConversationChanelPage = () => {
     });
 
     socket.on("onTypingStopToClientSide", (payload) => {
+      console.log("onTypingStopToClientSide", payload);
+
       if (parseInt(id) === parseInt(payload.conversationId)) {
-        console.log("user stop typing ...", payload, user?.id);
+        console.log("user stop typing ...", payload);
         setIsRecipientTyping(false);
       }
     });
