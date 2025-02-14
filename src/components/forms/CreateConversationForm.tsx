@@ -6,21 +6,24 @@ import { createConversationThunk } from "../../store/conversations/conversationT
 import { Button, InputContainer, InputLabel, TextField } from "../../styles";
 import { searchUsersApi } from "../../utils/api";
 import useDebounce from "../../utils/hooks/useDebounce";
-import { SelectedConversationType, UserType } from "../../utils/types";
-import RecipientField from "../recipients/RecipientField";
+import { UserType } from "../../utils/types";
+import ConversationRecipientField from "../recipients/ConversationRecipientField";
 import RecipientResultsContainer from "../recipients/RecipientResultsContainer";
 import styles from "./index.module.scss";
+import {
+  RecipientNoResultContainerStyle,
+  RecipientNoResultItemStyle,
+} from "../../styles/recipients";
+import { FaFrownOpen } from "react-icons/fa";
 
 type Props = {
-  type: SelectedConversationType;
   setShowModal: Dispatch<React.SetStateAction<boolean>>;
 };
 
-const CreateConversationForm = ({ setShowModal, type }: Props) => {
+const CreateConversationForm = ({ setShowModal }: Props) => {
   const [query, setQuery] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [selectedUser, setSelectedUser] = useState<UserType>();
-  const [selectedUsers, setSelectedUsers] = useState<UserType[]>([]);
 
   const debounceQuery = useDebounce(query, 1000);
 
@@ -34,6 +37,7 @@ const CreateConversationForm = ({ setShowModal, type }: Props) => {
   useEffect(() => {
     if (debounceQuery) {
       setSearching(true);
+
       searchUsersApi(debounceQuery)
         .then(({ data }) => {
           setUserResults(data);
@@ -43,37 +47,31 @@ const CreateConversationForm = ({ setShowModal, type }: Props) => {
     }
   }, [debounceQuery]);
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!selectedUser || !message) return;
 
     const data = { email: selectedUser.email, message };
-    return await dispatch(createConversationThunk(data))
+    return dispatch(createConversationThunk(data))
       .unwrap()
       .then(({ data }) => {
         setShowModal(false);
-        navigate(`/conversation/${data.id}`);
+        navigate(`/conversations/${data.id}`);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(`error create new conversation : ${error}`);
       });
   };
 
-  const handleUserSelect = (user: UserType) => {
+  const handleSelectUser = (user: UserType) => {
     setSelectedUser(user);
-    setQuery("");
-    setUserResults([]);
-  };
-
-  const handleMultipleUserSelect = (user: UserType) => {
-    const exists = selectedUsers.find((u) => u.id === user.id);
-
-    if (!exists) setSelectedUsers((prev) => [...prev, user]);
+    // setQuery("");
+    // setUserResults([]);
   };
 
   return (
     <form className={styles.createConversationForm} onSubmit={onSubmit}>
-      <RecipientField
+      <ConversationRecipientField
         query={query}
         searching={searching}
         selectedUser={selectedUser}
@@ -81,17 +79,32 @@ const CreateConversationForm = ({ setShowModal, type }: Props) => {
         setSelectedUser={setSelectedUser}
       />
 
-      {!selectedUser &&
-        !searching &&
-        userResults.length > 0 &&
-        debounceQuery && (
-          <RecipientResultsContainer
-            handleUserSelect={handleUserSelect}
-            userResults={userResults}
-            type={type}
-            handleMultipleUserSelect={handleMultipleUserSelect}
-          />
-        )}
+      {/* userResults > 0 */}
+
+      {!selectedUser && !searching && userResults.length > 0 && query && (
+        <RecipientResultsContainer
+          handleSelectUser={handleSelectUser}
+          userResults={userResults}
+        />
+      )}
+
+      {/* userResults === [] */}
+      <RecipientNoResultContainerStyle
+        style={{
+          display:
+            !searching &&
+            !selectedUser &&
+            userResults.length === 0 &&
+            debounceQuery
+              ? "block"
+              : "none",
+        }}
+      >
+        <RecipientNoResultItemStyle>
+          <span>No Result In Friends List</span>
+          <FaFrownOpen className="icon" />
+        </RecipientNoResultItemStyle>
+      </RecipientNoResultContainerStyle>
 
       <section>
         <InputContainer

@@ -43,6 +43,56 @@ export const RecipientResultItemStyle = styled.div`
   }
 `;
 
+export const RecipientNoResultContainerStyle = styled.div`
+  position: absolute;
+  right: 0;
+  left: 0;
+  margin: 4px 24px;
+  background-color: #161616;
+  will-change: background-color;
+  animation: bgChange 1.5s infinite alternate;
+  animation-fill-mode: both;
+
+  @keyframes bgChange {
+    0% {
+      background-color: #161616;
+    }
+    100% {
+      background-color: #292929;
+    }
+  }
+`;
+
+export const RecipientNoResultItemStyle = styled.div`
+  padding: 20px 10px;
+  border: 1px solid #161616;
+
+  transition: 0.5s background-color ease-in-out;
+  user-select: none;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  animation: colorChange 1.5s infinite alternate;
+  span {
+    color: #656565;
+  }
+  & .icon {
+    font-size: 22px;
+    cursor: pointer;
+    color: #656565;
+    animation: colorChange 1s infinite alternate;
+  }
+  @keyframes colorChange {
+    0% {
+      color: #656565;
+    }
+    100% {
+      color: #ffff00;
+    }
+  }
+`;
+
 export const SelectedRecipientPillStyle = styled.div`
   margin-top: 10px;
   background-color: #111;
@@ -61,9 +111,19 @@ export const SelectedRecipientPillStyle = styled.div`
     font-size: 22px;
     cursor: pointer;
     color: #656565;
-    transition: 0.5s color ease-in-out;
+    transition: 300ms color ease;
     &:hover {
-      color: #f90e22;
+      color: #c62d2d;
     }
   }
+`;
+
+export const RecipientChipContainerStyle = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  gap: 4px 10px;
+  /* height: 100px;
+  overflow: auto; */
 `;

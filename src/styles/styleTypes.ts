@@ -24,3 +24,8 @@ export type MessageItemContentProps = Partial<{
 export type SidebarItemProps = Partial<{
   $active: boolean;
 }>;
+
+export type AnimationOceanWaves = Partial<{
+  $animation?: boolean;
+  $length?: number;
+}>;

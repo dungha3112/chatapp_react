@@ -7,7 +7,10 @@ type Props = {
   user: UserType;
   setSelectedUser: Dispatch<SetStateAction<UserType | undefined>>;
 };
-const SelectedRecipientChip = ({ user, setSelectedUser }: Props) => {
+const SelectedConversationRecipientChip = ({
+  user,
+  setSelectedUser,
+}: Props) => {
   return (
     <SelectedRecipientPillStyle>
       <div className="container">
@@ -21,4 +24,4 @@ const SelectedRecipientChip = ({ user, setSelectedUser }: Props) => {
   );
 };
 
-export default SelectedRecipientChip;
+export default SelectedConversationRecipientChip;

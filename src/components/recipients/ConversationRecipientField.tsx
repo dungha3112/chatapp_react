@@ -1,7 +1,12 @@
 import { Dispatch, SetStateAction } from "react";
-import { InputContainer, InputField, InputLabel } from "../../styles";
+import {
+  InputContainer,
+  InputField,
+  InputLabel,
+  InputLabelAnimation,
+} from "../../styles";
 import { UserType } from "../../utils/types";
-import SelectedRecipientChip from "./SelectedRecipientChip";
+import SelectedConversationRecipientChip from "./SelectedConversationRecipientChip";
 
 type Props = {
   searching: boolean;
@@ -11,7 +16,7 @@ type Props = {
   query: string;
 };
 
-const RecipientField = ({
+const ConversationRecipientField = ({
   searching,
   selectedUser,
   setSelectedUser,
@@ -21,9 +26,19 @@ const RecipientField = ({
   return (
     <section>
       <InputContainer $backgroundColor="#161616">
-        <InputLabel htmlFor="username">
-          {searching ? "Search ..." : "Recipient"}
-        </InputLabel>
+        {searching ? (
+          <InputLabelAnimation
+            htmlFor="username"
+            $animation={true}
+            $length={"Search ...".length}
+          >
+            {"Search ...".split("").map((char, index) => (
+              <span key={index}>{char}</span>
+            ))}
+          </InputLabelAnimation>
+        ) : (
+          <InputLabel>Recipient</InputLabel>
+        )}
 
         {!selectedUser ? (
           <InputField
@@ -33,7 +48,7 @@ const RecipientField = ({
             onChange={(e) => setQuery(e.target.value)}
           />
         ) : (
-          <SelectedRecipientChip
+          <SelectedConversationRecipientChip
             user={selectedUser}
             setSelectedUser={setSelectedUser}
           />
@@ -43,4 +58,4 @@ const RecipientField = ({
   );
 };
 
-export default RecipientField;
+export default ConversationRecipientField;

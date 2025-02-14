@@ -1,5 +1,10 @@
 import styled, { css } from "styled-components";
-import { ContextMenuProps, InputContainerProps, PageProps } from "./styleTypes";
+import {
+  AnimationOceanWaves,
+  ContextMenuProps,
+  InputContainerProps,
+  PageProps,
+} from "./styleTypes";
 import { fadeInUpwards } from "./keyframes";
 
 export const InputContainer = styled.div<InputContainerProps>`
@@ -27,6 +32,87 @@ export const InputLabel = styled.label`
   font-size: 14px;
   margin: 4px 0;
   transition: 1s time-out ease-in-out;
+`;
+
+// export const InputLabelAnimation = styled.label<AnimationOceanWaves>`
+//   display: block;
+//   color: #8f8f8f;
+//   font-size: 14px;
+//   margin: 4px 0;
+//   transition: 1s time-out ease-in-out;
+
+//   white-space: nowrap; /* Tránh bị xuống dòng */
+
+//   display: inline-block;
+//   animation: waveText 1.5s infinite ease-in-out;
+
+//   span {
+//     display: inline-block;
+//     ${({ $animation }) =>
+//       $animation &&
+//       css`
+//         animation: waveText 1.5s infinite ease-in-out;
+//       `}
+//   }
+
+//   ${({ $animation }) =>
+//     $animation &&
+//     css`
+//       @keyframes waveText {
+//         0% {
+//           transform: translateY(0);
+//         }
+//         50% {
+//           transform: translateY(-5px);
+//         }
+//         100% {
+//           transform: translateY(0);
+//         }
+//       }
+//     `}
+// `;
+
+export const InputLabelAnimation = styled.label<AnimationOceanWaves>`
+  display: inline-block;
+  color: #8f8f8f;
+  font-size: 14px;
+  margin: 4px 0;
+  white-space: nowrap;
+
+  span {
+    display: inline-block;
+    ${({ $animation }) =>
+      $animation &&
+      css`
+        animation: waveText 0.8s infinite ease-in-out;
+      `}
+  }
+
+  ${({ $animation, $length }) =>
+    $animation &&
+    css`
+      @keyframes waveText {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      ${Array.from({ length: $length ?? 0 })
+        .map(
+          (_, i) => `
+        span:nth-child(${i + 1}) {
+          animation-delay: ${i * 0.1}s;
+        }
+      `
+        )
+        .join("")}
+    `}
 `;
 
 export const Button = styled.button`
@@ -152,4 +238,25 @@ export const UserAvatarContainer = styled.img`
   height: 50px;
   border-radius: 50%;
   cursor: pointer;
+`;
+
+export const ButtonIconStyle = styled.div`
+  background-color: #202020;
+  border-radius: 50px;
+  padding: 10px;
+  color: #e1e1e1;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.6ms background-color ease-in-out;
+  transition: 0.6ms ease-in-out;
+
+  &.actived {
+    background-color: #151515;
+  }
+
+  &:hover {
+    background-color: #151515;
+  }
 `;
