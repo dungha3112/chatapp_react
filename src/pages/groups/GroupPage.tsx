@@ -23,18 +23,21 @@ const GroupPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    socket.on("onGroupCreateToClient", (payload: GroupType) => {
+    socket.on("onGroupCreateToClientSide", (payload: GroupType) => {
       dispatch(addGroup(payload));
     });
 
-    socket.on("onGroupMessageToClient", (payload: GroupMessageEventPayload) => {
-      dispatch(addGroupMessage(payload));
-      dispatch(updateGroup(payload.group));
-    });
+    socket.on(
+      "onGroupMessageToClientSide",
+      (payload: GroupMessageEventPayload) => {
+        dispatch(addGroupMessage(payload));
+        dispatch(updateGroup(payload.group));
+      }
+    );
 
     return () => {
-      socket.off("onGroupCreateToClient");
-      socket.off("onGroupMessageToClient");
+      socket.off("onGroupCreateToClientSide");
+      socket.off("onGroupMessageToClientSide");
     };
   }, [socket, dispatch]);
 

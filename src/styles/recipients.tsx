@@ -94,8 +94,8 @@ export const RecipientNoResultItemStyle = styled.div`
 `;
 
 export const SelectedRecipientPillStyle = styled.div`
-  margin-top: 10px;
   background-color: #111;
+  border: 1px solid #ffffff32;
   user-select: none;
   padding: 6px 10px;
   width: fit-content;
@@ -124,6 +124,16 @@ export const RecipientChipContainerStyle = styled.div`
   margin-bottom: 10px;
   border-radius: 10px;
   gap: 4px 10px;
-  /* height: 100px;
-  overflow: auto; */
+
+  max-height: 80px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #070707;
+    border-radius: 10px;
+  }
 `;

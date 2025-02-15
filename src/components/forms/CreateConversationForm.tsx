@@ -57,6 +57,9 @@ const CreateConversationForm = ({ setShowModal }: Props) => {
       .then(({ data }) => {
         setShowModal(false);
         navigate(`/conversations/${data.id}`);
+        setQuery("");
+        setUserResults([]);
+        setMessage("");
       })
       .catch((error) => {
         console.log(`error create new conversation : ${error}`);

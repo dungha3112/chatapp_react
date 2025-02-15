@@ -152,3 +152,10 @@ export type FetchGroupMessagePayload = {
   id: number;
   messages: GroupMessageType[];
 };
+
+// CreateGroupParams
+export type CreateGroupParams = {
+  users: string[];
+  title: string;
+  message: string;
+};

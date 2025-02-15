@@ -2,7 +2,13 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styles from "./index.module.scss";
 import GroupRecipientField from "../recipients/GroupRecipientField";
 import { UserType } from "../../utils/types";
-import { Button, InputContainer, InputLabel, TextField } from "../../styles";
+import {
+  Button,
+  InputContainer,
+  InputField,
+  InputLabel,
+  TextField,
+} from "../../styles";
 import useDebounce from "../../utils/hooks/useDebounce";
 import { searchUsersApi } from "../../utils/api";
 import RecipientResultsContainer from "../recipients/RecipientResultsContainer";
@@ -13,6 +19,10 @@ import {
 } from "../../styles/recipients";
 import { FaFrownOpen } from "react-icons/fa";
 import SelectedGroupRecipientChip from "../recipients/SelectedGroupRecipientChip";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store";
+import { createGroupThunk } from "../../store/groups/groupThunk";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -21,6 +31,7 @@ type Props = {
 const CreateGroupForm = ({ setShowModal }: Props) => {
   const [query, setQuery] = useState<string>("");
   const [title, setTitle] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
 
   const [selectedRecipients, setSelectedRecipients] = useState<UserType[]>([]);
 
@@ -29,6 +40,9 @@ const CreateGroupForm = ({ setShowModal }: Props) => {
   const [searching, setSearching] = useState<boolean>(false);
 
   const debounceQuery = useDebounce(query, 1000);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (debounceQuery) {
@@ -58,6 +72,23 @@ const CreateGroupForm = ({ setShowModal }: Props) => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (selectedRecipients.length === 0 || !title || !message) return;
+
+    const users = selectedRecipients.map((user) => user.email);
+
+    return dispatch(createGroupThunk({ users, title, message }))
+      .unwrap()
+      .then(({ data }) => {
+        navigate(`/groups/${data.id}`);
+
+        setShowModal(false);
+        setQuery("");
+        setMessage("");
+        setTitle("");
+        setUserResults([]);
+        setSearching(false);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -73,6 +104,7 @@ const CreateGroupForm = ({ setShowModal }: Props) => {
         ))}
       </RecipientChipContainerStyle>
 
+      {/* Input ... search  */}
       <GroupRecipientField
         query={query}
         searching={searching}
@@ -105,15 +137,29 @@ const CreateGroupForm = ({ setShowModal }: Props) => {
 
       <section>
         <InputContainer
-          $backgroundColor="#5f5b5b"
+          $backgroundColor="#161616"
+          className={styles.messageOptions}
+        >
+          <InputLabel htmlFor="title">Title</InputLabel>
+          <InputField
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </InputContainer>
+      </section>
+
+      <section>
+        <InputContainer
+          $backgroundColor="#161616"
           className={styles.messageOptions}
         >
           <InputLabel htmlFor="message">Message (optional)</InputLabel>
           <TextField
             id="message"
             rows={3}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
           />
         </InputContainer>
       </section>

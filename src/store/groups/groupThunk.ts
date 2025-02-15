@@ -1,6 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getGroupsApi } from "../../utils/api";
+import { createGroupsApi, getGroupsApi } from "../../utils/api";
+import { CreateGroupParams } from "../../utils/types";
 
-export const fetchGroupsThunk = createAsyncThunk("groups/fetch", async () => {
-  return await getGroupsApi();
+export const fetchGroupsThunk = createAsyncThunk("groups/fetch", () => {
+  return getGroupsApi();
 });
+
+export const createGroupThunk = createAsyncThunk(
+  "group/create",
+  (params: CreateGroupParams) => createGroupsApi(params)
+);
