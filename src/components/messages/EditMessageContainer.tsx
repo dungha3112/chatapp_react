@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
 import { handleSetIsEditingMessage } from "../../store/messageContainerSlice";
-import { editMessageThunk } from "../../store/messages/messageThunk";
+import { editConversationMessageThunk } from "../../store/messages/messageThunk";
 import {
   EditMessageActionsContainer,
   EditMessageInputField,
 } from "../../styles/messages";
-import { editOrDeleteLastMessageConversation } from "../../store/conversations/conversationSlice";
-import { MessageType } from "../../utils/types";
+import { editOrDeleteLastMessageConversationSidebar } from "../../store/conversations/conversationSlice";
+import { GroupMessageType, MessageType } from "../../utils/types";
+import { editGroupMessageThunk } from "../../store/groupMessage/groupMessageThunk";
+import { editOrDeleteLastMessageGroupSidebar } from "../../store/groups/groupSlice";
 
 type Props = {
   onEditMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -35,28 +37,50 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const params = {
-      conversationId: parseInt(id),
-      messageId: messageBegingEdited.id,
-      content: messageBegingEdited.content,
-    };
     if (conversationType === "private") {
-      dispatch(editMessageThunk(params))
+      const params = {
+        conversationId: parseInt(id),
+        messageId: messageBegingEdited.id,
+        content: messageBegingEdited.content,
+      };
+      dispatch(editConversationMessageThunk(params))
         .unwrap()
-        .finally(() => {
+        .then(() => {
           dispatch(handleSetIsEditingMessage(false));
 
           dispatch(
-            editOrDeleteLastMessageConversation({
+            editOrDeleteLastMessageConversationSidebar({
               isEdit: true,
               messages: [],
               conversationId: parseInt(id),
               message: messageBegingEdited as MessageType,
             })
           );
-        });
-    } else {
-      dispatch(handleSetIsEditingMessage(false));
+        })
+        .catch((err) => console.log(err));
+    }
+
+    if (conversationType === "group") {
+      const params = {
+        groupId: parseInt(id),
+        messageId: messageBegingEdited.id,
+        content: messageBegingEdited.content,
+      };
+      dispatch(editGroupMessageThunk(params))
+        .unwrap()
+        .then(() => {
+          dispatch(handleSetIsEditingMessage(false));
+
+          dispatch(
+            editOrDeleteLastMessageGroupSidebar({
+              isEdit: true,
+              messages: [],
+              groupId: parseInt(id),
+              message: messageBegingEdited as GroupMessageType,
+            })
+          );
+        })
+        .catch((err) => console.log(err));
     }
   };
 

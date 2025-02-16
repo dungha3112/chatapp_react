@@ -1,5 +1,8 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { GroupType } from "../../utils/types";
+import {
+  EditOrDeleteLastMessageGroupSidebarResponse,
+  GroupType,
+} from "../../utils/types";
 import { createGroupThunk, fetchGroupsThunk } from "./groupThunk";
 import { RootState } from "..";
 
@@ -27,6 +30,30 @@ export const groupsSlice = createSlice({
       state.groups.splice(index, 1);
       state.groups.unshift(group);
     },
+
+    // editOrDeleteLastMessageGroupSidebar
+    editOrDeleteLastMessageGroupSidebar: (
+      state,
+      action: PayloadAction<EditOrDeleteLastMessageGroupSidebarResponse>
+    ) => {
+      const { isEdit, messages, message, groupId } = action.payload;
+
+      console.log("editOrDeleteLastMessage group : ", action.payload);
+
+      const group = state.groups.find((g) => g.id === groupId);
+      const index = state.groups.findIndex((g) => g.id === groupId);
+      const isLastMessageSent = group?.lastMessageSent.id === message.id;
+      if (!isLastMessageSent) return;
+
+      if (isEdit) {
+        console.log("edit message last sent in the group ...");
+        state.groups[index].lastMessageSent = message;
+      } else {
+        if (!messages) return;
+        console.log("delete message last sent in the group ");
+        state.groups[index].lastMessageSent = messages[1];
+      }
+    },
   },
 
   extraReducers(builder) {
@@ -53,5 +80,6 @@ export const selectGroupById = createSelector(
   (groups, groupId) => groups.find((g) => g.id === groupId)
 );
 
-export const { addGroup, updateGroup } = groupsSlice.actions;
+export const { addGroup, updateGroup, editOrDeleteLastMessageGroupSidebar } =
+  groupsSlice.actions;
 export default groupsSlice.reducer;

@@ -2,7 +2,7 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 import {
   ConversationType,
-  EditOrDeleteLastMessageConversationResponse,
+  EditOrDeleteLastMessageConversationSidebarResponse,
 } from "../../utils/types";
 import {
   createConversationThunk,
@@ -35,11 +35,11 @@ export const conversationSlice = createSlice({
       state.conversations.splice(index, 1);
       state.conversations.unshift(conversation);
     },
-    editOrDeleteLastMessageConversation: (
+    editOrDeleteLastMessageConversationSidebar: (
       state,
-      action: PayloadAction<EditOrDeleteLastMessageConversationResponse>
+      action: PayloadAction<EditOrDeleteLastMessageConversationSidebarResponse>
     ) => {
-      console.log("editOrDeleteLastMessageConversation", action.payload);
+      console.log("editOrDeleteLastMessageConversation");
 
       const { isEdit, messages, message, conversationId } = action.payload;
 
@@ -95,7 +95,7 @@ export const selectConversationById = createSelector(
 export const {
   addConversation,
   updateConversation,
-  editOrDeleteLastMessageConversation,
+  editOrDeleteLastMessageConversationSidebar,
 } = conversationSlice.actions;
 
 export default conversationSlice.reducer;

@@ -6,8 +6,8 @@ import {
   MessageType,
 } from "../../utils/types";
 import {
-  deleteMessageThunk,
-  editMessageThunk,
+  deleteConversationMessageThunk,
+  editConversationMessageThunk,
   fetchMessagesThunk,
 } from "./messageThunk";
 
@@ -38,7 +38,7 @@ export const messageSlice = createSlice({
 
     deleteMessage: (state, action: PayloadAction<MessageType>) => {
       // const { content, messageId, conversationId, userId } = action.payload;
-      console.log(action.payload);
+
       const conversationId = action.payload.conversation?.id;
       const messageId = action.payload.id;
 
@@ -93,7 +93,7 @@ export const messageSlice = createSlice({
         }
         state.loading = false;
       })
-      .addCase(deleteMessageThunk.fulfilled, (state, action) => {
+      .addCase(deleteConversationMessageThunk.fulfilled, (state, action) => {
         const { conversationId, messageId } = action.payload.data;
         const conversationMessages = state.messages.find(
           (cm) => (cm.id = conversationId)
@@ -106,7 +106,7 @@ export const messageSlice = createSlice({
 
         conversationMessages.messages.splice(messageIndex, 1);
       })
-      .addCase(editMessageThunk.fulfilled, (state, action) => {
+      .addCase(editConversationMessageThunk.fulfilled, (state, action) => {
         const message = action.payload.data;
         const conversationId = message.conversation?.id;
         const conversationMessage = state.messages.find(

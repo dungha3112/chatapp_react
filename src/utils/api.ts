@@ -6,13 +6,17 @@ import {
   FetchMessagePayload,
   UserCredentialsParams,
   UserType,
-  DeleteMessageParams,
+  DeleteConversationMessageParams,
   DeleteMessageResponse,
   EditMessageParams,
   MessageType,
   GroupType,
   FetchGroupMessagePayload,
   CreateGroupParams,
+  DeleteGroupMessageParams,
+  DeleteGroupMessageResponse,
+  EditGroupMessageParams,
+  GroupMessageType,
 } from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
@@ -73,7 +77,7 @@ export const getMessagesByConversationIdApi = async (id: number) =>
 export const deleteMessageApi = async ({
   conversationId,
   messageId,
-}: DeleteMessageParams) => {
+}: DeleteConversationMessageParams) => {
   const res = await axiosClient.delete<DeleteMessageResponse>(
     `conversations/${conversationId}/messages/${messageId}`
   );
@@ -89,6 +93,13 @@ export const editMessageApi = async ({
     `/conversations/${conversationId}/messages/${messageId}`,
     { content }
   );
+
+/**
+ * search user api
+ */
+
+export const searchUsersApi = async (query: string) =>
+  await axiosClient.get<UserType[]>(`/users/search?query=${query}`);
 
 /**
  * GROUP API
@@ -107,5 +118,20 @@ export const fetchGroupMessagesApi = async (id: number) =>
 export const postNewGroupMessageApi = async (content: string, id: number) =>
   await axiosClient.post(`/groups/${id}/messages`, { content });
 
-export const searchUsersApi = async (query: string) =>
-  await axiosClient.get<UserType[]>(`/users/search?query=${query}`);
+export const deleteGroupMessageApi = async ({
+  groupId,
+  messageId,
+}: DeleteGroupMessageParams) =>
+  await axiosClient.delete<DeleteGroupMessageResponse>(
+    `/groups/${groupId}/messages/${messageId}`
+  );
+
+export const editGroupMessageApi = async ({
+  groupId,
+  messageId,
+  content,
+}: EditGroupMessageParams) =>
+  await axiosClient.patch<GroupMessageType>(
+    `/groups/${groupId}/messages/${messageId}`,
+    { content }
+  );

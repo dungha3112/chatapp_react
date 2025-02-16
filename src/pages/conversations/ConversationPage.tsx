@@ -5,7 +5,7 @@ import ConversationSidebar from "../../components/sidebars/ConversationSidebar";
 import { AppDispatch, RootState } from "../../store";
 import {
   addConversation,
-  editOrDeleteLastMessageConversation,
+  editOrDeleteLastMessageConversationSidebar,
   updateConversation,
 } from "../../store/conversations/conversationSlice";
 import { fetchConversationsThunk } from "../../store/conversations/conversationThunk";
@@ -60,11 +60,9 @@ const ConversationPage = () => {
     });
 
     socket.on("onMessageDeleteToClientSide", (payload: MessageType) => {
-      console.log("Message Deleted", payload);
-
       dispatch(deleteMessage(payload));
       dispatch(
-        editOrDeleteLastMessageConversation({
+        editOrDeleteLastMessageConversationSidebar({
           isEdit: false,
           messages: conversationMessage?.messages.slice(0, 2),
           conversationId: Number(payload.conversation?.id),
@@ -78,11 +76,11 @@ const ConversationPage = () => {
       dispatch(editMessage(payload));
 
       dispatch(
-        editOrDeleteLastMessageConversation({
+        editOrDeleteLastMessageConversationSidebar({
           isEdit: true,
           messages: [],
           conversationId: Number(payload.conversation?.id),
-          message: payload as MessageType,
+          message: payload,
         })
       );
     });

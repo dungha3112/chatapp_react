@@ -39,7 +39,7 @@ export type CreateConversationParams = {
 };
 
 // delete OR Edit last message conversation
-export type EditOrDeleteLastMessageConversationResponse = {
+export type EditOrDeleteLastMessageConversationSidebarResponse = {
   isEdit: boolean;
   messages?: MessageType[];
   conversationId: number;
@@ -85,16 +85,17 @@ export type FetchMessagePayload = {
   messages: MessageType[];
 };
 
-// deleteMessageParams
-export type DeleteMessageParams = {
+// deleteConversationMessageParams
+export type DeleteConversationMessageParams = {
   conversationId: number;
   messageId: number;
 };
 
 // DeleteMessageResponse
 export type DeleteMessageResponse = {
-  conversationId: number;
   messageId: number;
+  conversationId: number;
+  userId: number;
 };
 
 // EditMessageParams
@@ -129,6 +130,7 @@ export type GroupMessageType = {
   author: UserType;
   group?: GroupType;
 };
+
 // GroupType
 export type GroupType = {
   id: number;
@@ -158,4 +160,31 @@ export type CreateGroupParams = {
   users: string[];
   title: string;
   message: string;
+};
+
+// DeleteGroupMessageParams
+export type DeleteGroupMessageParams = {
+  groupId: number;
+  messageId: number;
+};
+
+// DeleteGroupMessageResponse
+export type DeleteGroupMessageResponse = {
+  groupId: number;
+  messageId: number;
+};
+
+// delete OR Edit last message conversation siebar
+export type EditOrDeleteLastMessageGroupSidebarResponse = {
+  isEdit: boolean;
+  messages?: GroupMessageType[];
+  groupId: number;
+  message: GroupMessageType;
+};
+
+// EditGroupMessageParams
+export type EditGroupMessageParams = {
+  groupId: number;
+  messageId: number;
+  content: string;
 };
