@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import {
   CreateConversationParams,
   ConversationType,
@@ -32,32 +32,73 @@ const axiosClient = axios.create({
  * @returns
  */
 export const postRegisterApi = async (data: CreateUserParams) => {
-  return await axiosClient.post("auth/register", data);
+  try {
+    return await axiosClient.post("auth/register", data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
 };
 
 export const postLoginApi = async (data: UserCredentialsParams) => {
-  return await axiosClient.post("auth/login", data);
+  try {
+    return await axiosClient.post("auth/login", data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
 };
 
 /**
  * User Api
  * @returns
  */
-export const getStatusApi = async () =>
-  await axiosClient.get<UserType>("auth/status");
+export const getStatusApi = async () => {
+  try {
+    return await axiosClient.get<UserType>("auth/status");
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
+};
 
 /**
  * CONVERSATION API
  * @returns
  */
-export const getConversationsApi = async () =>
-  await axiosClient.get<ConversationType[]>("conversations");
+export const getConversationsApi = async () => {
+  try {
+    return await axiosClient.get<ConversationType[]>("conversations");
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
+};
 
 export const postNewConversationApi = async (
   data: CreateConversationParams
 ) => {
-  const res = await axiosClient.post<ConversationType>(`conversations/`, data);
-  return res;
+  try {
+    return await axiosClient.post<ConversationType>(`conversations/`, data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
 };
 
 /**
@@ -69,69 +110,171 @@ export const postNewConversationApi = async (
 export const postNewConversationMessageApi = async (
   content: string,
   id: number
-) => await axiosClient.post(`conversations/${id}/messages`, { content });
+) => {
+  try {
+    return await axiosClient.post(`conversations/${id}/messages`, { content });
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
+};
 
-export const getMessagesByConversationIdApi = async (id: number) =>
-  await axiosClient.get<FetchMessagePayload>(`conversations/${id}/messages`);
+export const getMessagesByConversationIdApi = async (id: number) => {
+  try {
+    return await axiosClient.get<FetchMessagePayload>(
+      `conversations/${id}/messages`
+    );
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
+};
 
 export const deleteMessageApi = async ({
   conversationId,
   messageId,
 }: DeleteConversationMessageParams) => {
-  const res = await axiosClient.delete<DeleteMessageResponse>(
-    `conversations/${conversationId}/messages/${messageId}`
-  );
-  return res;
+  try {
+    return await axiosClient.delete<DeleteMessageResponse>(
+      `conversations/${conversationId}/messages/${messageId}`
+    );
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
 };
 
 export const editMessageApi = async ({
   conversationId,
   messageId,
   content,
-}: EditMessageParams) =>
-  await axiosClient.patch<MessageType>(
-    `/conversations/${conversationId}/messages/${messageId}`,
-    { content }
-  );
+}: EditMessageParams) => {
+  try {
+    return await axiosClient.patch<MessageType>(
+      `/conversations/${conversationId}/messages/${messageId}`,
+      { content }
+    );
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
+};
 
 /**
  * search user api
  */
 
-export const searchUsersApi = async (query: string) =>
-  await axiosClient.get<UserType[]>(`/users/search?query=${query}`);
+export const searchUsersApi = async (query: string) => {
+  try {
+    return await axiosClient.get<UserType[]>(`/users/search?query=${query}`);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
+};
 
 /**
  * GROUP API
  * @returns
  */
 
-export const getGroupsApi = async () =>
-  await axiosClient.get<GroupType[]>("/groups");
+export const getGroupsApi = async () => {
+  try {
+    return await axiosClient.get<GroupType[]>("/groups");
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
+};
 
-export const createGroupsApi = async (params: CreateGroupParams) =>
-  await axiosClient.post<GroupType>("/groups", params);
+export const createGroupsApi = async (params: CreateGroupParams) => {
+  try {
+    return await axiosClient.post<GroupType>("/groups", params);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
+};
 
-export const fetchGroupMessagesApi = async (id: number) =>
-  await axiosClient.get<FetchGroupMessagePayload>(`/groups/${id}/messages`);
+export const fetchGroupMessagesApi = async (id: number) => {
+  try {
+    return await axiosClient.get<FetchGroupMessagePayload>(
+      `/groups/${id}/messages`
+    );
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
+};
 
-export const postNewGroupMessageApi = async (content: string, id: number) =>
-  await axiosClient.post(`/groups/${id}/messages`, { content });
+export const postNewGroupMessageApi = async (content: string, id: number) => {
+  try {
+    return await axiosClient.post(`/groups/${id}/messages`, { content });
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
+};
 
 export const deleteGroupMessageApi = async ({
   groupId,
   messageId,
-}: DeleteGroupMessageParams) =>
-  await axiosClient.delete<DeleteGroupMessageResponse>(
-    `/groups/${groupId}/messages/${messageId}`
-  );
+}: DeleteGroupMessageParams) => {
+  try {
+    return await axiosClient.delete<DeleteGroupMessageResponse>(
+      `/groups/${groupId}/messages/${messageId}`
+    );
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
+};
 
 export const editGroupMessageApi = async ({
   groupId,
   messageId,
   content,
-}: EditGroupMessageParams) =>
-  await axiosClient.patch<GroupMessageType>(
-    `/groups/${groupId}/messages/${messageId}`,
-    { content }
-  );
+}: EditGroupMessageParams) => {
+  try {
+    return await axiosClient.patch<GroupMessageType>(
+      `/groups/${groupId}/messages/${messageId}`,
+      { content }
+    );
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data.message;
+    } else {
+      console.log(error);
+    }
+  }
+};

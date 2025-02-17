@@ -73,11 +73,16 @@ export const conversationSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchConversationsThunk.fulfilled, (state, action) => {
-        state.conversations = action.payload.data;
+        if (action.payload?.data) {
+          state.conversations = action.payload.data;
+        } else {
+          state.conversations = [];
+        }
         state.loading = false;
       })
       .addCase(createConversationThunk.fulfilled, (state, action) => {
-        state.conversations.unshift(action.payload.data);
+        if (action.payload?.data)
+          state.conversations.unshift(action.payload.data);
       });
   },
 });

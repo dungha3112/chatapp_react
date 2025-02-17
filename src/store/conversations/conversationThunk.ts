@@ -1,21 +1,26 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getConversationsApi, postNewConversationApi } from "../../utils/api";
 import { CreateConversationParams } from "../../utils/types";
+import { toast } from "react-toastify";
 
 export const fetchConversationsThunk = createAsyncThunk(
   "conversations/fetch",
-  async () => {
-    return await getConversationsApi();
+  () => {
+    try {
+      return getConversationsApi();
+    } catch (error) {
+      toast(String(error), { type: "error" });
+    }
   }
 );
 
 export const createConversationThunk = createAsyncThunk(
   "conversations/create",
-  async (data: CreateConversationParams) => {
+  (data: CreateConversationParams) => {
     try {
-      return await postNewConversationApi(data);
-    } catch (error: any) {
-      throw new Error(error.response.data.message);
+      return postNewConversationApi(data);
+    } catch (error) {
+      toast(String(error), { type: "error" });
     }
   }
 );

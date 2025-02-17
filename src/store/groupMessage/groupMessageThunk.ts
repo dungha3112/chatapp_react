@@ -8,26 +8,37 @@ import {
   DeleteGroupMessageParams,
   EditGroupMessageParams,
 } from "../../utils/types";
+import { toast } from "react-toastify";
 
 export const fetchGroupMessagesThunk = createAsyncThunk(
   "groupMessages/fetch",
-  async (id: number) => {
+  (id: number) => {
     try {
-      return await fetchGroupMessagesApi(id);
-    } catch (error: any) {
-      throw error.response.data.message;
+      return fetchGroupMessagesApi(id);
+    } catch (error) {
+      toast(String(error), { type: "error" });
     }
   }
 );
 
 export const deleteGroupMessageThunk = createAsyncThunk(
   "groupMessages/delete",
-  ({ messageId, groupId }: DeleteGroupMessageParams) =>
-    deleteGroupMessageApi({ groupId, messageId })
+  ({ messageId, groupId }: DeleteGroupMessageParams) => {
+    try {
+      return deleteGroupMessageApi({ groupId, messageId });
+    } catch (error) {
+      toast(String(error), { type: "error" });
+    }
+  }
 );
 
 export const editGroupMessageThunk = createAsyncThunk(
   "groupMessages/edit",
-  ({ messageId, groupId, content }: EditGroupMessageParams) =>
-    editGroupMessageApi({ groupId, messageId, content })
+  ({ messageId, groupId, content }: EditGroupMessageParams) => {
+    try {
+      return editGroupMessageApi({ groupId, messageId, content });
+    } catch (error) {
+      toast(String(error), { type: "error" });
+    }
+  }
 );

@@ -18,6 +18,7 @@ export const ConversationHeaderSidebarStyle = styled.header`
   border-bottom: 1px solid #48484857;
   display: flex;
   gap: 20px;
+  box-shadow: 5px 0 5px 1px #000;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;

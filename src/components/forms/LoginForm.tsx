@@ -7,6 +7,7 @@ import { postLoginApi } from "../../utils/api";
 import { useContext, useEffect, useState } from "react";
 import { useAuth } from "../../utils/hooks/useAuth";
 import { SocketContext } from "../../utils/contexts/SocketContext";
+import { toast } from "react-toastify";
 
 const LoginForm = () => {
   const {
@@ -26,10 +27,13 @@ const LoginForm = () => {
       await postLoginApi(data);
       socket.connect();
       navigate("/conversations");
-      setLoading(false);
+      toast.clearWaitingQueue();
+      toast("Account logged in!", { type: "success" });
     } catch (error) {
+      toast.clearWaitingQueue();
+      toast(String(error), { type: "error" });
+    } finally {
       setLoading(false);
-      console.log(error);
     }
   };
   useEffect(() => {

@@ -21,6 +21,8 @@ export const groupsSlice = createSlice({
   initialState,
   reducers: {
     addGroup: (state, action: PayloadAction<GroupType>) => {
+      console.log(`add group slice`, action.payload);
+
       state.groups.unshift(action.payload);
     },
 
@@ -62,11 +64,15 @@ export const groupsSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchGroupsThunk.fulfilled, (state, action) => {
+        if (!action.payload) return;
+
         state.groups = action.payload.data;
         state.loading = false;
       })
 
       .addCase(createGroupThunk.fulfilled, (state, action) => {
+        if (!action.payload) return;
+
         state.groups.unshift(action.payload.data);
       });
   },

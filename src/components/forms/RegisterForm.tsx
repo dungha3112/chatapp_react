@@ -5,6 +5,7 @@ import { Button, InputContainer, InputField, InputLabel } from "../../styles";
 import { postRegisterApi } from "../../utils/api";
 import { CreateUserParams } from "../../utils/types";
 import styles from "./index.module.scss";
+import { toast } from "react-toastify";
 
 const RegisterForm = () => {
   const {
@@ -21,9 +22,12 @@ const RegisterForm = () => {
       setLoading(true);
       await postRegisterApi(data);
       navigate("/login");
-      setLoading(false);
+      toast.clearWaitingQueue();
+      toast("Account created!", { type: "success" });
     } catch (error) {
-      console.log(error);
+      toast.clearWaitingQueue();
+      toast(String(error), { type: "error" });
+    } finally {
       setLoading(false);
     }
   };

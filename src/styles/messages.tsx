@@ -2,11 +2,11 @@ import styled, { css } from "styled-components";
 import { MessageItemContentProps } from "./styleTypes";
 
 export const MessagePanelStyle = styled.div`
-  height: 100%;
-  width: 100%;
   display: flex;
   flex-direction: column;
-  background: inherit;
+  height: 100%;
+  width: 100%;
+  background-color: #141414;
 `;
 
 export const MessagePanelHeaderStyle = styled.div`
@@ -16,6 +16,7 @@ export const MessagePanelHeaderStyle = styled.div`
   width: 100%;
   flex-shrink: 0;
   border-bottom: 1px solid #49494925;
+  box-shadow: 5px 0 5px 1px #000;
   background-color: #151515;
   display: flex;
   align-items: center;

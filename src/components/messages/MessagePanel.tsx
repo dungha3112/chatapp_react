@@ -57,7 +57,9 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
       } catch (error) {
         console.log(error);
       }
-    } else {
+    }
+
+    if (conversationType === "group") {
       try {
         await postNewGroupMessageApi(content, parseInt(id));
         setContent("");

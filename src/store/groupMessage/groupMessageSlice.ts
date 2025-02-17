@@ -73,6 +73,8 @@ export const groupMessagesSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchGroupMessagesThunk.fulfilled, (state, action) => {
+        if (!action.payload) return;
+
         const { id } = action.payload.data;
 
         const index = state.messages.findIndex((gm) => gm.id === id);
@@ -86,6 +88,8 @@ export const groupMessagesSlice = createSlice({
       })
 
       .addCase(deleteGroupMessageThunk.fulfilled, (state, action) => {
+        if (!action.payload) return;
+
         const { groupId, messageId } = action.payload.data;
 
         const groupMessage = state.messages.find((gm) => (gm.id = groupId));
@@ -99,6 +103,8 @@ export const groupMessagesSlice = createSlice({
       })
 
       .addCase(editGroupMessageThunk.fulfilled, (state, action) => {
+        if (!action.payload) return;
+
         const message = action.payload.data;
         const conversationId = message.group?.id;
         const groupMessage = state.messages.find(

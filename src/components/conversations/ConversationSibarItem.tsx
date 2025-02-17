@@ -10,7 +10,7 @@ type Props = {
   conversation: ConversationType;
 };
 export const ConversationSibarItem = ({ conversation }: Props) => {
-  const { id: conversationId } = useParams();
+  const { id } = useParams();
   const { user } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export const ConversationSibarItem = ({ conversation }: Props) => {
     <ConversationSidebarItemStyle
       key={conversation.id}
       onClick={() => navigate(`/conversations/${conversation.id}`)}
-      className={parseInt(conversationId!) === conversation.id ? "actived" : ""}
+      className={parseInt(id!) === conversation.id ? "actived" : ""}
     >
       <div className={styles.conversationAvatar}></div>
       <div>
@@ -29,6 +29,10 @@ export const ConversationSibarItem = ({ conversation }: Props) => {
           {getDisplayUser?.firstName + " " + getDisplayUser?.lastName}
         </span>
         <span className={styles.conversationMessage}>
+          <span style={{ fontWeight: "bold", color: "#e2e2e2" }}>
+            {`${conversation.lastMessageSent?.author.firstName} ${conversation.lastMessageSent?.author.lastName}: `}
+          </span>
+
           {conversation.lastMessageSent?.content.length >= 25
             ? conversation.lastMessageSent?.content.slice(0, 25) + " ..."
             : conversation.lastMessageSent?.content}

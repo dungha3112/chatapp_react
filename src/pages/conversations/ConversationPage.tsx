@@ -55,10 +55,21 @@ const ConversationPage = () => {
     );
 
     socket.on("onMessageCreateToClientSide", (payload: MessageEventPayload) => {
+      console.log(payload);
+
       dispatch(addMessage(payload));
       dispatch(updateConversation(payload.conversation));
     });
 
+    return () => {
+      socket.off("connected");
+      socket.off("disconnected");
+      socket.off("onConversationCreateToClientSide");
+      socket.off("onMessageCreateToClientSide");
+    };
+  }, [dispatch, socket]);
+
+  useEffect(() => {
     socket.on("onMessageDeleteToClientSide", (payload: MessageType) => {
       dispatch(deleteMessage(payload));
       dispatch(
@@ -86,11 +97,6 @@ const ConversationPage = () => {
     });
 
     return () => {
-      socket.off("connected");
-      socket.off("disconnected");
-      socket.off("onConversationCreateToClientSide");
-      socket.off("onMessageCreateToClientSide");
-
       socket.off("onMessageDeleteToClientSide");
       socket.off("onMessageEditToClientSide");
     };

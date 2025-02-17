@@ -6,6 +6,7 @@ import { AppDispatch } from "../../store";
 import { ConversationChannelPageStyle } from "../../styles/conversation";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import { AuthContext } from "../../utils/contexts/AuthContext";
+import GroupRecipientsSidebar from "../../components/sidebars/group-recipients/GroupRecipientsSidebar";
 
 const GroupChanelPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,12 +31,16 @@ const GroupChanelPage = () => {
   };
 
   return (
-    <ConversationChannelPageStyle>
-      <MessagePanel
-        sendTypingStatus={sendTypingStatus}
-        isRecipientTyping={isRecipientTyping}
-      />
-    </ConversationChannelPageStyle>
+    <>
+      <ConversationChannelPageStyle>
+        <MessagePanel
+          sendTypingStatus={sendTypingStatus}
+          isRecipientTyping={isRecipientTyping}
+        />
+      </ConversationChannelPageStyle>
+
+      <GroupRecipientsSidebar />
+    </>
   );
 };
 

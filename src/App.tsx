@@ -14,6 +14,8 @@ import { AuthContext } from "./utils/contexts/AuthContext";
 import { socket, SocketContext } from "./utils/contexts/SocketContext";
 import { UserType } from "./utils/types";
 
+import { ToastContainer } from "react-toastify";
+
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
@@ -65,6 +67,7 @@ const AppWithProviders = ({ children }: { children: ReactNode }) => {
 const App = () => {
   return (
     <AppWithProviders>
+      <ToastContainer theme="dark" />
       <RouterProvider router={router} />
     </AppWithProviders>
   );

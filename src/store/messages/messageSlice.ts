@@ -14,13 +14,11 @@ import {
 export interface MessagesState {
   messages: ConversationMessage[];
   loading: boolean;
-  errorMessage: string;
 }
 
 const initialState: MessagesState = {
   messages: [],
   loading: false,
-  errorMessage: "",
 };
 
 export const messageSlice = createSlice({
@@ -77,10 +75,10 @@ export const messageSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchMessagesThunk.rejected, (state, action) => {
-        state.errorMessage = String(action.error.message);
         state.loading = false;
       })
       .addCase(fetchMessagesThunk.fulfilled, (state, action) => {
+        if (!action.payload) return;
         const { id } = action.payload.data;
         const index = state.messages.findIndex((cm) => cm.id === id);
         const exists = state.messages.find((cm) => cm.id === id);
@@ -94,6 +92,7 @@ export const messageSlice = createSlice({
         state.loading = false;
       })
       .addCase(deleteConversationMessageThunk.fulfilled, (state, action) => {
+        if (!action.payload) return;
         const { conversationId, messageId } = action.payload.data;
         const conversationMessages = state.messages.find(
           (cm) => (cm.id = conversationId)
@@ -107,6 +106,8 @@ export const messageSlice = createSlice({
         conversationMessages.messages.splice(messageIndex, 1);
       })
       .addCase(editConversationMessageThunk.fulfilled, (state, action) => {
+        if (!action.payload) return;
+
         const message = action.payload.data;
         const conversationId = message.conversation?.id;
         const conversationMessage = state.messages.find(

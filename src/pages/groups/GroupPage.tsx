@@ -41,6 +41,8 @@ const GroupPage = () => {
 
   useEffect(() => {
     socket.on("onGroupCreateToClientSide", (payload: GroupType) => {
+      console.log(`create group`, payload);
+
       dispatch(addGroup(payload));
     });
 
@@ -52,6 +54,13 @@ const GroupPage = () => {
       }
     );
 
+    return () => {
+      socket.off("onGroupCreateToClientSide");
+      socket.off("onGroupMessageToClientSide");
+    };
+  }, [dispatch, socket]);
+
+  useEffect(() => {
     socket.on(
       "onGroupMessageDeleteToClientSide",
       (payload: GroupMessageType) => {
@@ -75,19 +84,17 @@ const GroupPage = () => {
         editOrDeleteLastMessageGroupSidebar({
           isEdit: true,
           messages: [],
-          groupId: Number(payload.group.id),
+          groupId: Number(payload.group?.id),
           message: payload,
         })
       );
     });
 
     return () => {
-      socket.off("onGroupCreateToClientSide");
-      socket.off("onGroupMessageToClientSide");
       socket.off("onGroupMessageDeleteToClientSide");
       socket.off("onGroupMessageEditToClientSide");
     };
-  }, [socket, dispatch, groupMessage?.messages]);
+  }, [dispatch, groupMessage?.messages, socket]);
 
   useEffect(() => {
     if (id) dispatch(fetchGroupMessagesThunk(parseInt(id)));
