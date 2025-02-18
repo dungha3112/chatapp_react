@@ -55,8 +55,6 @@ const ConversationPage = () => {
     );
 
     socket.on("onMessageCreateToClientSide", (payload: MessageEventPayload) => {
-      console.log(payload);
-
       dispatch(addMessage(payload));
       dispatch(updateConversation(payload.conversation));
     });

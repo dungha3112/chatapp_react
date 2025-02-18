@@ -1,36 +1,48 @@
+import { useContext, useEffect, useState } from "react";
 import { MdGroups } from "react-icons/md";
-import {
-  GroupRecipientsSidebarItemContainerStyle,
-  GroupRecipientsSidebarHeaderStyle,
-  GroupRecipientsSidebarStyle,
-  GroupRecipientItemSidebarStyle,
-} from "../../../styles/group-recipients/groupRecipientsSidebar";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { RootState } from "../../../store";
 import { selectGroupById } from "../../../store/groups/groupSlice";
-import { useParams } from "react-router-dom";
-import { MessageItemAvatar } from "../../../styles/messages";
-import { useContext, useEffect } from "react";
+import {
+  GroupRecipientsSidebarHeaderStyle,
+  GroupRecipientsSidebarItemContainerStyle,
+  GroupRecipientsSidebarStyle,
+} from "../../../styles/group-recipients/groupRecipientsSidebar";
 import { SocketContext } from "../../../utils/contexts/SocketContext";
+import { UserType } from "../../../utils/types";
+import OfflineGroupRecipients from "./OfflineGroupRecipients";
+import OnlineGroupRecipients from "./OnlineGroupRecipients";
 
 const GroupRecipientsSidebar = () => {
+  const [onlineUsers, setOnlineUsers] = useState<UserType[]>([]);
+  const [offlineUsers, setOfflineUsers] = useState<UserType[]>([]);
+
   const socket = useContext(SocketContext);
-  const { id: groupId } = useParams();
+
+  const { id } = useParams();
   const group = useSelector((state: RootState) =>
-    selectGroupById(state, parseInt(groupId!))
+    selectGroupById(state, parseInt(id!))
   );
 
   useEffect(() => {
-    socket.emit("getOnlineGroupUsers", { groupId });
+    socket.emit("getOnlineGroupUsers", { groupId: parseInt(id!) });
+
     const interval = setInterval(() => {
-      socket.emit("getOnlineGroupUsers", { groupId });
+      socket.emit("getOnlineGroupUsers", { groupId: parseInt(id!) });
     }, 5000);
+
+    socket.on("onlineGroupUsersReceived", (payload) => {
+      const { onlineUsers, offlineUsers } = payload;
+      setOnlineUsers(onlineUsers);
+      setOfflineUsers(offlineUsers);
+    });
 
     return () => {
       clearInterval(interval);
-      socket.off("getOnlineGroupUsers");
+      socket.off("onlineGroupUsersReceived");
     };
-  }, [groupId, socket]);
+  }, [id, socket]);
 
   return (
     <GroupRecipientsSidebarStyle>
@@ -40,12 +52,11 @@ const GroupRecipientsSidebar = () => {
       </GroupRecipientsSidebarHeaderStyle>
 
       <GroupRecipientsSidebarItemContainerStyle>
-        {group?.users.map((user) => (
-          <GroupRecipientItemSidebarStyle key={user.id}>
-            <MessageItemAvatar />
-            <span>{`${user.firstName} ${user.lastName}`}</span>
-          </GroupRecipientItemSidebarStyle>
-        ))}
+        <span className="titleOnOffline">Online Users</span>
+        <OnlineGroupRecipients users={onlineUsers} />
+
+        <span className="titleOnOffline">Offline Users</span>
+        <OfflineGroupRecipients users={offlineUsers} />
       </GroupRecipientsSidebarItemContainerStyle>
     </GroupRecipientsSidebarStyle>
   );

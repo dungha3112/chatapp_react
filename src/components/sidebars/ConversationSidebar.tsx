@@ -43,7 +43,10 @@ const ConversationSidebar = () => {
         <ConversationHeaderSidebarStyle>
           <ConversationSearchbar placeholder="Search for conversations ..." />
 
-          <ButtonIconStyle onClick={() => setShowModal(true)}>
+          <ButtonIconStyle
+            className={showModal ? "actived" : ""}
+            onClick={() => setShowModal(true)}
+          >
             {chatType === "group" ? (
               <MdGroups size={20} />
             ) : (

@@ -32,7 +32,7 @@ const ConversationChanelPage = () => {
       console.log("userLeave ");
     });
 
-    socket.on("userJoinToClientSide", () => {
+    socket.on("userConversationJoinToClientSide", () => {
       console.log("userJoin ");
     });
 
@@ -59,7 +59,7 @@ const ConversationChanelPage = () => {
         conversationId: parseInt(id),
       });
 
-      socket.off("userJoinToClientSide");
+      socket.off("userConversationJoinToClientSide");
       socket.off("userLeaveToClientSide");
 
       socket.off("onTypingStartToClientSide");

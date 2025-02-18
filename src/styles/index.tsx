@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import {
-  AnimationOceanWaves,
+  AnimationOceanWavesProps,
   ContextMenuProps,
   InputContainerProps,
   PageProps,
@@ -24,6 +24,9 @@ export const InputField = styled.input`
   font-size: 18px;
   padding: 0;
   margin: 4px 0;
+  &:disabled {
+    color: #3b3b3b;
+  }
 `;
 
 export const InputLabel = styled.label`
@@ -34,45 +37,7 @@ export const InputLabel = styled.label`
   transition: 1s time-out ease-in-out;
 `;
 
-// export const InputLabelAnimation = styled.label<AnimationOceanWaves>`
-//   display: block;
-//   color: #8f8f8f;
-//   font-size: 14px;
-//   margin: 4px 0;
-//   transition: 1s time-out ease-in-out;
-
-//   white-space: nowrap; /* Tránh bị xuống dòng */
-
-//   display: inline-block;
-//   animation: waveText 1.5s infinite ease-in-out;
-
-//   span {
-//     display: inline-block;
-//     ${({ $animation }) =>
-//       $animation &&
-//       css`
-//         animation: waveText 1.5s infinite ease-in-out;
-//       `}
-//   }
-
-//   ${({ $animation }) =>
-//     $animation &&
-//     css`
-//       @keyframes waveText {
-//         0% {
-//           transform: translateY(0);
-//         }
-//         50% {
-//           transform: translateY(-5px);
-//         }
-//         100% {
-//           transform: translateY(0);
-//         }
-//       }
-//     `}
-// `;
-
-export const InputLabelAnimation = styled.label<AnimationOceanWaves>`
+export const InputLabelAnimation = styled.label<AnimationOceanWavesProps>`
   display: inline-block;
   color: #8f8f8f;
   font-size: 14px;
@@ -156,16 +121,13 @@ export const OverlayStyle = styled.div`
   z-index: 9999;
 `;
 
-type ModalProps = Partial<{
-  showModal: boolean;
-}>;
-
-export const ModalContainerStyle = styled.div<ModalProps>`
+export const ModalContainerStyle = styled.div`
   position: relative;
   background-color: #121212;
   width: 650px;
   box-sizing: border-box;
   border-radius: 10px;
+
   animation: ${fadeInUpwards} 500ms ease;
 `;
 
@@ -250,13 +212,14 @@ export const ButtonIconStyle = styled.div`
   justify-content: center;
   align-items: center;
   transition: 0.6ms background-color ease-in-out;
-  transition: 0.6ms ease-in-out;
+  transition: 0.6ms color ease-in-out;
 
   &.actived {
-    background-color: #151515;
+    background-color: #cecbcb;
+    color: #000;
   }
 
   &:hover {
-    background-color: #151515;
+    background-color: #363535;
   }
 `;

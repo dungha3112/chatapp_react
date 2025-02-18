@@ -90,10 +90,10 @@ export const ConversationSidebarItemStyle = styled.div`
   transition: 0.3s ease;
 
   &.actived {
-    background-color: #151515;
+    background-color: #363535;
   }
 
   &:hover {
-    background-color: #151515;
+    background-color: #363535;
   }
 `;

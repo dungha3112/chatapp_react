@@ -24,10 +24,9 @@ const CreateConversationForm = ({ setShowModal }: Props) => {
   const [query, setQuery] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [selectedUser, setSelectedUser] = useState<UserType>();
+  const [searching, setSearching] = useState<boolean>(false);
 
   const debounceQuery = useDebounce(query, 1000);
-
-  const [searching, setSearching] = useState<boolean>(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();

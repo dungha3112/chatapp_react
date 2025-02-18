@@ -71,6 +71,9 @@ export const MessageInputContainer = styled.div`
   border-radius: 10px;
   position: relative;
   width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
 `;
 
 export const MessageInputStyle = styled.input`
@@ -96,8 +99,8 @@ export const MessageItemContainer = styled.div`
 `;
 
 export const MessageItemAvatar = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background-color: #c1c1c1;
 `;

@@ -25,7 +25,7 @@ export type SidebarItemProps = Partial<{
   $active: boolean;
 }>;
 
-export type AnimationOceanWaves = Partial<{
+export type AnimationOceanWavesProps = Partial<{
   $animation?: boolean;
   $length?: number;
 }>;

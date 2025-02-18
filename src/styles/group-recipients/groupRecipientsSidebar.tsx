@@ -2,13 +2,22 @@ import styled from "styled-components";
 import { WIDTH_SIDE_BAR } from "../../utils/constants";
 
 export const GroupRecipientsSidebarStyle = styled.aside`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   max-width: ${WIDTH_SIDE_BAR}px;
   width: 100%;
   height: 100%;
   background-color: #141414;
+  border-left: 1px solid #49494925; */
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: ${WIDTH_SIDE_BAR}px;
+  width: 100%;
+  background-color: #141414;
   border-left: 1px solid #49494925;
+  flex: 0 0 auto;
 `;
 
 export const GroupRecipientsSidebarHeaderStyle = styled.div`
@@ -31,14 +40,19 @@ export const GroupRecipientsSidebarHeaderStyle = styled.div`
 `;
 
 export const GroupRecipientsSidebarItemContainerStyle = styled.div`
-  user-select: none;
-
+  padding: 30px 0 0 0px;
   flex: 1 1 auto;
   overflow-y: auto;
   min-height: 0;
-
+  user-select: none;
   &::-webkit-scrollbar {
     display: none;
+  }
+  .titleOnOffline {
+    display: flex;
+    padding: 20px;
+    color: #fff;
+    text-decoration: underline;
   }
 `;
 
@@ -46,10 +60,16 @@ export const GroupRecipientItemSidebarStyle = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 18px;
-  font-weight: 500;
   padding: 8px 16px;
-  cursor: pointer;
-
   border-bottom: 1px solid #5454543d;
+  cursor: pointer;
+  transition: 0.3s ease;
+
+  &.actived {
+    background-color: #363535;
+  }
+
+  &:hover {
+    background-color: #363535;
+  }
 `;

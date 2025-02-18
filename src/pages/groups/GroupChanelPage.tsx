@@ -17,12 +17,18 @@ const GroupChanelPage = () => {
   const [isRecipientTyping, setIsRecipientTyping] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!id) return;
-    const groupId: number = parseInt(id);
+    const groupId = parseInt(id!);
+
     socket.emit("onGroupJoin", { groupId });
+
+    socket.emit("useGroupJoinToClientSide", () => {
+      console.log(` user group join ..`);
+    });
 
     return () => {
       socket.emit("onGroupLeave", { groupId });
+
+      socket.off("useGroupJoinToClientSide");
     };
   }, [id, socket]);
 

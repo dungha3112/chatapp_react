@@ -16,7 +16,7 @@ import {
 import { AuthContext } from "../../utils/contexts/AuthContext";
 import { getRecipientFromConversation } from "../../utils/helpers";
 import MessageContainer from "./MessageContainer";
-import MessageInputFiled from "./MessageInputFiled";
+import MessageInputField from "./MessageInputField";
 import MessagePanelHeader from "./MessagePanelHeader";
 
 type Props = {
@@ -33,13 +33,13 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
     (state: RootState) => state.selectedConversationType.type
   );
 
-  const {
-    errorMessage: errorConversationMessage,
-    loading: isLoadingConversationMessage,
-  } = useSelector((state: RootState) => state.message);
+  const { loading: isLoadingConversationMessage } = useSelector(
+    (state: RootState) => state.message
+  );
 
-  const { errorMessage: errorGroupMessage, loading: isLoadingGroupMessage } =
-    useSelector((state: RootState) => state.groupMessages);
+  const { loading: isLoadingGroupMessage } = useSelector(
+    (state: RootState) => state.groupMessages
+  );
 
   const conversation = useSelector((state: RootState) =>
     selectConversationById(state, parseInt(id!))
@@ -71,8 +71,6 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
 
   if (isLoadingConversationMessage || isLoadingGroupMessage)
     return <div>Loading message ..</div>;
-  if (errorConversationMessage) return <div>{errorConversationMessage}</div>;
-  if (errorGroupMessage) return <div>{errorGroupMessage}</div>;
 
   return (
     <>
@@ -89,7 +87,7 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
               `${recipient?.firstName} ${recipient?.lastName} is typing...`}
           </MessageTypingStatusStyle>
 
-          <MessageInputFiled
+          <MessageInputField
             content={content}
             setContent={setContent}
             sendMessage={sendMessage}

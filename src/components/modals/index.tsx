@@ -13,16 +13,6 @@ export const ModalContentBody: FC<PropsWithChildren> = ({ children }) => {
   return <ModalContentBodyStyle>{children}</ModalContentBodyStyle>;
 };
 
-type ModalContainerProps = {
-  showModal?: boolean | false;
-};
-
-export const ModalContainer: FC<PropsWithChildren & ModalContainerProps> = ({
-  children,
-  showModal,
-}) => {
-  console.log(`showModal: ${showModal}`);
-  return (
-    <ModalContainerStyle showModal={showModal}>{children}</ModalContainerStyle>
-  );
+export const ModalContainer: FC<PropsWithChildren> = ({ children }) => {
+  return <ModalContainerStyle>{children}</ModalContainerStyle>;
 };

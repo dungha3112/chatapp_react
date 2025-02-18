@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../store";
@@ -6,8 +6,13 @@ import { selectConversationById } from "../../store/conversations/conversationSl
 import { selectGroupById } from "../../store/groups/groupSlice";
 import { MessagePanelHeaderStyle } from "../../styles/messages";
 import { AuthContext } from "../../utils/contexts/AuthContext";
+import { BsPersonAdd } from "react-icons/bs";
+import { ButtonIconStyle } from "../../styles";
+import AddGroupRecipientModal from "../modals/AddGroupRecipientModal";
 
 const MessagePanelHeader = () => {
+  const [showModal, setShowModal] = useState<boolean>(false);
+
   const { id: conversationId } = useParams();
 
   const { user } = useContext(AuthContext);
@@ -34,10 +39,27 @@ const MessagePanelHeader = () => {
   const headerTitle = conversationType === "group" ? groupTitle : displayName;
 
   return (
-    <MessagePanelHeaderStyle>
-      <div>{headerTitle}</div>
-      <div>{headerTitle}</div>
-    </MessagePanelHeaderStyle>
+    <>
+      {showModal && (
+        <AddGroupRecipientModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
+      )}
+
+      <MessagePanelHeaderStyle>
+        <div>{headerTitle}</div>
+
+        {conversationType === "group" && (
+          <ButtonIconStyle
+            className={showModal ? "actived" : ""}
+            onClick={() => setShowModal(true)}
+          >
+            <BsPersonAdd fontSize={20} />
+          </ButtonIconStyle>
+        )}
+      </MessagePanelHeaderStyle>
+    </>
   );
 };
 

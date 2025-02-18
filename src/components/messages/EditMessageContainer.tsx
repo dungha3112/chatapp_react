@@ -2,16 +2,16 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
+import { editOrDeleteLastMessageConversationSidebar } from "../../store/conversations/conversationSlice";
+import { editGroupMessageThunk } from "../../store/groupMessage/groupMessageThunk";
+import { editOrDeleteLastMessageGroupSidebar } from "../../store/groups/groupSlice";
 import { handleSetIsEditingMessage } from "../../store/messageContainerSlice";
 import { editConversationMessageThunk } from "../../store/messages/messageThunk";
 import {
   EditMessageActionsContainer,
   EditMessageInputField,
 } from "../../styles/messages";
-import { editOrDeleteLastMessageConversationSidebar } from "../../store/conversations/conversationSlice";
 import { GroupMessageType, MessageType } from "../../utils/types";
-import { editGroupMessageThunk } from "../../store/groupMessage/groupMessageThunk";
-import { editOrDeleteLastMessageGroupSidebar } from "../../store/groups/groupSlice";
 
 type Props = {
   onEditMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -86,7 +86,7 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
 
   return (
     <div style={{ width: "100%" }}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} style={{ width: "100%" }}>
         <EditMessageInputField
           value={messageBegingEdited.content}
           onChange={onEditMessageChange}
