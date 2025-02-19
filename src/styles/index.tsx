@@ -91,7 +91,20 @@ export const Button = styled.button`
   border: none;
   padding: 20px 0;
 
-  cursor: pointer;
+  &:hover {
+    cursor: pointer;
+    background-color: #3415ff;
+  }
+
+  &:active {
+    background-color: #3a1cff;
+  }
+
+  &:disabled {
+    background-color: #4937dc7c;
+    color: #878787;
+    cursor: not-allowed;
+  }
 `;
 
 export const Page = styled.div<PageProps>`

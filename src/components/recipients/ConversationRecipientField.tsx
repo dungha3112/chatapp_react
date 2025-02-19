@@ -27,17 +27,13 @@ const ConversationRecipientField = ({
     <section>
       <InputContainer $backgroundColor="#161616">
         {searching ? (
-          <InputLabelAnimation
-            htmlFor="username"
-            $animation={true}
-            $length={"Search ...".length}
-          >
+          <InputLabelAnimation $animation={true} $length={"Search ...".length}>
             {"Search ...".split("").map((char, index) => (
               <span key={index}>{char}</span>
             ))}
           </InputLabelAnimation>
         ) : (
-          <InputLabel>Recipient</InputLabel>
+          <InputLabel htmlFor="username">Recipient</InputLabel>
         )}
 
         {!selectedUser ? (
