@@ -4,6 +4,11 @@ export type UserCredentialsParams = {
   password: string;
 };
 
+export type PointsType = {
+  x: number;
+  y: number;
+};
+
 //CreateUserParams
 export type CreateUserParams = UserCredentialsParams & {
   firstName: string;
@@ -187,4 +192,16 @@ export type EditGroupMessageParams = {
   groupId: number;
   messageId: number;
   content: string;
+};
+
+// AddGroupRecipientParams
+export type AddGroupRecipientParams = {
+  groupId: number;
+  email: string;
+};
+
+// AddGroupUserPayload
+export type AddGroupUserPayload = {
+  group: GroupType;
+  user: UserType;
 };

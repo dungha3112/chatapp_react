@@ -29,3 +29,7 @@ export type AnimationOceanWavesProps = Partial<{
   $animation?: boolean;
   $length?: number;
 }>;
+
+export type ShowSidebarProps = Partial<{
+  $showSidebar: boolean;
+}>;

@@ -6,8 +6,8 @@ export const ConversationSidebarStyle = styled.aside`
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: ${WIDTH_SIDE_BAR}px;
-  width: 100%;
+  width: ${WIDTH_SIDE_BAR}px;
+  flex: 0 0 auto;
   background-color: #111;
   user-select: none;
 `;

@@ -82,17 +82,17 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
         </MessagePanelBody>
 
         <MessagePanelFooter>
-          <MessageTypingStatusStyle>
-            {isRecipientTyping &&
-              `${recipient?.firstName} ${recipient?.lastName} is typing...`}
-          </MessageTypingStatusStyle>
-
           <MessageInputField
             content={content}
             setContent={setContent}
             sendMessage={sendMessage}
             sendTypingStatus={sendTypingStatus}
           />
+
+          <MessageTypingStatusStyle>
+            {isRecipientTyping &&
+              `${recipient?.firstName} ${recipient?.lastName} is typing...`}
+          </MessageTypingStatusStyle>
         </MessagePanelFooter>
       </MessagePanelStyle>
     </>

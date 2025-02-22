@@ -23,6 +23,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store";
 import { createGroupThunk } from "../../store/groups/groupThunk";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../../utils/hooks/useToast";
 
 type Props = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -32,6 +33,7 @@ const CreateGroupForm = ({ setShowModal }: Props) => {
   const [query, setQuery] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const { success, error } = useToast();
 
   const [selectedRecipients, setSelectedRecipients] = useState<UserType[]>([]);
 
@@ -48,9 +50,9 @@ const CreateGroupForm = ({ setShowModal }: Props) => {
     if (debounceQuery) {
       setSearching(true);
       searchUsersApi(debounceQuery)
-        .then(({ data }) => {
-          setUserResults(data);
-        })
+        .then((res) =>
+          res && res.data ? setUserResults(res.data) : setUserResults([])
+        )
         .catch((err) => console.log(err))
         .finally(() => setTimeout(() => setSearching(false), 500));
     }
@@ -78,8 +80,9 @@ const CreateGroupForm = ({ setShowModal }: Props) => {
 
     return dispatch(createGroupThunk({ users, title, message }))
       .unwrap()
-      .then(({ data }) => {
-        navigate(`/groups/${data.id}`);
+      .then((res) => {
+        success("Created new group");
+        navigate(`/groups/${res?.data.id}`);
 
         setShowModal(false);
         setQuery("");
@@ -88,7 +91,10 @@ const CreateGroupForm = ({ setShowModal }: Props) => {
         setUserResults([]);
         setSearching(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        error("Try again !");
+      });
   };
 
   return (

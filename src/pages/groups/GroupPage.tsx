@@ -18,6 +18,7 @@ import { fetchGroupsThunk } from "../../store/groups/groupThunk";
 import { updateType } from "../../store/selectedSlice";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import {
+  AddGroupUserPayload,
   GroupMessageEventPayload,
   GroupMessageType,
   GroupType,
@@ -90,9 +91,14 @@ const GroupPage = () => {
       );
     });
 
+    socket.on("onGroupUserAddToClientSide", (payload: AddGroupUserPayload) => {
+      dispatch(addGroup(payload.group));
+    });
+
     return () => {
       socket.off("onGroupMessageDeleteToClientSide");
       socket.off("onGroupMessageEditToClientSide");
+      socket.off("onGroupUserAddToClientSide");
     };
   }, [dispatch, groupMessage?.messages, socket]);
 

@@ -6,3 +6,9 @@ export const GroupChanelPageStyle = styled.div`
   width: 100%;
   /* margin-left: ${WIDTH_SIDE_BAR}px; */
 `;
+
+export const GroupHeaderIconsStyle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;

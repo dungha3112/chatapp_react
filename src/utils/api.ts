@@ -17,6 +17,7 @@ import {
   DeleteGroupMessageResponse,
   EditGroupMessageParams,
   GroupMessageType,
+  AddGroupRecipientParams,
 } from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
@@ -25,6 +26,14 @@ const axiosClient = axios.create({
   baseURL: BASEURL,
   withCredentials: true,
 } as AxiosRequestConfig);
+
+const logErrorMessage = (error: unknown) => {
+  if (error instanceof AxiosError) {
+    throw error.response?.data.message;
+  } else {
+    console.log(error);
+  }
+};
 
 /**
  * Auth api
@@ -35,11 +44,7 @@ export const postRegisterApi = async (data: CreateUserParams) => {
   try {
     return await axiosClient.post("auth/register", data);
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -47,11 +52,7 @@ export const postLoginApi = async (data: UserCredentialsParams) => {
   try {
     return await axiosClient.post("auth/login", data);
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -63,11 +64,7 @@ export const getStatusApi = async () => {
   try {
     return await axiosClient.get<UserType>("auth/status");
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -79,11 +76,7 @@ export const getConversationsApi = async () => {
   try {
     return await axiosClient.get<ConversationType[]>("conversations");
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -93,11 +86,7 @@ export const postNewConversationApi = async (
   try {
     return await axiosClient.post<ConversationType>(`conversations/`, data);
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -114,11 +103,7 @@ export const postNewConversationMessageApi = async (
   try {
     return await axiosClient.post(`conversations/${id}/messages`, { content });
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -128,11 +113,7 @@ export const getMessagesByConversationIdApi = async (id: number) => {
       `conversations/${id}/messages`
     );
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -145,11 +126,7 @@ export const deleteMessageApi = async ({
       `conversations/${conversationId}/messages/${messageId}`
     );
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -164,11 +141,7 @@ export const editMessageApi = async ({
       { content }
     );
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -180,11 +153,7 @@ export const searchUsersApi = async (query: string) => {
   try {
     return await axiosClient.get<UserType[]>(`/users/search?query=${query}`);
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -197,11 +166,7 @@ export const getGroupsApi = async () => {
   try {
     return await axiosClient.get<GroupType[]>("/groups");
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -209,11 +174,7 @@ export const createGroupsApi = async (params: CreateGroupParams) => {
   try {
     return await axiosClient.post<GroupType>("/groups", params);
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -223,11 +184,7 @@ export const fetchGroupMessagesApi = async (id: number) => {
       `/groups/${id}/messages`
     );
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -235,11 +192,7 @@ export const postNewGroupMessageApi = async (content: string, id: number) => {
   try {
     return await axiosClient.post(`/groups/${id}/messages`, { content });
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -252,11 +205,7 @@ export const deleteGroupMessageApi = async ({
       `/groups/${groupId}/messages/${messageId}`
     );
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
   }
 };
 
@@ -271,10 +220,19 @@ export const editGroupMessageApi = async ({
       { content }
     );
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw error.response?.data.message;
-    } else {
-      console.log(error);
-    }
+    logErrorMessage(error);
+  }
+};
+
+export const addGroupRecipientApi = async ({
+  groupId,
+  email,
+}: AddGroupRecipientParams) => {
+  try {
+    return await axiosClient.post<GroupType>(`/groups/${groupId}/recipients`, {
+      email,
+    });
+  } catch (error) {
+    logErrorMessage(error);
   }
 };

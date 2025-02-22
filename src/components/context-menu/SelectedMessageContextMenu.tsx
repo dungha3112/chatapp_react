@@ -10,14 +10,15 @@ import {
 } from "../../store/messageContainerSlice";
 import { selectConversationMessage } from "../../store/messages/messageSlice";
 import { deleteConversationMessageThunk } from "../../store/messages/messageThunk";
-import { ContextMenuSyle } from "../../styles";
+import { ContextMenuItemStyle, ContextMenuSyle } from "../../styles";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 import { deleteGroupMessageThunk } from "../../store/groupMessage/groupMessageThunk";
 import { selectGroupMessage } from "../../store/groupMessage/groupMessageSlice";
 import { editOrDeleteLastMessageGroupSidebar } from "../../store/groups/groupSlice";
+import { PointsType } from "../../utils/types";
 
 type Props = {
-  points: { x: number; y: number };
+  points: PointsType;
 };
 const SelectedMessageContextMenu = ({ points }: Props) => {
   const { selectedMessage } = useSelector(
@@ -86,26 +87,19 @@ const SelectedMessageContextMenu = ({ points }: Props) => {
   };
 
   return (
-    <>
-      {user?.id === selectedMessage?.author.id && (
-        <ContextMenuSyle
-          $left={points.x}
-          $top={points.y}
-          style={{ zIndex: "10000" }}
-        >
-          <ul>
-            <li onClick={handleDeleteMessage}>
-              <MdDelete color="red" fontSize={20} /> Delete
-            </li>
-
-            <li onClick={handleEditMessage}>
-              <MdEdit color="blue" fontSize={20} /> Edit
-            </li>
-          </ul>
-        </ContextMenuSyle>
+    <ContextMenuSyle $left={points.x} $top={points.y}>
+      {selectedMessage?.author.id === user?.id && (
+        <ContextMenuItemStyle onClick={handleDeleteMessage}>
+          <MdDelete color="#ea0e0e" /> Delete
+        </ContextMenuItemStyle>
       )}
-    </>
+
+      {selectedMessage?.author.id === user?.id && (
+        <ContextMenuItemStyle onClick={handleEditMessage}>
+          <MdEdit color="#1cee0d" /> Edit
+        </ContextMenuItemStyle>
+      )}
+    </ContextMenuSyle>
   );
 };
-
 export default SelectedMessageContextMenu;

@@ -1,6 +1,10 @@
 import React, { Dispatch, useState } from "react";
 import styles from "./index.module.scss";
 import { Button, InputContainer, InputField, InputLabel } from "../../styles";
+import { useParams } from "react-router-dom";
+import { addGroupRecipientApi } from "../../utils/api";
+
+import { useToast } from "../../utils/hooks/useToast";
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>;
@@ -8,10 +12,19 @@ type Props = {
 
 const AddGroupRecipientForm = ({ setShowModal }: Props) => {
   const [username, setUsername] = useState<string>("");
+  const { id } = useParams();
+  const { success, error } = useToast();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(username);
+    if (!id || !username) return;
+
+    const params = { email: username, groupId: parseInt(id) };
+    addGroupRecipientApi(params)
+      .then((res) => {
+        success("Added recipient success!");
+      })
+      .catch((err) => error(err));
   };
 
   return (
@@ -21,8 +34,8 @@ const AddGroupRecipientForm = ({ setShowModal }: Props) => {
 
         <InputField
           id="recipient"
-          value={username}
           autoComplete="off"
+          value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
       </InputContainer>

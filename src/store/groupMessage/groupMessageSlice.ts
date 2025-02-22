@@ -32,17 +32,20 @@ export const groupMessagesSlice = createSlice({
     },
 
     deleteGroupMessage: (state, action: PayloadAction<GroupMessageType>) => {
+      console.log("deleteGroupMessage . ...");
+
       const groupId = action.payload.group?.id;
       const messageId = action.payload.id;
 
       const groupMessage = state.messages.find((gm) => gm.id === groupId);
+
       if (!groupMessage) return;
 
       const messageIndex = groupMessage.messages.findIndex(
         (m) => m.id === messageId
       );
 
-      groupMessage.messages.splice(messageIndex, 1);
+      groupMessage?.messages.splice(messageIndex, 1);
     },
 
     editGroupMessage: (state, action: PayloadAction<GroupMessageType>) => {
@@ -66,7 +69,7 @@ export const groupMessagesSlice = createSlice({
       .addCase(fetchGroupMessagesThunk.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchGroupMessagesThunk.rejected, (state, action) => {
+      .addCase(fetchGroupMessagesThunk.rejected, (state) => {
         state.loading = false;
       })
       .addCase(fetchGroupMessagesThunk.fulfilled, (state, action) => {
@@ -86,6 +89,7 @@ export const groupMessagesSlice = createSlice({
 
       .addCase(deleteGroupMessageThunk.fulfilled, (state, action) => {
         if (!action.payload) return;
+        console.log("delete group message thunk", action.payload.data);
 
         const { groupId, messageId } = action.payload.data;
 
@@ -96,7 +100,7 @@ export const groupMessagesSlice = createSlice({
           (m) => m.id === messageId
         );
 
-        groupMessage.messages.splice(messageIndex, 1);
+        // groupMessage?.messages.splice(messageIndex, 1);
       })
 
       .addCase(editGroupMessageThunk.fulfilled, (state, action) => {

@@ -1,23 +1,24 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { WIDTH_SIDE_BAR } from "../../utils/constants";
+import { slideInFromLeft, slideInFromRight } from "../keyframes";
+import { ShowSidebarProps } from "../styleTypes";
 
-export const GroupRecipientsSidebarStyle = styled.aside`
-  /* display: flex;
-  flex-direction: column;
-  max-width: ${WIDTH_SIDE_BAR}px;
-  width: 100%;
-  height: 100%;
-  background-color: #141414;
-  border-left: 1px solid #49494925; */
-
+export const GroupRecipientsSidebarStyle = styled.aside<ShowSidebarProps>`
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: ${WIDTH_SIDE_BAR}px;
-  width: 100%;
-  background-color: #141414;
-  border-left: 1px solid #49494925;
+  width: ${WIDTH_SIDE_BAR}px;
   flex: 0 0 auto;
+  background-color: #111111;
+  border-left: 1px solid #49494925;
+
+  /* console.log("Styled Component received $showSidebar:", $showSidebar); */
+  /* ${({ $showSidebar }) => {
+    const animation = $showSidebar ? slideInFromRight : slideInFromLeft;
+    return css`
+      animation: ${animation} 500ms ease;
+    `;
+  }} */
 `;
 
 export const GroupRecipientsSidebarHeaderStyle = styled.div`

@@ -1,4 +1,4 @@
-import { keyframes } from 'styled-components';
+import { keyframes } from "styled-components";
 
 export const fadeInUpwards = keyframes`
   from {
@@ -26,5 +26,27 @@ export const slideDown = keyframes`
   }
   100% {
     transform: translate(-50%, 100%)
+  }
+`;
+
+export const slideInFromRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(20%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+`;
+
+export const slideInFromLeft = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-20%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
   }
 `;

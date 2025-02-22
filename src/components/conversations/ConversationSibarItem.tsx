@@ -30,12 +30,14 @@ export const ConversationSibarItem = ({ conversation }: Props) => {
         </span>
         <span className={styles.conversationMessage}>
           <span style={{ fontWeight: "bold", color: "#e2e2e2" }}>
-            {`${conversation.lastMessageSent?.author.firstName} ${conversation.lastMessageSent?.author.lastName}: `}
+            {conversation?.lastMessageSent &&
+              `${conversation?.lastMessageSent?.author.firstName} ${conversation?.lastMessageSent?.author.lastName}: `}
           </span>
 
-          {conversation.lastMessageSent?.content.length >= 25
-            ? conversation.lastMessageSent?.content.slice(0, 25) + " ..."
-            : conversation.lastMessageSent?.content}
+          {conversation?.lastMessageSent &&
+          conversation?.lastMessageSent?.content.length >= 25
+            ? conversation?.lastMessageSent?.content.slice(0, 25) + " ..."
+            : conversation?.lastMessageSent?.content}
         </span>
       </div>
     </ConversationSidebarItemStyle>

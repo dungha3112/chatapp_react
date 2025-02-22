@@ -15,6 +15,7 @@ import {
   RecipientNoResultItemStyle,
 } from "../../styles/recipients";
 import { FaFrownOpen } from "react-icons/fa";
+import { useToast } from "../../utils/hooks/useToast";
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>;
@@ -25,6 +26,8 @@ const CreateConversationForm = ({ setShowModal }: Props) => {
   const [message, setMessage] = useState<string>("");
   const [selectedUser, setSelectedUser] = useState<UserType>();
   const [searching, setSearching] = useState<boolean>(false);
+
+  const { success, error } = useToast();
 
   const debounceQuery = useDebounce(query, 1000);
 
@@ -38,9 +41,9 @@ const CreateConversationForm = ({ setShowModal }: Props) => {
       setSearching(true);
 
       searchUsersApi(debounceQuery)
-        .then(({ data }) => {
-          setUserResults(data);
-        })
+        .then((res) =>
+          res && res.data ? setUserResults(res.data) : setUserResults([])
+        )
         .catch((err) => console.log(err))
         .finally(() => setTimeout(() => setSearching(false), 1000));
     }
@@ -53,15 +56,17 @@ const CreateConversationForm = ({ setShowModal }: Props) => {
     const data = { email: selectedUser.email, message };
     return dispatch(createConversationThunk(data))
       .unwrap()
-      .then(({ data }) => {
+      .then((res) => {
+        success("Created new conversation.");
         setShowModal(false);
-        navigate(`/conversations/${data.id}`);
+        navigate(`/conversations/${res?.data.id}`);
         setQuery("");
         setUserResults([]);
         setMessage("");
       })
-      .catch((error) => {
-        console.log(`error create new conversation : ${error}`);
+      .catch((err) => {
+        console.log(err);
+        error(err.message);
       });
   };
 

@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import MessagePanel from "../../components/messages/MessagePanel";
-import { AppDispatch } from "../../store";
+import { AppDispatch, RootState } from "../../store";
 import { ConversationChannelPageStyle } from "../../styles/conversation";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import { AuthContext } from "../../utils/contexts/AuthContext";
@@ -15,6 +15,8 @@ const GroupChanelPage = () => {
   const { user } = useContext(AuthContext);
 
   const [isRecipientTyping, setIsRecipientTyping] = useState<boolean>(false);
+
+  const { showSidebar } = useSelector((state: RootState) => state.groupSidebar);
 
   useEffect(() => {
     const groupId = parseInt(id!);
@@ -45,7 +47,7 @@ const GroupChanelPage = () => {
         />
       </ConversationChannelPageStyle>
 
-      <GroupRecipientsSidebar />
+      {showSidebar && <GroupRecipientsSidebar />}
     </>
   );
 };

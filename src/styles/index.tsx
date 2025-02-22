@@ -131,7 +131,7 @@ export const OverlayStyle = styled.div`
   left: 0;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 99;
 `;
 
 export const ModalContainerStyle = styled.div`
@@ -176,35 +176,41 @@ export const TextField = styled.textarea`
   resize: none;
 `;
 
-export const ContextMenuSyle = styled.div<ContextMenuProps>`
+export const ContextMenuSyle = styled.ul<ContextMenuProps>`
+  /* display: ${({ $left, $top }) =>
+    $left === 0 && $top === 0 ? "none" : "block"};  */
+
   border-radius: 4px;
-  position: absolute;
-  width: 200px;
+  width: 180px;
   position: fixed;
   background-color: #252525;
+
   ${({ $left, $top }) => css`
     top: ${$top}px;
     left: ${$left}px;
   `}
-  transition: ease-in-out 0.3s;
 
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  ul li {
-    padding: 10px 12px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    &:hover {
-      cursor: pointer;
-      transition: ease-in-out 0.2s;
-      background-color: #000;
-    }
+  right: 0;
+  transition: ease-in-out 0.3s;
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+  z-index: 9999;
+`;
+
+export const ContextMenuItemStyle = styled.li`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  margin: 6px 0;
+  &:hover {
+    cursor: pointer;
+    background-color: #1f1f1f;
   }
 `;
 

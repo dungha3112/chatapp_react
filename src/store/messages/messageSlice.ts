@@ -43,6 +43,8 @@ export const messageSlice = createSlice({
       const conversationMessages = state.messages.find(
         (cm) => cm.id === conversationId
       );
+      console.log(conversationMessages);
+
       if (!conversationMessages) return;
 
       const messageIndex = conversationMessages.messages.findIndex(
@@ -71,10 +73,10 @@ export const messageSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMessagesThunk.pending, (state, action) => {
+      .addCase(fetchMessagesThunk.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchMessagesThunk.rejected, (state, action) => {
+      .addCase(fetchMessagesThunk.rejected, (state) => {
         state.loading = false;
       })
       .addCase(fetchMessagesThunk.fulfilled, (state, action) => {
@@ -103,7 +105,7 @@ export const messageSlice = createSlice({
           (m) => m.id === messageId
         );
 
-        conversationMessages.messages.splice(messageIndex, 1);
+        conversationMessages?.messages.splice(messageIndex, 1);
       })
       .addCase(editConversationMessageThunk.fulfilled, (state, action) => {
         if (!action.payload) return;

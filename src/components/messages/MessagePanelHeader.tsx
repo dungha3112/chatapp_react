@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { RootState } from "../../store";
+import { AppDispatch, RootState } from "../../store";
 import { selectConversationById } from "../../store/conversations/conversationSlice";
 import { selectGroupById } from "../../store/groups/groupSlice";
 import { MessagePanelHeaderStyle } from "../../styles/messages";
@@ -9,6 +9,9 @@ import { AuthContext } from "../../utils/contexts/AuthContext";
 import { BsPersonAdd } from "react-icons/bs";
 import { ButtonIconStyle } from "../../styles";
 import AddGroupRecipientModal from "../modals/AddGroupRecipientModal";
+import { MdGroups } from "react-icons/md";
+import { tonggleSidebar } from "../../store/groupRecipientSidebarSlice";
+import { GroupHeaderIconsStyle } from "../../styles/group";
 
 const MessagePanelHeader = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -16,6 +19,9 @@ const MessagePanelHeader = () => {
   const { id: conversationId } = useParams();
 
   const { user } = useContext(AuthContext);
+  const dispatch = useDispatch<AppDispatch>();
+  const { showSidebar } = useSelector((state: RootState) => state.groupSidebar);
+
   const conversationType = useSelector(
     (state: RootState) => state.selectedConversationType.type
   );
@@ -50,14 +56,29 @@ const MessagePanelHeader = () => {
       <MessagePanelHeaderStyle>
         <div>{headerTitle}</div>
 
-        {conversationType === "group" && (
-          <ButtonIconStyle
-            className={showModal ? "actived" : ""}
-            onClick={() => setShowModal(true)}
-          >
-            <BsPersonAdd fontSize={20} />
-          </ButtonIconStyle>
-        )}
+        <GroupHeaderIconsStyle>
+          {conversationType === "group" && user?.id === group?.owner.id && (
+            <ButtonIconStyle
+              className={showModal ? "actived" : ""}
+              onClick={() => setShowModal(true)}
+            >
+              <BsPersonAdd fontSize={20} />
+            </ButtonIconStyle>
+          )}
+
+          {conversationType === "group" && (
+            <ButtonIconStyle
+              className={showSidebar ? "actived" : ""}
+              onClick={() => {
+                setTimeout(() => {
+                  dispatch(tonggleSidebar(!showSidebar));
+                }, 0);
+              }}
+            >
+              <MdGroups fontSize={20} />
+            </ButtonIconStyle>
+          )}
+        </GroupHeaderIconsStyle>
       </MessagePanelHeaderStyle>
     </>
   );
