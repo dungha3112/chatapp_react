@@ -15,6 +15,7 @@ import { socket, SocketContext } from "./utils/contexts/SocketContext";
 import { UserType } from "./utils/types";
 
 import { ToastContainer } from "react-toastify";
+import ConversationPageGuard from "./guards/ConversationPageGuard";
 
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -27,13 +28,6 @@ const router = createBrowserRouter([
         <AppPage />
       </AuthenticatedRoute>
     ),
-    // children: [
-    //   { path: "/groups", element: <GroupPage /> },
-    //   { path: "/group/:id", element: <GroupChanelPage /> },
-
-    //   { path: "/conversations", element: <ConversationPage /> },
-    //   { path: "/conversation/:id", element: <ConversationChanelPage /> },
-    // ],
     children: [
       {
         path: "/groups",
@@ -44,7 +38,14 @@ const router = createBrowserRouter([
       {
         path: "/conversations",
         element: <ConversationPage />,
-        children: [{ path: ":id", element: <ConversationChanelPage /> }],
+        children: [
+          {
+            path: ":id",
+            element: (
+              <ConversationPageGuard children={<ConversationChanelPage />} />
+            ),
+          },
+        ],
       },
     ],
   },

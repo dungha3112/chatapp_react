@@ -200,8 +200,19 @@ export type AddGroupRecipientParams = {
   email: string;
 };
 
-// AddGroupUserPayload
-export type AddGroupUserPayload = {
+// AddGroupRecipientResponse
+export type AddGroupRecipientResponse = {
+  group: GroupType;
+  user: UserType;
+};
+
+// RemoveGroupUserParams
+export type RemoveGroupUserParams = {
+  groupId: number;
+  removeUserId: number;
+};
+
+export type RemovedGroupUserPayload = {
   group: GroupType;
   user: UserType;
 };

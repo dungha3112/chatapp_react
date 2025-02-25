@@ -45,6 +45,7 @@ const GroupRecipientsSidebar = () => {
 
     socket.on("onlineGroupUsersReceived", (payload) => {
       const { onlineUsers, offlineUsers } = payload;
+
       setOnlineUsers(onlineUsers);
       setOfflineUsers(offlineUsers);
     });
@@ -87,8 +88,8 @@ const GroupRecipientsSidebar = () => {
     const width = 180; // width of  SelectedParticipantContextMenu , take ref
     const height = 188; // height of  SelectedParticipantContextMenu , take ref
 
-    if (itemWidth === 264 && relativeX < (itemWidth * 3) / 4) {
-      x -= 140; // Dịch sang trái khoảng 133px
+    if (itemWidth === 264 && relativeX < (itemWidth * 2) / 3) {
+      x -= (180 * 1) / 2; // Dịch sang trái khoảng 120px
     }
 
     if (x + width > screenWidth) {

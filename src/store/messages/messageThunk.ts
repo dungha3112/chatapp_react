@@ -16,6 +16,8 @@ export const fetchMessagesThunk = createAsyncThunk(
     try {
       return await getMessagesByConversationIdApi(id);
     } catch (error) {
+      console.log(error);
+
       toast(String(error), { type: "error" });
     }
   }
@@ -23,9 +25,9 @@ export const fetchMessagesThunk = createAsyncThunk(
 
 export const deleteConversationMessageThunk = createAsyncThunk(
   "messages/delete",
-  async ({ conversationId, messageId }: DeleteConversationMessageParams) => {
+  ({ conversationId, messageId }: DeleteConversationMessageParams) => {
     try {
-      return await deleteMessageApi({ conversationId, messageId });
+      return deleteMessageApi({ conversationId, messageId });
     } catch (error) {
       toast(String(error), { type: "error" });
     }

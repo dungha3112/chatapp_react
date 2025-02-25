@@ -1,4 +1,4 @@
-import { ConversationType, UserType } from "./types";
+import { ConversationType, GroupType, UserType } from "./types";
 
 export const getRecipientFromConversation = (
   conversation?: ConversationType,
@@ -8,3 +8,6 @@ export const getRecipientFromConversation = (
     ? conversation?.recipient
     : conversation?.creator;
 };
+
+export const isGroupOwner = (user?: UserType, group?: GroupType) =>
+  user?.id === group?.owner.id;

@@ -3,7 +3,11 @@ import {
   EditOrDeleteLastMessageGroupSidebarResponse,
   GroupType,
 } from "../../utils/types";
-import { createGroupThunk, fetchGroupsThunk } from "./groupThunk";
+import {
+  createGroupThunk,
+  fetchGroupsThunk,
+  removeGroupUserThunk,
+} from "./groupThunk";
 import { RootState } from "..";
 
 export interface GroupState {
@@ -27,10 +31,25 @@ export const groupsSlice = createSlice({
     },
 
     updateGroup: (state, action: PayloadAction<GroupType>) => {
+      console.log(`update group:`, action.payload);
+
       const group = action.payload;
+      const existingGroup = state.groups.find((g) => g.id === group.id);
+      console.log(existingGroup);
+
+      if (!existingGroup) return;
+
       const index = state.groups.findIndex((g) => g.id === group.id);
+
       state.groups.splice(index, 1);
       state.groups.unshift(group);
+    },
+
+    removeGroup: (state, action: PayloadAction<GroupType>) => {
+      const group = state.groups.find((g) => g.id === action.payload.id);
+      const index = state.groups.findIndex((g) => g.id === action.payload.id);
+      if (!group) return;
+      state.groups.splice(index, 1);
     },
 
     // editOrDeleteLastMessageGroupSidebar
@@ -74,6 +93,18 @@ export const groupsSlice = createSlice({
         if (!action.payload) return;
 
         state.groups.unshift(action.payload.data);
+      })
+
+      .addCase(removeGroupUserThunk.fulfilled, (state, action) => {
+        if (!action.payload) return;
+        const group = action.payload.data;
+
+        const exitingGroup = state.groups.find((g) => g.id === group.id);
+        const index = state.groups.findIndex((i) => i.id === group.id);
+
+        if (exitingGroup) {
+          state.groups[index] = group;
+        }
       });
   },
 });
@@ -86,6 +117,10 @@ export const selectGroupById = createSelector(
   (groups, groupId) => groups.find((g) => g.id === groupId)
 );
 
-export const { addGroup, updateGroup, editOrDeleteLastMessageGroupSidebar } =
-  groupsSlice.actions;
+export const {
+  addGroup,
+  updateGroup,
+  editOrDeleteLastMessageGroupSidebar,
+  removeGroup,
+} = groupsSlice.actions;
 export default groupsSlice.reducer;

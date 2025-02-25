@@ -22,6 +22,7 @@ const AddGroupRecipientForm = ({ setShowModal }: Props) => {
     const params = { email: username, groupId: parseInt(id) };
     addGroupRecipientApi(params)
       .then((res) => {
+        setShowModal(false);
         success("Added recipient success!");
       })
       .catch((err) => error(err));

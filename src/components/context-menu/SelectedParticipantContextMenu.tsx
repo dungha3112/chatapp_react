@@ -1,61 +1,46 @@
-// import { forwardRef, useImperativeHandle, useRef } from "react";
-// import { BsPersonFillSlash } from "react-icons/bs";
-// import { FaUserCircle } from "react-icons/fa";
-// import { GiQueenCrown } from "react-icons/gi";
-// import { ContextMenuItemStyle, ContextMenuSyle } from "../../styles";
-// import { PointsType } from "../../utils/types";
-
-// type Props = {
-//   points: PointsType;
-// };
-
-// const SelectedParticipantContextMenu = forwardRef<any, Props>((props, ref) => {
-//   const { points } = props;
-
-//   const menuRef = useRef<HTMLUListElement>(null);
-
-//   useImperativeHandle(
-//     ref,
-//     () => ({
-//       getOffsetValue: () => ({
-//         width: menuRef.current?.offsetWidth,
-//         height: menuRef.current?.offsetHeight,
-//       }),
-//     }),
-//     []
-//   );
-
-//   return (
-//     <ContextMenuSyle $top={points.y} $left={points.x} ref={menuRef}>
-//       <ContextMenuItemStyle>
-//         <FaUserCircle fontSize={20} />
-//         Profile
-//       </ContextMenuItemStyle>
-
-//       <ContextMenuItemStyle style={{ color: "#FF0000" }}>
-//         <BsPersonFillSlash fontSize={20} />
-//         Kick user
-//       </ContextMenuItemStyle>
-//       <ContextMenuItemStyle style={{ color: "#FFB800" }}>
-//         <GiQueenCrown fontSize={20} />
-//         Transfer owner
-//       </ContextMenuItemStyle>
-//     </ContextMenuSyle>
-//   );
-// });
-
-// export default SelectedParticipantContextMenu;
-
+import { useContext } from "react";
 import { BsPersonFillSlash } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { GiQueenCrown } from "react-icons/gi";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { AppDispatch, RootState } from "../../store";
+import { selectGroupById } from "../../store/groups/groupSlice";
+import { removeGroupUserThunk } from "../../store/groups/groupThunk";
 import { ContextMenuItemStyle, ContextMenuSyle } from "../../styles";
-import { PointsType } from "../../utils/types";
+import { AuthContext } from "../../utils/contexts/AuthContext";
+import { PointsType, RemoveGroupUserParams } from "../../utils/types";
+import { isGroupOwner } from "../../utils/helpers";
 
 type Props = {
   points: PointsType;
 };
 const SelectedParticipantContextMenu = ({ points }: Props) => {
+  const { selectedUser } = useSelector(
+    (state: RootState) => state.groupSidebar
+  );
+  const { id: groupId } = useParams();
+  const dispatch = useDispatch<AppDispatch>();
+  const group = useSelector((state: RootState) =>
+    selectGroupById(state, parseInt(groupId!))
+  );
+  const { user } = useContext(AuthContext);
+
+  const isOwner = isGroupOwner(user, group);
+
+  const handleKickUser = async () => {
+    if (!selectedUser || !groupId) return;
+
+    const params: RemoveGroupUserParams = {
+      groupId: parseInt(groupId),
+      removeUserId: selectedUser.id,
+    };
+    dispatch(removeGroupUserThunk(params))
+      .unwrap()
+      .then((res) => {})
+      .catch((err) => console.log(err));
+  };
+
   return (
     <ContextMenuSyle $top={points.y} $left={points.x}>
       <ContextMenuItemStyle>
@@ -63,14 +48,21 @@ const SelectedParticipantContextMenu = ({ points }: Props) => {
         Profile
       </ContextMenuItemStyle>
 
-      <ContextMenuItemStyle style={{ color: "#FF0000" }}>
-        <BsPersonFillSlash fontSize={20} />
-        Kick user
-      </ContextMenuItemStyle>
-      <ContextMenuItemStyle style={{ color: "#FFB800" }}>
-        <GiQueenCrown fontSize={20} />
-        Transfer owner
-      </ContextMenuItemStyle>
+      {user?.id !== selectedUser?.id && isOwner && (
+        <>
+          <ContextMenuItemStyle
+            style={{ color: "#FF0000" }}
+            onClick={handleKickUser}
+          >
+            <BsPersonFillSlash fontSize={20} />
+            Kick user
+          </ContextMenuItemStyle>
+          <ContextMenuItemStyle style={{ color: "#FFB800" }}>
+            <GiQueenCrown fontSize={20} />
+            Transfer owner
+          </ContextMenuItemStyle>
+        </>
+      )}
     </ContextMenuSyle>
   );
 };

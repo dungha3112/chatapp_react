@@ -38,8 +38,6 @@ export const groupRecipientSidebarSlice = createSlice({
       state,
       action: PayloadAction<PointsType>
     ) => {
-      // console.log(`change`, action.payload);
-
       state.points = action.payload;
     },
   },

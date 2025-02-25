@@ -9,7 +9,7 @@ const RegisterPage = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user) return navigate("/");
+    if (user) return navigate("/conversations");
   }, [navigate, user]);
 
   return (

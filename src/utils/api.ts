@@ -18,6 +18,8 @@ import {
   EditGroupMessageParams,
   GroupMessageType,
   AddGroupRecipientParams,
+  AddGroupRecipientResponse,
+  RemoveGroupUserParams,
 } from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
@@ -84,7 +86,17 @@ export const postNewConversationApi = async (
   data: CreateConversationParams
 ) => {
   try {
-    return await axiosClient.post<ConversationType>(`conversations/`, data);
+    return await axiosClient.post<ConversationType>(`conversations`, data);
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+export const getConversationByIdApi = async (conversationId: number) => {
+  try {
+    return await axiosClient.get<ConversationType>(
+      `/conversations/${conversationId} `
+    );
   } catch (error) {
     logErrorMessage(error);
   }
@@ -113,6 +125,8 @@ export const getMessagesByConversationIdApi = async (id: number) => {
       `conversations/${id}/messages`
     );
   } catch (error) {
+    console.log(error);
+
     logErrorMessage(error);
   }
 };
@@ -229,9 +243,25 @@ export const addGroupRecipientApi = async ({
   email,
 }: AddGroupRecipientParams) => {
   try {
-    return await axiosClient.post<GroupType>(`/groups/${groupId}/recipients`, {
-      email,
-    });
+    return await axiosClient.post<AddGroupRecipientResponse>(
+      `/groups/${groupId}/recipients`,
+      {
+        email,
+      }
+    );
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+export const removeGroupUserApi = async ({
+  groupId,
+  removeUserId,
+}: RemoveGroupUserParams) => {
+  try {
+    return await axiosClient.delete<GroupType>(
+      `/groups/${groupId}/recipients/${removeUserId}`
+    );
   } catch (error) {
     logErrorMessage(error);
   }

@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
 import {
   addGroupMessage,
@@ -12,16 +12,17 @@ import { fetchGroupMessagesThunk } from "../../store/groupMessage/groupMessageTh
 import {
   addGroup,
   editOrDeleteLastMessageGroupSidebar,
+  removeGroup,
   updateGroup,
 } from "../../store/groups/groupSlice";
 import { fetchGroupsThunk } from "../../store/groups/groupThunk";
 import { updateType } from "../../store/selectedSlice";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import {
-  AddGroupUserPayload,
   GroupMessageEventPayload,
   GroupMessageType,
   GroupType,
+  RemovedGroupUserPayload,
 } from "../../utils/types";
 import ConversationSidebar from "../../components/sidebars/ConversationSidebar";
 import ConversationPanel from "../../components/conversations/ConversationPanel";
@@ -30,7 +31,7 @@ const GroupPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const socket = useContext(SocketContext);
-
+  const navigate = useNavigate();
   const groupMessage = useSelector((state: RootState) =>
     selectGroupMessage(state, parseInt(id!))
   );
@@ -41,44 +42,72 @@ const GroupPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    socket.on("onGroupCreateToClientSide", (payload: GroupType) => {
+    socket.on("onGroupCreate", (payload: GroupType) => {
       console.log(`create group`, payload);
 
       dispatch(addGroup(payload));
     });
 
-    socket.on(
-      "onGroupMessageToClientSide",
-      (payload: GroupMessageEventPayload) => {
-        dispatch(addGroupMessage(payload));
-        dispatch(updateGroup(payload.group));
+    socket.on("onGroupMessage", (payload: GroupMessageEventPayload) => {
+      console.log(`on group create message`, payload);
+
+      dispatch(addGroupMessage(payload));
+      dispatch(updateGroup(payload.group));
+    });
+
+    socket.on("onGroupUserAdd", (payload: GroupType) => {
+      dispatch(addGroup(payload));
+    });
+
+    socket.on("onGroupReceivedNewUser", (payload: GroupType) => {
+      console.log(" add new user to group ...");
+
+      // dispatch(updateGroup(payload));
+    });
+
+    //// send socket to all user in group
+    socket.on("onGroupRecipientRemoved", (payload: RemovedGroupUserPayload) => {
+      console.log(`group recipients removed`, payload);
+      // dispatch(updateGroup(payload.group));
+    });
+
+    socket.on("onGroupUserRemoved", (payload: RemovedGroupUserPayload) => {
+      dispatch(removeGroup(payload.group));
+
+      if (id && parseInt(id) === payload.group.id) {
+        console.log("Navigating User to /groups");
+        navigate("/groups");
       }
-    );
+    });
 
     return () => {
-      socket.off("onGroupCreateToClientSide");
-      socket.off("onGroupMessageToClientSide");
+      socket.off("onGroupCreate");
+      socket.off("onGroupMessage");
+
+      socket.off("onGroupUserAdd");
+      socket.off("onGroupReceivedNewUser");
+
+      //// send socket to all user in group
+      socket.off("onGroupRecipientRemoved");
+      socket.off("onGroupUserRemoved");
     };
-  }, [dispatch, socket]);
+  }, [dispatch, id, navigate, socket]);
 
   useEffect(() => {
-    socket.on(
-      "onGroupMessageDeleteToClientSide",
-      (payload: GroupMessageType) => {
-        dispatch(deleteGroupMessage(payload));
+    socket.on("onGroupMessageDelete", (payload: GroupMessageType) => {
+      dispatch(deleteGroupMessage(payload));
 
-        dispatch(
-          editOrDeleteLastMessageGroupSidebar({
-            isEdit: false,
-            messages: groupMessage?.messages.slice(0, 2),
-            groupId: Number(payload.group?.id),
-            message: payload,
-          })
-        );
-      }
-    );
+      dispatch(
+        editOrDeleteLastMessageGroupSidebar({
+          isEdit: false,
+          messages: groupMessage?.messages.slice(0, 2),
+          groupId: Number(payload.group?.id),
+          message: payload,
+        })
+      );
+    });
 
-    socket.on("onGroupMessageEditToClientSide", (payload: GroupMessageType) => {
+    socket.on("onGroupMessageEdit", (payload: GroupMessageType) => {
       dispatch(editGroupMessage(payload));
 
       dispatch(
@@ -91,14 +120,9 @@ const GroupPage = () => {
       );
     });
 
-    socket.on("onGroupUserAddToClientSide", (payload: AddGroupUserPayload) => {
-      dispatch(addGroup(payload.group));
-    });
-
     return () => {
-      socket.off("onGroupMessageDeleteToClientSide");
-      socket.off("onGroupMessageEditToClientSide");
-      socket.off("onGroupUserAddToClientSide");
+      socket.off("onGroupMessageDelete");
+      socket.off("onGroupMessageEdit");
     };
   }, [dispatch, groupMessage?.messages, socket]);
 

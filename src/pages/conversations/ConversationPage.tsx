@@ -47,14 +47,11 @@ const ConversationPage = () => {
       console.log("disconnected ...");
     });
 
-    socket.on(
-      "onConversationCreateToClientSide",
-      (payload: ConversationType) => {
-        dispatch(addConversation(payload));
-      }
-    );
+    socket.on("onConversationCreate", (payload: ConversationType) => {
+      dispatch(addConversation(payload));
+    });
 
-    socket.on("onMessageCreateToClientSide", (payload: MessageEventPayload) => {
+    socket.on("onMessageCreate", (payload: MessageEventPayload) => {
       dispatch(addMessage(payload));
       dispatch(updateConversation(payload.conversation));
     });
@@ -62,13 +59,13 @@ const ConversationPage = () => {
     return () => {
       socket.off("connected");
       socket.off("disconnected");
-      socket.off("onConversationCreateToClientSide");
-      socket.off("onMessageCreateToClientSide");
+      socket.off("onConversationCreate");
+      socket.off("onMessageCreate");
     };
   }, [dispatch, socket]);
 
   useEffect(() => {
-    socket.on("onMessageDeleteToClientSide", (payload: MessageType) => {
+    socket.on("onMessageDelete", (payload: MessageType) => {
       dispatch(deleteMessage(payload));
       dispatch(
         editOrDeleteLastMessageConversationSidebar({
@@ -80,7 +77,7 @@ const ConversationPage = () => {
       );
     });
 
-    socket.on("onMessageEditToClientSide", (payload: MessageType) => {
+    socket.on("onMessageEdit", (payload: MessageType) => {
       console.log("Message Edit", payload);
       dispatch(editMessage(payload));
 
@@ -95,8 +92,8 @@ const ConversationPage = () => {
     });
 
     return () => {
-      socket.off("onMessageDeleteToClientSide");
-      socket.off("onMessageEditToClientSide");
+      socket.off("onMessageDelete");
+      socket.off("onMessageEdit");
     };
   }, [conversationMessage?.messages, dispatch, socket]);
 

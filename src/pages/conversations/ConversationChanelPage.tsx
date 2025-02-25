@@ -7,12 +7,14 @@ import { fetchMessagesThunk } from "../../store/messages/messageThunk";
 import { ConversationChannelPageStyle } from "../../styles/conversation";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import { AuthContext } from "../../utils/contexts/AuthContext";
+import { useToast } from "../../utils/hooks/useToast";
 
 const ConversationChanelPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const socket = useContext(SocketContext);
   const { id } = useParams();
   const { user } = useContext(AuthContext);
+  const { error } = useToast();
 
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
   const [isTyping, setIsTyping] = useState<boolean>(false);
@@ -20,7 +22,9 @@ const ConversationChanelPage = () => {
 
   useEffect(() => {
     if (!id) return;
-    dispatch(fetchMessagesThunk(parseInt(id)));
+    dispatch(fetchMessagesThunk(parseInt(id)))
+      .unwrap()
+      .catch((err) => console.log(err));
   }, [id, dispatch]);
 
   useEffect(() => {
@@ -28,15 +32,15 @@ const ConversationChanelPage = () => {
 
     socket.emit("onConversationJoin", { conversationId: parseInt(id) });
 
-    socket.on("userLeaveToClientSide", () => {
+    socket.on("userLeave", () => {
       console.log("userLeave ");
     });
 
-    socket.on("userConversationJoinToClientSide", () => {
+    socket.on("userConversationJoin", () => {
       console.log("userJoin ");
     });
 
-    socket.on("onTypingStartToClientSide", (payload) => {
+    socket.on("onTypingStart", (payload) => {
       if (parseInt(id) === parseInt(payload.conversationId)) {
         console.log("user start typing ...", payload);
         if (user?.id !== payload.userId) {
@@ -45,8 +49,8 @@ const ConversationChanelPage = () => {
       }
     });
 
-    socket.on("onTypingStopToClientSide", (payload) => {
-      console.log("onTypingStopToClientSide", payload);
+    socket.on("onTypingStop", (payload) => {
+      console.log("onTypingStop", payload);
 
       if (parseInt(id) === parseInt(payload.conversationId)) {
         console.log("user stop typing ...", payload);
@@ -59,11 +63,11 @@ const ConversationChanelPage = () => {
         conversationId: parseInt(id),
       });
 
-      socket.off("userConversationJoinToClientSide");
-      socket.off("userLeaveToClientSide");
+      socket.off("userConversationJoin");
+      socket.off("userLeave");
 
-      socket.off("onTypingStartToClientSide");
-      socket.off("onTypingStopToClientSide");
+      socket.off("onTypingStart");
+      socket.off("onTypingStop");
     };
   }, [id, socket, user?.id]);
 

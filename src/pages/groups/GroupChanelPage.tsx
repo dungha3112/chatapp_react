@@ -23,14 +23,14 @@ const GroupChanelPage = () => {
 
     socket.emit("onGroupJoin", { groupId });
 
-    socket.emit("useGroupJoinToClientSide", () => {
+    socket.emit("userGroupJoin", () => {
       console.log(` user group join ..`);
     });
 
     return () => {
       socket.emit("onGroupLeave", { groupId });
 
-      socket.off("useGroupJoinToClientSide");
+      // socket.off("userGroupJoin");
     };
   }, [id, socket]);
 
