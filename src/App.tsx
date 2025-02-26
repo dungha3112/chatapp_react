@@ -16,6 +16,7 @@ import { UserType } from "./utils/types";
 
 import { ToastContainer } from "react-toastify";
 import ConversationPageGuard from "./guards/ConversationPageGuard";
+import GroupPageGuard from "./guards/GroupPageGuard";
 
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -32,7 +33,12 @@ const router = createBrowserRouter([
       {
         path: "/groups",
         element: <GroupPage />,
-        children: [{ path: ":id", element: <GroupChanelPage /> }],
+        children: [
+          {
+            path: ":id",
+            element: <GroupPageGuard children={<GroupChanelPage />} />,
+          },
+        ],
       },
 
       {

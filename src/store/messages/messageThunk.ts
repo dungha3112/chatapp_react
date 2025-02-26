@@ -12,15 +12,7 @@ import { toast } from "react-toastify";
 
 export const fetchMessagesThunk = createAsyncThunk(
   "messages/fetch",
-  async (id: number) => {
-    try {
-      return await getMessagesByConversationIdApi(id);
-    } catch (error) {
-      console.log(error);
-
-      toast(String(error), { type: "error" });
-    }
-  }
+  (id: number) => getMessagesByConversationIdApi(id)
 );
 
 export const deleteConversationMessageThunk = createAsyncThunk(

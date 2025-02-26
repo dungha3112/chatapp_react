@@ -125,8 +125,6 @@ export const getMessagesByConversationIdApi = async (id: number) => {
       `conversations/${id}/messages`
     );
   } catch (error) {
-    console.log(error);
-
     logErrorMessage(error);
   }
 };
@@ -191,6 +189,20 @@ export const createGroupsApi = async (params: CreateGroupParams) => {
     logErrorMessage(error);
   }
 };
+
+export const getGroupByIdApi = async (conversationId: number) => {
+  try {
+    return await axiosClient.get<GroupType>(`/groups/${conversationId} `);
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+/**
+ * Group message
+ * @param id
+ * @returns
+ */
 
 export const fetchGroupMessagesApi = async (id: number) => {
   try {

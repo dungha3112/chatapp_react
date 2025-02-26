@@ -25,7 +25,7 @@ const ConversationChanelPage = () => {
     dispatch(fetchMessagesThunk(parseInt(id)))
       .unwrap()
       .catch((err) => console.log(err));
-  }, [id, dispatch]);
+  }, [id, dispatch, error]);
 
   useEffect(() => {
     if (!id) return;
