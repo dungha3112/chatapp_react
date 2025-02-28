@@ -7,6 +7,8 @@ import { ConversationChannelPageStyle } from "../../styles/conversation";
 import { SocketContext } from "../../utils/contexts/SocketContext";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 import GroupRecipientsSidebar from "../../components/sidebars/group-recipients/GroupRecipientsSidebar";
+import { updateGroup } from "../../store/groups/groupSlice";
+import { GroupType } from "../../utils/types";
 
 const GroupChanelPage = () => {
   const dispatch = useDispatch<AppDispatch>();

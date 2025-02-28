@@ -212,7 +212,8 @@ export type RemoveGroupUserParams = {
   removeUserId: number;
 };
 
-export type RemovedGroupUserPayload = {
-  group: GroupType;
-  user: UserType;
+// UpdateGroupOwnerParams
+export type UpdateGroupOwnerParams = {
+  groupId: number;
+  newOwnerId: number;
 };

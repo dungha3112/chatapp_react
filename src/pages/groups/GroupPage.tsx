@@ -22,7 +22,6 @@ import {
   GroupMessageEventPayload,
   GroupMessageType,
   GroupType,
-  RemovedGroupUserPayload,
 } from "../../utils/types";
 import ConversationSidebar from "../../components/sidebars/ConversationSidebar";
 import ConversationPanel from "../../components/conversations/ConversationPanel";
@@ -60,24 +59,28 @@ const GroupPage = () => {
     });
 
     socket.on("onGroupReceivedNewUser", (payload: GroupType) => {
-      console.log(" add new user to group ...");
-
+      console.log(" add new user to group ...", payload);
       // dispatch(updateGroup(payload));
     });
 
-    //// send socket to all user in group
-    socket.on("onGroupRecipientRemoved", (payload: RemovedGroupUserPayload) => {
-      console.log(`group recipients removed`, payload);
-      // dispatch(updateGroup(payload.group));
-    });
+    // send socket to all user in group
+    // socket.on("onGroupRecipientRemoved", (payload: GroupType) => {
+    //   console.log(`group recipients removed`, payload);
+    //   dispatch(updateGroup(payload));
+    // });
 
-    socket.on("onGroupUserRemoved", (payload: RemovedGroupUserPayload) => {
-      dispatch(removeGroup(payload.group));
+    socket.on("onGroupUserRemoved", (payload: GroupType) => {
+      dispatch(removeGroup(payload));
 
-      if (id && parseInt(id) === payload.group.id) {
+      if (id && parseInt(id) === payload.id) {
         console.log("Navigating User to /groups");
         navigate("/groups");
       }
+    });
+
+    socket.on("onGroupOwnerUpdate", (payload: GroupType) => {
+      console.log("on Group Owner Update", payload);
+      dispatch(updateGroup(payload));
     });
 
     return () => {
@@ -88,8 +91,10 @@ const GroupPage = () => {
       socket.off("onGroupReceivedNewUser");
 
       //// send socket to all user in group
-      socket.off("onGroupRecipientRemoved");
+      // socket.off("onGroupRecipientRemoved");
       socket.off("onGroupUserRemoved");
+
+      socket.off("onGroupOwnerUpdate");
     };
   }, [dispatch, id, navigate, socket]);
 

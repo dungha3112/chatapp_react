@@ -7,6 +7,7 @@ import {
   createGroupThunk,
   fetchGroupsThunk,
   removeGroupUserThunk,
+  updateGroupOwnerThunk,
 } from "./groupThunk";
 import { RootState } from "..";
 
@@ -31,11 +32,8 @@ export const groupsSlice = createSlice({
     },
 
     updateGroup: (state, action: PayloadAction<GroupType>) => {
-      console.log(`update group:`, action.payload);
-
       const group = action.payload;
       const existingGroup = state.groups.find((g) => g.id === group.id);
-      console.log(existingGroup);
 
       if (!existingGroup) return;
 
@@ -46,6 +44,8 @@ export const groupsSlice = createSlice({
     },
 
     removeGroup: (state, action: PayloadAction<GroupType>) => {
+      console.log(`remove group reducer ..:..`);
+
       const group = state.groups.find((g) => g.id === action.payload.id);
       const index = state.groups.findIndex((g) => g.id === action.payload.id);
       if (!group) return;
@@ -105,6 +105,18 @@ export const groupsSlice = createSlice({
         if (exitingGroup) {
           state.groups[index] = group;
         }
+      })
+      //updateGroupOwnerThunk
+      .addCase(updateGroupOwnerThunk.fulfilled, (state, action) => {
+        console.log("updateGroupOwnerThunk.fulfilled");
+        // if (!action.payload) return;
+        // const groupPayload = action.payload.data;
+        // const group = state.groups.find((g) => g.id === groupPayload.id);
+        // const index = state.groups.findIndex((i) => i.id === groupPayload.id);
+
+        // if (!group) return;
+        // state.groups.splice(index, 1);
+        // state.groups.unshift(group);
       });
   },
 });

@@ -11,3 +11,6 @@ export const getRecipientFromConversation = (
 
 export const isGroupOwner = (user?: UserType, group?: GroupType) =>
   user?.id === group?.owner.id;
+
+export const isUserGroup = (user?: UserType, group?: GroupType) =>
+  group?.users.find((u) => u.id === user?.id);

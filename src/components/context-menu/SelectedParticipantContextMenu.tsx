@@ -1,17 +1,18 @@
 import { useContext } from "react";
 import { BsPersonFillSlash } from "react-icons/bs";
-import { FaUserCircle } from "react-icons/fa";
-import { GiQueenCrown } from "react-icons/gi";
+import { FaPeopleArrows, FaUserCircle } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
 import { selectGroupById } from "../../store/groups/groupSlice";
-import { removeGroupUserThunk } from "../../store/groups/groupThunk";
+import {
+  removeGroupUserThunk,
+  updateGroupOwnerThunk,
+} from "../../store/groups/groupThunk";
 import { ContextMenuItemStyle, ContextMenuSyle } from "../../styles";
 import { AuthContext } from "../../utils/contexts/AuthContext";
-import { PointsType, RemoveGroupUserParams } from "../../utils/types";
 import { isGroupOwner } from "../../utils/helpers";
-
+import { PointsType, RemoveGroupUserParams } from "../../utils/types";
 type Props = {
   points: PointsType;
 };
@@ -37,8 +38,14 @@ const SelectedParticipantContextMenu = ({ points }: Props) => {
     };
     dispatch(removeGroupUserThunk(params))
       .unwrap()
-      .then((res) => {})
       .catch((err) => console.log(err));
+  };
+
+  const handleTransferGroupOwner = async () => {
+    if (!selectedUser || !groupId) return;
+
+    const params = { groupId: parseInt(groupId), newOwnerId: selectedUser.id };
+    dispatch(updateGroupOwnerThunk(params));
   };
 
   return (
@@ -57,8 +64,12 @@ const SelectedParticipantContextMenu = ({ points }: Props) => {
             <BsPersonFillSlash fontSize={20} />
             Kick user
           </ContextMenuItemStyle>
-          <ContextMenuItemStyle style={{ color: "#FFB800" }}>
-            <GiQueenCrown fontSize={20} />
+
+          <ContextMenuItemStyle
+            style={{ color: "#FFB800" }}
+            onClick={handleTransferGroupOwner}
+          >
+            <FaPeopleArrows fontSize={20} />
             Transfer owner
           </ContextMenuItemStyle>
         </>
