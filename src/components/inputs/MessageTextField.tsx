@@ -9,7 +9,13 @@ const MessageTextField = () => {
     setMessage(e.target.value);
   };
 
-  return <MessageTextarea value={message} onChange={onMessageChange} />;
+  return (
+    <MessageTextarea
+      value={message}
+      onChange={onMessageChange}
+      placeholder="Write something ..."
+    />
+  );
 };
 
 export default MessageTextField;

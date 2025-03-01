@@ -3,6 +3,7 @@ import { LuMessageSquarePlus } from "react-icons/lu";
 import { MdGroups } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
+import { tonggleGroupSidebarContextMenu } from "../../store/groups/groupSlice";
 import { ButtonIconStyle } from "../../styles";
 import {
   ConversationHeaderSidebarStyle,
@@ -10,13 +11,12 @@ import {
   ConversationSidebarContainerStyle,
   ConversationSidebarStyle,
 } from "../../styles/conversationSidebar";
+import GroupSidebarContextMenu from "../context-menu/GroupSidebarContextMenu";
 import { ConversationSibarItem } from "../conversations/ConversationSibarItem";
 import ConversationTab from "../conversations/ConversationTab";
 import GroupItem from "../groups/GroupItem";
 import CreateConversationModal from "../modals/CreateConversationModal";
 import CreateGroupModal from "../modals/CreateGroupModal";
-import GroupSidebarContextMenu from "../context-menu/GroupSidebarContextMenu";
-import { tonggleGroupSidebarContextMenu } from "../../store/groups/groupSlice";
 
 const ConversationSidebar = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -65,7 +65,6 @@ const ConversationSidebar = () => {
       <ConversationSidebarStyle>
         <ConversationHeaderSidebarStyle>
           <ConversationSearchbar placeholder="Search for conversations ..." />
-
           <ButtonIconStyle
             className={showModal ? "actived" : ""}
             onClick={() => setShowModal(true)}

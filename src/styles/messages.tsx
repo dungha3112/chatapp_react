@@ -74,6 +74,7 @@ export const MessageInputContainer = styled.div`
   display: flex;
   align-items: center;
   padding: 0 10px;
+  gap: 10px;
 `;
 
 export const MessageInputStyle = styled.input`
@@ -81,13 +82,17 @@ export const MessageInputStyle = styled.input`
   outline: none;
   border: none;
   font-family: "Inter";
-  font-size: 18px;
+  font-size: 14px;
   width: 100%;
   outline: none;
   border: none;
   color: #454545;
-  padding: 18px 24px;
+  padding: 14px 0px;
   margin: 4px 0;
+
+  &::placeholder {
+    user-select: none;
+  }
 `;
 
 export const MessageItemContainer = styled.div`

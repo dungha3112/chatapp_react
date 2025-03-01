@@ -1,11 +1,14 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { MessageInputContainer } from "../../styles/messages";
+import {
+  MessageInputContainer,
+  MessageInputStyle,
+} from "../../styles/messages";
 import styles from "./index.module.scss";
 
-import { AiFillPlusCircle } from "react-icons/ai";
-
+import { AiFillPlusCircle, AiOutlineFileGif } from "react-icons/ai";
 import { EmojiClickData } from "emoji-picker-react";
 import MessageTextField from "../inputs/MessageTextField";
+import { ImHappy } from "react-icons/im";
 
 type Props = {
   content: string;
@@ -46,8 +49,9 @@ const MessageInputField = ({
   return (
     <>
       <MessageInputContainer>
+        <AiFillPlusCircle className={styles.icon} />
         <form onSubmit={sendMessage} className={styles.form}>
-          {/* <MessageInputStyle
+          <MessageInputStyle
             placeholder="Write to ..."
             value={content}
             onChange={changeContent}
@@ -66,10 +70,12 @@ const MessageInputField = ({
                 setCursonPosition(Number(e.target.selectionStart));
               }
             }}
-          /> */}
+          />
 
-          <MessageTextField />
+          {/* <MessageTextField /> */}
         </form>
+        <AiOutlineFileGif className={styles.icon} />
+        <ImHappy className={styles.icon} />
       </MessageInputContainer>
     </>
   );
