@@ -16,7 +16,11 @@ import {
   MessageItemContent,
 } from "../../styles/messages";
 import { AuthContext } from "../../utils/contexts/AuthContext";
-import { GroupMessageType, MessageType } from "../../utils/types";
+import {
+  ContextMenuEventType,
+  GroupMessageType,
+  MessageType,
+} from "../../utils/types";
 import SelectedMessageContextMenu from "../context-menu/SelectedMessageContextMenu";
 import EditMessageContainer from "./EditMessageContainer";
 import FormatedMessage from "./FormatedMessage";
@@ -48,7 +52,7 @@ const MessageContainer = () => {
     (state: RootState) => state.selectedConversationType.type
   );
 
-  const onEditMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onEditMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (!isEditingMessage) return;
     dispatch(handleUpdateMessageContentBegingEdited(e.target.value));
   };
@@ -82,10 +86,7 @@ const MessageContainer = () => {
     };
   }, [id, dispatch]);
 
-  const onContextMenu = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    mess: MessageType
-  ) => {
+  const onContextMenu = (e: ContextMenuEventType, mess: MessageType) => {
     e.preventDefault();
     if (mess.author.id !== user?.id) return;
 
@@ -146,7 +147,9 @@ const MessageContainer = () => {
       return conversationMessage?.messages.map(mapMessages);
     }
 
-    return groupMessage?.messages.map(mapMessages);
+    if (conversationType === "group") {
+      return groupMessage?.messages.map(mapMessages);
+    }
   };
 
   useEffect(() => {

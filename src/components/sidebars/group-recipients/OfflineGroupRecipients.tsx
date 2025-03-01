@@ -1,14 +1,11 @@
 import React from "react";
 import { GroupRecipientItemSidebarStyle } from "../../../styles/group-recipients/groupRecipientsSidebar";
 import { MessageItemAvatar } from "../../../styles/messages";
-import { UserType } from "../../../utils/types";
+import { ContextMenuEventType, UserType } from "../../../utils/types";
 
 type Props = {
   users: UserType[];
-  onUserContextMenu: (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    user: UserType
-  ) => void;
+  onUserContextMenu: (e: ContextMenuEventType, user: UserType) => void;
 };
 const OfflineGroupRecipients = ({ users, onUserContextMenu }: Props) => {
   return (

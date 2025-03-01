@@ -1,3 +1,6 @@
+import React from "react";
+export type ContextMenuEventType = React.MouseEvent<HTMLDivElement, MouseEvent>;
+
 //UserCredentialsParams
 export type UserCredentialsParams = {
   email: string;
@@ -216,4 +219,15 @@ export type RemoveGroupUserParams = {
 export type UpdateGroupOwnerParams = {
   groupId: number;
   newOwnerId: number;
+};
+
+// UserLeaveGroupParams
+export type UserLeaveGroupParams = {
+  groupId: number;
+};
+
+//GroupParticipantLeftPayload
+export type GroupParticipantLeftPayload = {
+  group: GroupType;
+  userId: number;
 };

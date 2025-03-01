@@ -20,7 +20,8 @@ import {
   AddGroupRecipientParams,
   AddGroupRecipientResponse,
   RemoveGroupUserParams,
-  TransferGroupUserParams,
+  UpdateGroupOwnerParams,
+  UserLeaveGroupParams,
 } from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
@@ -283,11 +284,19 @@ export const removeGroupUserApi = async ({
 export const updateGroupOwnerApi = async ({
   groupId,
   newOwnerId,
-}: TransferGroupUserParams) => {
+}: UpdateGroupOwnerParams) => {
   try {
     return await axiosClient.patch<GroupType>(`/groups/${groupId}/owner`, {
       newOwnerId,
     });
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+export const userLeaveGroupApi = async ({ groupId }: UserLeaveGroupParams) => {
+  try {
+    return await axiosClient.delete<GroupType>(`/groups/${groupId}/leave`);
   } catch (error) {
     logErrorMessage(error);
   }

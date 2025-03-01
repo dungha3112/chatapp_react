@@ -21,6 +21,7 @@ import { SocketContext } from "../../utils/contexts/SocketContext";
 import {
   GroupMessageEventPayload,
   GroupMessageType,
+  GroupParticipantLeftPayload,
   GroupType,
 } from "../../utils/types";
 import ConversationSidebar from "../../components/sidebars/ConversationSidebar";
@@ -59,21 +60,13 @@ const GroupPage = () => {
     });
 
     socket.on("onGroupReceivedNewUser", (payload: GroupType) => {
-      console.log(" add new user to group ...", payload);
-      // dispatch(updateGroup(payload));
+      dispatch(updateGroup(payload));
     });
-
-    // send socket to all user in group
-    // socket.on("onGroupRecipientRemoved", (payload: GroupType) => {
-    //   console.log(`group recipients removed`, payload);
-    //   dispatch(updateGroup(payload));
-    // });
 
     socket.on("onGroupUserRemoved", (payload: GroupType) => {
       dispatch(removeGroup(payload));
 
       if (id && parseInt(id) === payload.id) {
-        console.log("Navigating User to /groups");
         navigate("/groups");
       }
     });
@@ -83,6 +76,19 @@ const GroupPage = () => {
       dispatch(updateGroup(payload));
     });
 
+    // send socket to all user in group
+    socket.on("onGroupRecipientRemoved", (payload: GroupType) => {
+      console.log(`group recipients removed`, payload);
+      dispatch(updateGroup(payload));
+    });
+
+    socket.on(
+      "onGroupParticipantLeft",
+      (payload: GroupParticipantLeftPayload) => {
+        dispatch(updateGroup(payload.group));
+      }
+    );
+
     return () => {
       socket.off("onGroupCreate");
       socket.off("onGroupMessage");
@@ -90,11 +96,12 @@ const GroupPage = () => {
       socket.off("onGroupUserAdd");
       socket.off("onGroupReceivedNewUser");
 
-      //// send socket to all user in group
-      // socket.off("onGroupRecipientRemoved");
       socket.off("onGroupUserRemoved");
-
       socket.off("onGroupOwnerUpdate");
+
+      //// send socket to all user in group
+      socket.off("onGroupRecipientRemoved");
+      socket.off("onGroupParticipantLeft");
     };
   }, [dispatch, id, navigate, socket]);
 

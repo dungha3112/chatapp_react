@@ -1,14 +1,11 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import {
-  MessageInputContainer,
-  MessageInputStyle,
-} from "../../styles/messages";
+import { MessageInputContainer } from "../../styles/messages";
 import styles from "./index.module.scss";
 
-import { IoHappyOutline } from "react-icons/io5";
 import { AiFillPlusCircle } from "react-icons/ai";
 
-import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
+import { EmojiClickData } from "emoji-picker-react";
+import MessageTextField from "../inputs/MessageTextField";
 
 type Props = {
   content: string;
@@ -49,9 +46,8 @@ const MessageInputField = ({
   return (
     <>
       <MessageInputContainer>
-        <AiFillPlusCircle cursor="pointer" fontSize={30} color="#b8b3b3" />
         <form onSubmit={sendMessage} className={styles.form}>
-          <MessageInputStyle
+          {/* <MessageInputStyle
             placeholder="Write to ..."
             value={content}
             onChange={changeContent}
@@ -70,34 +66,10 @@ const MessageInputField = ({
                 setCursonPosition(Number(e.target.selectionStart));
               }
             }}
-          />
-        </form>
-        <IoHappyOutline
-          cursor="pointer"
-          fontSize={30}
-          color="#fff"
-          onClick={() => setShowEmojiPicker((prev) => !prev)}
-        />
+          /> */}
 
-        {showEmojiPicker && (
-          <div
-            style={{
-              position: "absolute",
-              right: 0,
-              bottom: 65,
-            }}
-          >
-            <EmojiPicker
-              onEmojiClick={onEmojiClick}
-              height={450} // Chiều cao
-              width={350} // Chiều rộng
-              theme={Theme.DARK}
-              skinTonesDisabled
-              // disableSearchBar={true}
-              reactionsDefaultOpen={true}
-            />
-          </div>
-        )}
+          <MessageTextField />
+        </form>
       </MessageInputContainer>
     </>
   );

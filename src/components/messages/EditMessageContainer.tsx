@@ -14,7 +14,7 @@ import {
 import { GroupMessageType, MessageType } from "../../utils/types";
 
 type Props = {
-  onEditMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onEditMessageChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
 const EditMessageContainer = ({ onEditMessageChange }: Props) => {

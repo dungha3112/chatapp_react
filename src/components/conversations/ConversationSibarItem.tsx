@@ -1,10 +1,10 @@
+import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ConversationSidebarItemStyle } from "../../styles/conversationSidebar";
+import { AuthContext } from "../../utils/contexts/AuthContext";
 import { getRecipientFromConversation } from "../../utils/helpers";
 import { ConversationType } from "../../utils/types";
 import styles from "./index.module.scss";
-import { AuthContext } from "../../utils/contexts/AuthContext";
-import { useContext } from "react";
 
 type Props = {
   conversation: ConversationType;
@@ -35,8 +35,8 @@ export const ConversationSibarItem = ({ conversation }: Props) => {
           </span>
 
           {conversation?.lastMessageSent &&
-          conversation?.lastMessageSent?.content.length >= 25
-            ? conversation?.lastMessageSent?.content.slice(0, 25) + " ..."
+          conversation?.lastMessageSent?.content.length > 15
+            ? conversation?.lastMessageSent?.content.slice(0, 15) + " ..."
             : conversation?.lastMessageSent?.content}
         </span>
       </div>

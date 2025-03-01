@@ -1,4 +1,9 @@
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { LuMessageSquarePlus } from "react-icons/lu";
+import { MdGroups } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store";
+import { ButtonIconStyle } from "../../styles";
 import {
   ConversationHeaderSidebarStyle,
   ConversationSearchbar,
@@ -8,16 +13,14 @@ import {
 import { ConversationSibarItem } from "../conversations/ConversationSibarItem";
 import ConversationTab from "../conversations/ConversationTab";
 import GroupItem from "../groups/GroupItem";
-import { RootState } from "../../store";
-import { LuMessageSquarePlus } from "react-icons/lu";
-import { MdGroups } from "react-icons/md";
-import { useState } from "react";
 import CreateConversationModal from "../modals/CreateConversationModal";
-import { ButtonIconStyle } from "../../styles";
 import CreateGroupModal from "../modals/CreateGroupModal";
+import GroupSidebarContextMenu from "../context-menu/GroupSidebarContextMenu";
+import { tonggleGroupSidebarContextMenu } from "../../store/groups/groupSlice";
 
 const ConversationSidebar = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const chatType = useSelector(
     (state: RootState) => state.selectedConversationType.type
@@ -27,7 +30,25 @@ const ConversationSidebar = () => {
     (state: RootState) => state.conversation
   );
 
-  const { groups } = useSelector((state: RootState) => state.group);
+  const { groups, showGroupContextMenu, points } = useSelector(
+    (state: RootState) => state.group
+  );
+
+  useEffect(() => {
+    const handleClick = () => dispatch(tonggleGroupSidebarContextMenu(false));
+    window.addEventListener("click", handleClick);
+
+    return () => {
+      console.log("UnClick ...");
+      window.removeEventListener("click", handleClick);
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    const handleResize = () => dispatch(tonggleGroupSidebarContextMenu(false));
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [dispatch]);
 
   return (
     <>
@@ -38,6 +59,8 @@ const ConversationSidebar = () => {
       {showModal && chatType === "group" && (
         <CreateGroupModal setShowModal={setShowModal} />
       )}
+
+      {showGroupContextMenu && <GroupSidebarContextMenu points={points} />}
 
       <ConversationSidebarStyle>
         <ConversationHeaderSidebarStyle>
@@ -74,7 +97,7 @@ const ConversationSidebar = () => {
           </ConversationSidebarContainerStyle>
         </ConversationSidebarContainerStyle>
 
-        <footer style={{ backgroundColor: "#fff" }}>Hello</footer>
+        {/* <footer style={{ backgroundColor: "#fff" }}>Hello</footer> */}
       </ConversationSidebarStyle>
     </>
   );

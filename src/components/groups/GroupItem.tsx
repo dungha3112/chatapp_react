@@ -1,10 +1,14 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { ConversationSidebarItemStyle } from "../../styles/conversationSidebar";
-import { GroupType } from "../../utils/types";
-import styles from "./index.module.scss";
-import { tonggleSidebar } from "../../store/groupRecipientSidebarSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppDispatch } from "../../store";
+import {
+  setGroupSidebarContextMenuLocal,
+  setSelectedGroupContextMenu,
+  tonggleGroupSidebarContextMenu,
+} from "../../store/groups/groupSlice";
+import { ConversationSidebarItemStyle } from "../../styles/conversationSidebar";
+import { ContextMenuEventType, GroupType } from "../../utils/types";
+import styles from "./index.module.scss";
 
 type Props = {
   group: GroupType;
@@ -15,14 +19,37 @@ const GroupItem = ({ group }: Props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
+  const onUserContextMenu = (e: ContextMenuEventType) => {
+    e.preventDefault();
+    let x = e.pageX;
+    let y = e.pageY;
+    const padding = 10;
+
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    const width = 180; // width of  GroupContextMenu , take ref
+    const height = 134; // height of  GroupContextMenu , take ref
+
+    if (x + width > screenWidth) {
+      x = screenWidth - width - padding;
+    }
+
+    if (y + height > screenHeight) {
+      y = screenHeight - height - padding;
+    }
+
+    dispatch(tonggleGroupSidebarContextMenu(true));
+    dispatch(setGroupSidebarContextMenuLocal({ x, y }));
+    dispatch(setSelectedGroupContextMenu(group));
+  };
+
   return (
     <ConversationSidebarItemStyle
       key={group.id}
-      onClick={() => {
-        navigate(`/groups/${group.id}`);
-        // dispatch(tonggleSidebar(false));
-      }}
+      onClick={() => navigate(`/groups/${group.id}`)}
       className={parseInt(id!) === group.id ? "actived" : ""}
+      onContextMenu={(e) => onUserContextMenu(e)}
     >
       <div className={styles.groupAvatar}></div>
       <div>
@@ -34,8 +61,8 @@ const GroupItem = ({ group }: Props) => {
           </span>
 
           {group?.lastMessageSent &&
-          group?.lastMessageSent?.content.length >= 25
-            ? group?.lastMessageSent?.content.slice(0, 25) + " ..."
+          group?.lastMessageSent?.content.length >= 15
+            ? group?.lastMessageSent?.content.slice(0, 15) + " ..."
             : group?.lastMessageSent?.content}
         </span>
       </div>

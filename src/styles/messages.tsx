@@ -129,7 +129,7 @@ export const MessageItemContent = styled.div<MessageItemContentProps>`
   width: 100%;
 `;
 
-export const EditMessageInputField = styled.input`
+export const EditMessageInputField = styled.textarea`
   outline: none;
   border: none;
   background-color: #222;

@@ -3,6 +3,7 @@ import { MdClose } from "react-icons/md";
 import { ModalContainer, ModalContentBody } from ".";
 import { ButtonIconStyle, ModalHeaderStyle, OverlayStyle } from "../../styles";
 import CreateConversationForm from "../forms/CreateConversationForm";
+import { ContextMenuEventType } from "../../utils/types";
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>;
@@ -17,9 +18,7 @@ const CreateConversationModal = ({ setShowModal }: Props) => {
     return () => window.removeEventListener("keydown", handleKeydown);
   }, [setShowModal]);
 
-  const handleOverlayClick = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
+  const handleOverlayClick = (e: ContextMenuEventType) => {
     const { current } = ref;
     if (current === e.target) {
       setShowModal(false);

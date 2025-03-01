@@ -7,7 +7,12 @@ import {
   MessageItemHeader,
 } from "../../styles/messages";
 import moment from "moment";
-import { GroupMessageType, MessageType, UserType } from "../../utils/types";
+import {
+  ContextMenuEventType,
+  GroupMessageType,
+  MessageType,
+  UserType,
+} from "../../utils/types";
 import EditMessageContainer from "./EditMessageContainer";
 import { RootState } from "../../store";
 import { useSelector } from "react-redux";
@@ -15,8 +20,8 @@ import { useSelector } from "react-redux";
 type Props = {
   user?: UserType;
   message: MessageType | GroupMessageType;
-  onContextMenu: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  onEditMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onContextMenu: (e: ContextMenuEventType) => void;
+  onEditMessageChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
 const FormatedMessage = ({

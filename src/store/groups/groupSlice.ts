@@ -2,23 +2,30 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   EditOrDeleteLastMessageGroupSidebarResponse,
   GroupType,
+  PointsType,
 } from "../../utils/types";
 import {
   createGroupThunk,
   fetchGroupsThunk,
   removeGroupUserThunk,
   updateGroupOwnerThunk,
+  userLeaveGroupThunk,
 } from "./groupThunk";
 import { RootState } from "..";
 
 export interface GroupState {
   groups: GroupType[];
   loading: boolean;
+  showGroupContextMenu: boolean;
+  selectGroup?: GroupType;
+  points: PointsType;
 }
 
 const initialState: GroupState = {
   groups: [],
   loading: false,
+  showGroupContextMenu: false,
+  points: { x: 0, y: 0 },
 };
 
 export const groupsSlice = createSlice({
@@ -32,6 +39,8 @@ export const groupsSlice = createSlice({
     },
 
     updateGroup: (state, action: PayloadAction<GroupType>) => {
+      console.log("update group...");
+
       const group = action.payload;
       const existingGroup = state.groups.find((g) => g.id === group.id);
 
@@ -75,6 +84,22 @@ export const groupsSlice = createSlice({
         state.groups[index].lastMessageSent = messages[1];
       }
     },
+
+    // options of group sidebar , groupsidebar item
+    tonggleGroupSidebarContextMenu: (state, action: PayloadAction<boolean>) => {
+      state.showGroupContextMenu = action.payload;
+    },
+
+    setGroupSidebarContextMenuLocal: (
+      state,
+      action: PayloadAction<PointsType>
+    ) => {
+      state.points = action.payload;
+    },
+
+    setSelectedGroupContextMenu: (state, action: PayloadAction<GroupType>) => {
+      state.selectGroup = action.payload;
+    },
   },
 
   extraReducers(builder) {
@@ -109,14 +134,19 @@ export const groupsSlice = createSlice({
       //updateGroupOwnerThunk
       .addCase(updateGroupOwnerThunk.fulfilled, (state, action) => {
         console.log("updateGroupOwnerThunk.fulfilled");
-        // if (!action.payload) return;
-        // const groupPayload = action.payload.data;
-        // const group = state.groups.find((g) => g.id === groupPayload.id);
-        // const index = state.groups.findIndex((i) => i.id === groupPayload.id);
+      })
 
-        // if (!group) return;
-        // state.groups.splice(index, 1);
-        // state.groups.unshift(group);
+      //userLeaveGroupThunk
+      .addCase(userLeaveGroupThunk.fulfilled, (state, action) => {
+        if (!action.payload) return;
+        const group = state.groups.find(
+          (g) => g.id === action.payload?.data.id
+        );
+        const index = state.groups.findIndex(
+          (g) => g.id === action.payload?.data.id
+        );
+        if (!group) return;
+        state.groups.splice(index, 1);
       });
   },
 });
@@ -134,5 +164,8 @@ export const {
   updateGroup,
   editOrDeleteLastMessageGroupSidebar,
   removeGroup,
+  tonggleGroupSidebarContextMenu,
+  setGroupSidebarContextMenuLocal,
+  setSelectedGroupContextMenu,
 } = groupsSlice.actions;
 export default groupsSlice.reducer;

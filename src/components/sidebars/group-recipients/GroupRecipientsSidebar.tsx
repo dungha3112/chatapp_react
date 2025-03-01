@@ -37,22 +37,30 @@ const GroupRecipientsSidebar = () => {
   );
 
   useEffect(() => {
-    socket.emit("getOnlineGroupUsers", { groupId: parseInt(id!) });
+    if (!id) return;
+
+    socket.emit("getOnlineGroupUsers", { groupId: parseInt(id) });
 
     const interval = setInterval(() => {
-      socket.emit("getOnlineGroupUsers", { groupId: parseInt(id!) });
-    }, 5000);
+      socket.emit("getOnlineGroupUsers", { groupId: parseInt(id) });
+    }, 10000);
 
-    socket.on("onlineGroupUsersReceived", (payload) => {
-      const { onlineUsers, offlineUsers } = payload;
-
+    const updateOnlineUsers = ({
+      onlineUsers,
+      offlineUsers,
+    }: {
+      onlineUsers: UserType[];
+      offlineUsers: UserType[];
+    }) => {
       setOnlineUsers(onlineUsers);
       setOfflineUsers(offlineUsers);
-    });
+    };
+
+    socket.on("onlineGroupUsersReceived", updateOnlineUsers);
 
     return () => {
       clearInterval(interval);
-      socket.off("onlineGroupUsersReceived");
+      socket.off("onlineGroupUsersReceived", updateOnlineUsers);
     };
   }, [id, socket]);
 
@@ -89,7 +97,7 @@ const GroupRecipientsSidebar = () => {
     const height = 188; // height of  SelectedParticipantContextMenu , take ref
 
     if (itemWidth === 264 && relativeX < (itemWidth * 2) / 3) {
-      x -= (180 * 1) / 2; // Dịch sang trái khoảng 120px
+      x -= (width * 1) / 2; // Dịch sang trái khoảng 120px
     }
 
     if (x + width > screenWidth) {

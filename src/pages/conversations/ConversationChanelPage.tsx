@@ -41,12 +41,12 @@ const ConversationChanelPage = () => {
     });
 
     socket.on("onTypingStart", (payload) => {
-      if (parseInt(id) === parseInt(payload.conversationId)) {
-        console.log("user start typing ...", payload);
-        if (user?.id !== payload.userId) {
-          setIsRecipientTyping(true);
-        }
-      }
+      // if (parseInt(id) === parseInt(payload.conversationId)) {
+      //   console.log("user start typing ...", payload);
+      //   if (user?.id !== payload.userId) {
+      //     setIsRecipientTyping(true);
+      //   }
+      // }
     });
 
     socket.on("onTypingStop", (payload) => {
@@ -74,18 +74,18 @@ const ConversationChanelPage = () => {
   const sendTypingStatus = () => {
     if (!id) return;
 
-    if (isTyping) {
-      clearTimeout(timer);
-      setTimer(
-        setTimeout(() => {
-          socket.emit("onTypingStop", { conversationId: parseInt(id) });
-          setIsTyping(false);
-        }, 500)
-      );
-    } else {
-      socket.emit("onTypingStart", { conversationId: parseInt(id) });
-      setIsTyping(true);
-    }
+    // if (isTyping) {
+    //   clearTimeout(timer);
+    //   setTimer(
+    //     setTimeout(() => {
+    //       socket.emit("onTypingStop", { conversationId: parseInt(id) });
+    //       setIsTyping(false);
+    //     }, 500)
+    //   );
+    // } else {
+    //   socket.emit("onTypingStart", { conversationId: parseInt(id) });
+    //   setIsTyping(true);
+    // }
   };
 
   return (
