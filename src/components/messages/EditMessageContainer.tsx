@@ -8,10 +8,15 @@ import { editOrDeleteLastMessageGroupSidebar } from "../../store/groups/groupSli
 import { handleSetIsEditingMessage } from "../../store/messageContainerSlice";
 import { editConversationMessageThunk } from "../../store/messages/messageThunk";
 import {
+  CharacterLimit,
   EditMessageActionsContainer,
-  EditMessageInputField,
+  MessageInputContainer,
 } from "../../styles/messages";
 import { GroupMessageType, MessageType } from "../../utils/types";
+import MessageEditField from "../inputs/MessageEditField";
+import { AiFillPlusCircle } from "react-icons/ai";
+import { HiMiniGif } from "react-icons/hi2";
+import styles from "./index.module.scss";
 
 type Props = {
   onEditMessageChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -19,10 +24,11 @@ type Props = {
 
 const EditMessageContainer = ({ onEditMessageChange }: Props) => {
   const { id } = useParams();
-  const { messageBegingEdited, isEditingMessage } = useSelector(
+  const { messageBegingEdited } = useSelector(
     (state: RootState) => state.messageContainer
   );
-
+  const MAX_LENGTH = 2048;
+  const atMaxLength = messageBegingEdited?.content.length === MAX_LENGTH;
   const dispatch = useDispatch<AppDispatch>();
 
   const conversationType = useSelector(
@@ -37,6 +43,54 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // if (conversationType === "private") {
+    //   const params = {
+    //     conversationId: parseInt(id),
+    //     messageId: messageBegingEdited.id,
+    //     content: messageBegingEdited.content,
+    //   };
+    //   dispatch(editConversationMessageThunk(params))
+    //     .unwrap()
+    //     .then(() => {
+    //       dispatch(handleSetIsEditingMessage(false));
+
+    //       dispatch(
+    //         editOrDeleteLastMessageConversationSidebar({
+    //           isEdit: true,
+    //           messages: [],
+    //           conversationId: parseInt(id),
+    //           message: messageBegingEdited as MessageType,
+    //         })
+    //       );
+    //     })
+    //     .catch((err) => console.log(err));
+    // }
+
+    // if (conversationType === "group") {
+    //   const params = {
+    //     groupId: parseInt(id),
+    //     messageId: messageBegingEdited.id,
+    //     content: messageBegingEdited.content,
+    //   };
+    //   dispatch(editGroupMessageThunk(params))
+    //     .unwrap()
+    //     .then(() => {
+    //       dispatch(handleSetIsEditingMessage(false));
+
+    //       dispatch(
+    //         editOrDeleteLastMessageGroupSidebar({
+    //           isEdit: true,
+    //           messages: [],
+    //           groupId: parseInt(id),
+    //           message: messageBegingEdited as GroupMessageType,
+    //         })
+    //       );
+    //     })
+    //     .catch((err) => console.log(err));
+    // }
+  };
+
+  const onSubmitEditMessage = async () => {
     if (conversationType === "private") {
       const params = {
         conversationId: parseInt(id),
@@ -85,12 +139,18 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
   };
 
   return (
-    <div style={{ width: "100%" }}>
-      <form onSubmit={onSubmit} style={{ width: "100%" }}>
-        <EditMessageInputField
-          value={messageBegingEdited.content}
-          onChange={onEditMessageChange}
-          autoFocus={isEditingMessage}
+    <MessageInputContainer>
+      <AiFillPlusCircle className={styles.icon} />
+      <form onSubmit={onSubmit} className={styles.form}>
+        <MessageEditField
+          message={messageBegingEdited.content}
+          setMessage={(s) =>
+            onEditMessageChange({
+              target: { value: s },
+            } as React.ChangeEvent<HTMLTextAreaElement>)
+          }
+          maxLength={2048}
+          sendMessage={onSubmitEditMessage}
         />
 
         <EditMessageActionsContainer>
@@ -99,7 +159,16 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
           </div>
         </EditMessageActionsContainer>
       </form>
-    </div>
+
+      <HiMiniGif
+        onClick={() => console.log(123)}
+        className={`${styles.icon}  `}
+      />
+
+      <CharacterLimit $atMaxLength={atMaxLength}>
+        {messageBegingEdited.content.length}/{MAX_LENGTH}
+      </CharacterLimit>
+    </MessageInputContainer>
   );
 };
 

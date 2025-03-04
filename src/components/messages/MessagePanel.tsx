@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../store";
@@ -9,10 +9,6 @@ import {
   MessagePanelStyle,
   MessageTypingStatusStyle,
 } from "../../styles/messages";
-import {
-  postNewConversationMessageApi,
-  postNewGroupMessageApi,
-} from "../../utils/api";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 import { getRecipientFromConversation } from "../../utils/helpers";
 import MessageContainer from "./MessageContainer";
@@ -24,14 +20,9 @@ type Props = {
   isRecipientTyping: boolean;
 };
 const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
-  const [content, setContent] = useState("");
   const { id } = useParams();
 
   const { user } = useContext(AuthContext);
-
-  const conversationType = useSelector(
-    (state: RootState) => state.selectedConversationType.type
-  );
 
   const { loading: isLoadingConversationMessage } = useSelector(
     (state: RootState) => state.message
@@ -47,28 +38,6 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
 
   const recipient = getRecipientFromConversation(conversation, user);
 
-  const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!id || !content) return;
-    if (conversationType === "private") {
-      try {
-        await postNewConversationMessageApi(content, parseInt(id));
-        setContent("");
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    if (conversationType === "group") {
-      try {
-        await postNewGroupMessageApi(content, parseInt(id));
-        setContent("");
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
   if (isLoadingConversationMessage || isLoadingGroupMessage)
     return <div>Loading message ..</div>;
 
@@ -82,12 +51,7 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
         </MessagePanelBody>
 
         <MessagePanelFooter>
-          <MessageInputField
-            content={content}
-            setContent={setContent}
-            sendMessage={sendMessage}
-            sendTypingStatus={sendTypingStatus}
-          />
+          <MessageInputField sendTypingStatus={sendTypingStatus} />
 
           <MessageTypingStatusStyle>
             {isRecipientTyping &&

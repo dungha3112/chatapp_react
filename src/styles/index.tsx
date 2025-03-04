@@ -1,11 +1,11 @@
 import styled, { css } from "styled-components";
+import { fadeInUpwards } from "./keyframes";
 import {
   AnimationOceanWavesProps,
   ContextMenuProps,
   InputContainerProps,
   PageProps,
 } from "./styleTypes";
-import { fadeInUpwards } from "./keyframes";
 
 export const InputContainer = styled.div<InputContainerProps>`
   background-color: ${({ $backgroundColor }) => $backgroundColor || "#131313"};

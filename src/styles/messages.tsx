@@ -72,9 +72,9 @@ export const MessageInputContainer = styled.div`
   position: relative;
   width: 100%;
   display: flex;
-  align-items: center;
-  padding: 0 10px;
-  gap: 10px;
+  padding: 18px 12px;
+  gap: 15px;
+  align-items: end;
 `;
 
 export const MessageInputStyle = styled.input`
@@ -134,23 +134,23 @@ export const MessageItemContent = styled.div<MessageItemContentProps>`
   width: 100%;
 `;
 
-export const EditMessageInputField = styled.textarea`
-  outline: none;
-  border: none;
-  background-color: #222;
-  color: #bababa;
-  font-family: "Inter";
-  box-sizing: border-box;
-  font-size: 15px;
-  padding: 18px 22px;
-  border-radius: 5px;
-  margin: 4px 0;
-  width: 100%;
-`;
-
 export const EditMessageActionsContainer = styled.div`
   font-size: 12px;
   & span {
     color: #1d77ff;
   }
+`;
+
+type CharacterLimitProps = {
+  $atMaxLength: boolean;
+};
+export const CharacterLimit = styled.span<CharacterLimitProps>`
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 9px;
+  margin: 5px;
+  font-weight: 500;
+  color: ${({ $atMaxLength }) => ($atMaxLength ? "#ff0000" : "#9c9c9c")};
+  transition: 0.5s color ease;
 `;

@@ -1,28 +1,34 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import {
-  MessageInputContainer,
-  MessageInputStyle,
-} from "../../styles/messages";
+import { useState } from "react";
+import { CharacterLimit, MessageInputContainer } from "../../styles/messages";
 import styles from "./index.module.scss";
 
-import { AiFillPlusCircle, AiOutlineFileGif } from "react-icons/ai";
-import { EmojiClickData } from "emoji-picker-react";
+import { AiFillPlusCircle } from "react-icons/ai";
+import { HiMiniGif } from "react-icons/hi2";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { RootState } from "../../store";
+import {
+  postNewConversationMessageApi,
+  postNewGroupMessageApi,
+} from "../../utils/api";
 import MessageTextField from "../inputs/MessageTextField";
-import { ImHappy } from "react-icons/im";
 
 type Props = {
-  content: string;
-  setContent: Dispatch<SetStateAction<string>>;
-  sendMessage: (e: React.FormEvent<HTMLFormElement>) => void;
   sendTypingStatus: () => void;
 };
 
-const MessageInputField = ({
-  content,
-  setContent,
-  sendMessage,
-  sendTypingStatus,
-}: Props) => {
+const MessageInputField = ({ sendTypingStatus }: Props) => {
+  const [content, setContent] = useState<string>("");
+  const [isMultiLine, setIsMultiLine] = useState<boolean>(false);
+
+  const conversationType = useSelector(
+    (state: RootState) => state.selectedConversationType.type
+  );
+  const { id } = useParams();
+
+  const MAX_LENGTH = 2048;
+  const atMaxLength = content.length === MAX_LENGTH;
+
   const ARROW_KEYS = new Set([
     "ArrowUp",
     "ArrowDown",
@@ -30,52 +36,50 @@ const MessageInputField = ({
     "ArrowLeft",
   ]);
 
-  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
-  const [cursonPosition, setCursonPosition] = useState<number>(-1);
+  const sendMessage = async () => {
+    if (!content || !id) return;
+    if (conversationType === "private") {
+      try {
+        await postNewConversationMessageApi(content, parseInt(id));
+        setContent("");
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
-  const changeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setContent(e.target.value);
-    sendTypingStatus();
-    setCursonPosition(Number(e.target.selectionStart));
-  };
-
-  const onEmojiClick = (data: EmojiClickData) => {
-    setContent(
-      (prev) =>
-        prev.slice(0, cursonPosition) + data.emoji + prev.slice(cursonPosition)
-    );
+    if (conversationType === "group") {
+      try {
+        await postNewGroupMessageApi(content, parseInt(id));
+        setContent("");
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
     <>
       <MessageInputContainer>
         <AiFillPlusCircle className={styles.icon} />
-        <form onSubmit={sendMessage} className={styles.form}>
-          <MessageInputStyle
-            placeholder="Write to ..."
-            value={content}
-            onChange={changeContent}
-            onKeyDown={(e) => {
-              sendTypingStatus();
 
-              if (e.target instanceof HTMLInputElement) {
-                if (ARROW_KEYS.has(e.key)) {
-                  setCursonPosition(Number(e.target.selectionStart));
-                }
-              }
-            }}
-            maxLength={4000}
-            onMouseUp={(e) => {
-              if (e.target instanceof HTMLInputElement) {
-                setCursonPosition(Number(e.target.selectionStart));
-              }
-            }}
+        <form className={styles.form}>
+          <MessageTextField
+            message={content}
+            setMessage={setContent}
+            maxLength={MAX_LENGTH}
+            setIsMultiLine={setIsMultiLine}
+            sendTypingStatus={sendTypingStatus}
+            sendMessage={sendMessage}
           />
-
-          {/* <MessageTextField /> */}
         </form>
-        <AiOutlineFileGif className={styles.icon} />
-        <ImHappy className={styles.icon} />
+        <HiMiniGif
+          onClick={() => console.log(123)}
+          className={`${styles.icon}  `}
+        />
+
+        <CharacterLimit $atMaxLength={atMaxLength}>
+          {content.length}/{MAX_LENGTH}
+        </CharacterLimit>
       </MessageInputContainer>
     </>
   );

@@ -73,7 +73,6 @@ const ConversationChanelPage = () => {
 
   const sendTypingStatus = () => {
     if (!id) return;
-
     // if (isTyping) {
     //   clearTimeout(timer);
     //   setTimer(

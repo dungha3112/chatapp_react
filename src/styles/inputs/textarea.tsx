@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const MessageTextarea = styled.textarea`
-  background-color: inherit;
+  background-color: initial;
   outline: none;
   border: none;
   font-family: "Inter";
@@ -10,12 +10,11 @@ export const MessageTextarea = styled.textarea`
   outline: none;
   border: none;
   color: #454545;
-  padding: 10px 15px;
-  margin: 4px 0;
   resize: none;
-  /* height: 20px;
-  max-height: 200px; */
-  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  height: 20px;
+  max-height: 100px;
   &::-webkit-scrollbar {
     display: none;
   }
