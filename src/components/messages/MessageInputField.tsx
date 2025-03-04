@@ -37,7 +37,7 @@ const MessageInputField = ({ sendTypingStatus }: Props) => {
   ]);
 
   const sendMessage = async () => {
-    if (!content || !id) return;
+    if (!content.trim() || !id) return;
     if (conversationType === "private") {
       try {
         await postNewConversationMessageApi(content, parseInt(id));

@@ -91,6 +91,7 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
   };
 
   const onSubmitEditMessage = async () => {
+    if (!id || !messageBegingEdited.content.trim()) return;
     if (conversationType === "private") {
       const params = {
         conversationId: parseInt(id),
