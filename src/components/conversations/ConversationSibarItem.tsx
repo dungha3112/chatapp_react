@@ -21,7 +21,7 @@ export const ConversationSibarItem = ({ conversation }: Props) => {
     <ConversationSidebarItemStyle
       key={conversation.id}
       onClick={() => navigate(`/conversations/${conversation.id}`)}
-      className={parseInt(id!) === conversation.id ? "actived" : ""}
+      $selected={parseInt(id!) === conversation.id}
     >
       <div className={styles.conversationAvatar}></div>
       <div>

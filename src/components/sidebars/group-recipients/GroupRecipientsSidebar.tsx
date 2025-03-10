@@ -43,7 +43,7 @@ const GroupRecipientsSidebar = () => {
 
     const interval = setInterval(() => {
       socket.emit("getOnlineGroupUsers", { groupId: parseInt(id) });
-    }, 10000);
+    }, 5000);
 
     const updateOnlineUsers = ({
       onlineUsers,

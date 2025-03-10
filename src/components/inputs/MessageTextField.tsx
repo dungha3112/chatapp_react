@@ -1,4 +1,4 @@
-import React, { SetStateAction, useRef } from "react";
+import React, { SetStateAction } from "react";
 import { MessageTextarea } from "../../styles/inputs/textarea";
 
 type Props = {
@@ -8,6 +8,7 @@ type Props = {
   setIsMultiLine: React.Dispatch<SetStateAction<boolean>>;
   sendTypingStatus: () => void;
   sendMessage: () => void;
+  textAreaRef: React.RefObject<HTMLTextAreaElement>;
 };
 const MessageTextField = ({
   message,
@@ -16,14 +17,14 @@ const MessageTextField = ({
   setIsMultiLine,
   sendTypingStatus,
   sendMessage,
+  textAreaRef,
 }: Props) => {
   const DEFAULT_TEXTAREA_HEIGHT = 20;
-  const ref = useRef<HTMLTextAreaElement>(null);
 
   const onMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     setMessage(e.target.value);
-    const { current } = ref;
+    const { current } = textAreaRef;
     if (current) {
       const height = parseInt(current.style.height);
       current.style.height = "5px";
@@ -42,7 +43,7 @@ const MessageTextField = ({
       e.preventDefault();
       sendMessage();
       setIsMultiLine(false);
-      const { current } = ref;
+      const { current } = textAreaRef;
       if (current) {
         current.style.height = DEFAULT_TEXTAREA_HEIGHT + "px";
       }
@@ -51,7 +52,7 @@ const MessageTextField = ({
 
   return (
     <MessageTextarea
-      ref={ref}
+      ref={textAreaRef}
       value={message}
       onChange={onMessageChange}
       placeholder="Write something ..."

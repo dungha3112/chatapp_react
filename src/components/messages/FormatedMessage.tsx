@@ -1,4 +1,7 @@
+import moment from "moment";
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import {
   MessageItemAvatar,
   MessageItemContainer,
@@ -6,7 +9,6 @@ import {
   MessageItemDetails,
   MessageItemHeader,
 } from "../../styles/messages";
-import moment from "moment";
 import {
   ContextMenuEventType,
   GroupMessageType,
@@ -14,8 +16,6 @@ import {
   UserType,
 } from "../../utils/types";
 import EditMessageContainer from "./EditMessageContainer";
-import { RootState } from "../../store";
-import { useSelector } from "react-redux";
 
 type Props = {
   user?: UserType;

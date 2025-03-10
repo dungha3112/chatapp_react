@@ -1,5 +1,8 @@
 import styled, { css } from "styled-components";
-import { ConversationSelectedProps } from "./styleTypes";
+import {
+  ConversationSelectedProps,
+  ConversationSidebarItemProps,
+} from "./styleTypes";
 import { WIDTH_SIDE_BAR } from "../utils/constants";
 
 export const ConversationSidebarStyle = styled.aside`
@@ -80,18 +83,20 @@ export const ConversationSidebarContainerStyle = styled.div`
   }
 `;
 
-export const ConversationSidebarItemStyle = styled.div`
+export const ConversationSidebarItemStyle = styled.div<ConversationSidebarItemProps>`
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 8px 16px;
   border-bottom: 1px solid #5454543d;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: 0.3s background-color ease;
 
-  &.actived {
-    background-color: #363535;
-  }
+  ${(props) =>
+    props.$selected &&
+    css`
+      background-color: #363535;
+    `}
 
   &:hover {
     background-color: #363535;

@@ -6,6 +6,7 @@ import groupReducer from "./groups/groupSlice";
 import groupMessagesReducer from "./groupMessage/groupMessageSlice";
 import messageContainerReducer from "./messageContainerSlice";
 import groupRecipientSidebarReducer from "./groupRecipientSidebarSlice";
+import modalReducer from "./modals/modalSlice";
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,8 @@ export const store = configureStore({
 
     messageContainer: messageContainerReducer,
     groupSidebar: groupRecipientSidebarReducer,
+
+    modal: modalReducer,
   },
   middleware(getDefaultMiddleware) {
     return getDefaultMiddleware({ serializableCheck: false });

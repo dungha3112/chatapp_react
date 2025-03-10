@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CharacterLimit, MessageInputContainer } from "../../styles/messages";
 import styles from "./index.module.scss";
 
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { HiMiniGif } from "react-icons/hi2";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { RootState } from "../../store";
+import { AppDispatch, RootState } from "../../store";
+import {
+  handleOpenFeedIconEditMess,
+  handleOpenFeedIconNewMess,
+} from "../../store/modals/modalSlice";
 import {
   postNewConversationMessageApi,
   postNewGroupMessageApi,
@@ -18,8 +24,16 @@ type Props = {
 };
 
 const MessageInputField = ({ sendTypingStatus }: Props) => {
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
   const [content, setContent] = useState<string>("");
+
   const [isMultiLine, setIsMultiLine] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { openFeedIconEditMess, openFeedIconNewMess } = useSelector(
+    (state: RootState) => state.modal
+  );
 
   const conversationType = useSelector(
     (state: RootState) => state.selectedConversationType.type
@@ -55,6 +69,27 @@ const MessageInputField = ({ sendTypingStatus }: Props) => {
         console.log(error);
       }
     }
+    dispatch(handleOpenFeedIconNewMess(false));
+  };
+
+  const onEmojiSelect = (emoji: any) => {
+    if (!textAreaRef.current) return;
+
+    const cursorPos = textAreaRef.current.selectionStart; // Lấy vị trí con trỏ
+    const textBefore = content.substring(0, cursorPos); // Phần trước con trỏ
+    const textAfter = content.substring(cursorPos); // Phần sau con trỏ
+
+    // Cập nhật state với emoji được chèn vào vị trí con trỏ
+    setContent(textBefore + emoji.native + textAfter);
+
+    // Đặt lại vị trí con trỏ sau emoji
+    setTimeout(() => {
+      textAreaRef.current!.selectionStart = textAreaRef.current!.selectionEnd =
+        cursorPos + emoji.native.length;
+      textAreaRef.current!.focus();
+    }, 0);
+
+    dispatch(handleOpenFeedIconNewMess(false));
   };
 
   return (
@@ -64,6 +99,7 @@ const MessageInputField = ({ sendTypingStatus }: Props) => {
 
         <form className={styles.form}>
           <MessageTextField
+            textAreaRef={textAreaRef}
             message={content}
             setMessage={setContent}
             maxLength={MAX_LENGTH}
@@ -73,13 +109,32 @@ const MessageInputField = ({ sendTypingStatus }: Props) => {
           />
         </form>
         <HiMiniGif
-          onClick={() => console.log(123)}
+          onClick={() => {
+            if (openFeedIconEditMess) {
+              dispatch(handleOpenFeedIconEditMess(false));
+            }
+            dispatch(handleOpenFeedIconNewMess(!openFeedIconNewMess));
+          }}
           className={`${styles.icon}  `}
         />
 
         <CharacterLimit $atMaxLength={atMaxLength}>
           {content.length}/{MAX_LENGTH}
         </CharacterLimit>
+
+        <div className={styles.emojiPicker}>
+          {openFeedIconNewMess && (
+            <Picker
+              className={styles.customPicker}
+              showPreview={false}
+              theme="dark"
+              previewPosition="none"
+              searchPosition="none"
+              data={data}
+              onEmojiSelect={onEmojiSelect}
+            />
+          )}
+        </div>
       </MessageInputContainer>
     </>
   );

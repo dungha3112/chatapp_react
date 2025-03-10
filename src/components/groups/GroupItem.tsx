@@ -48,7 +48,7 @@ const GroupItem = ({ group }: Props) => {
     <ConversationSidebarItemStyle
       key={group.id}
       onClick={() => navigate(`/groups/${group.id}`)}
-      className={parseInt(id!) === group.id ? "actived" : ""}
+      $selected={parseInt(id!) === group.id}
       onContextMenu={(e) => onUserContextMenu(e)}
     >
       <div className={styles.groupAvatar}></div>

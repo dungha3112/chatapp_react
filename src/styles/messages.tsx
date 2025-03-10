@@ -38,7 +38,8 @@ export const MessageContainerStyle = styled.div`
   padding: 10px 0;
   display: flex;
   flex-direction: column-reverse;
-  overflow-y: scroll;
+  /* flex-direction: column; */
+  overflow-y: auto;
   &::-webkit-scrollbar {
     width: 8px;
     height: 5px;
@@ -110,12 +111,13 @@ export const MessageItemAvatar = styled.div`
   background-color: #c1c1c1;
 `;
 
-export const MessageItemDetails = styled.div``;
-
-export const MessageItemHeader = styled.div`
+export const MessageItemDetails = styled.div`
   display: flex;
+  text-align: center;
   align-items: center;
   gap: 12px;
+  width: 100%;
+
   .authorName {
     font-size: 16px;
     font-weight: bold;
@@ -124,6 +126,12 @@ export const MessageItemHeader = styled.div`
     font-size: 11.5px;
     color: #6d6d6d;
   }
+`;
+
+export const MessageItemHeader = styled.div`
+  /* display: flex;
+  gap: 12px;
+  width: 100%; */
 `;
 
 export const MessageItemContent = styled.div<MessageItemContentProps>`

@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
 import { selectGroupMessage } from "../../store/groupMessage/groupMessageSlice";
+import { tongleGroupRecipientContextMenu } from "../../store/groupRecipientSidebarSlice";
+import { tonggleGroupSidebarContextMenu } from "../../store/groups/groupSlice";
 import {
   handleResetMessageContainter,
   handleSelectedMessage,
@@ -10,6 +12,10 @@ import {
   handleUpdateMessageContentBegingEdited,
 } from "../../store/messageContainerSlice";
 import { selectConversationMessage } from "../../store/messages/messageSlice";
+import {
+  handleOpenFeedIconEditMess,
+  handleOpenFeedIconNewMess,
+} from "../../store/modals/modalSlice";
 import {
   MessageContainerStyle,
   MessageItemContainer,
@@ -59,6 +65,7 @@ const MessageContainer = () => {
 
   useEffect(() => {
     const handleClick = () => setShowMenu(false);
+
     window.addEventListener("click", handleClick);
 
     return () => {
@@ -69,7 +76,12 @@ const MessageContainer = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: globalThis.KeyboardEvent) =>
-      e.key === "Escape" && dispatch(handleSetIsEditingMessage(false));
+      e.key === "Escape" &&
+      (dispatch(handleSetIsEditingMessage(false)),
+      dispatch(handleOpenFeedIconEditMess(false)),
+      dispatch(tonggleGroupSidebarContextMenu(false)),
+      dispatch(tongleGroupRecipientContextMenu(false)),
+      dispatch(handleOpenFeedIconNewMess(false)));
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
@@ -133,7 +145,7 @@ const MessageContainer = () => {
               />
             </MessageItemContent>
           ) : (
-            <MessageItemContent $padding="0 0 0 60px">
+            <MessageItemContent $padding="0 0 0 40px">
               {m.content}
             </MessageItemContent>
           )}
@@ -165,6 +177,7 @@ const MessageContainer = () => {
   return (
     <MessageContainerStyle>
       {formatMessages()}
+
       {showMenu && <SelectedMessageContextMenu points={points} />}
     </MessageContainerStyle>
   );
