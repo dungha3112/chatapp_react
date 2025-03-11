@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import MessagePanel from "../../components/messages/MessagePanel";
-import { AppDispatch } from "../../store";
+import { AppDispatch, RootState } from "../../store";
 import { fetchMessagesThunk } from "../../store/messages/messageThunk";
 import { ConversationChannelPageStyle } from "../../styles/conversation";
 import { SocketContext } from "../../utils/contexts/SocketContext";
@@ -16,16 +16,19 @@ const ConversationChanelPage = () => {
   const { user } = useContext(AuthContext);
   const { error } = useToast();
 
+  const { pagination } = useSelector((state: RootState) => state.message);
+
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [isRecipientTyping, setIsRecipientTyping] = useState<boolean>(false);
 
   useEffect(() => {
     if (!id) return;
-    dispatch(fetchMessagesThunk(parseInt(id)))
+    const params = { id: parseInt(id), skip: pagination.skip };
+    dispatch(fetchMessagesThunk(params))
       .unwrap()
       .catch((err) => console.log(err));
-  }, [id, dispatch, error]);
+  }, [id, dispatch, pagination]);
 
   useEffect(() => {
     if (!id) return;

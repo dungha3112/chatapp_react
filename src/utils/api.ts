@@ -22,6 +22,7 @@ import {
   RemoveGroupUserParams,
   UpdateGroupOwnerParams,
   UserLeaveGroupParams,
+  FetchMessageParams,
 } from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
@@ -121,10 +122,13 @@ export const postNewConversationMessageApi = async (
   }
 };
 
-export const getMessagesByConversationIdApi = async (id: number) => {
+export const getMessagesByConversationIdApi = async ({
+  id,
+  skip,
+}: FetchMessageParams) => {
   try {
     return await axiosClient.get<FetchMessagePayload>(
-      `conversations/${id}/messages`
+      `conversations/${id}/messages?skip=${skip}`
     );
   } catch (error) {
     logErrorMessage(error);

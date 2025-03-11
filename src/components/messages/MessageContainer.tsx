@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
@@ -11,7 +11,10 @@ import {
   handleSetIsEditingMessage,
   handleUpdateMessageContentBegingEdited,
 } from "../../store/messageContainerSlice";
-import { selectConversationMessage } from "../../store/messages/messageSlice";
+import {
+  selectConversationMessage,
+  updatePaginationSkip,
+} from "../../store/messages/messageSlice";
 import {
   handleOpenFeedIconEditMess,
   handleOpenFeedIconNewMess,
@@ -34,6 +37,11 @@ import FormatedMessage from "./FormatedMessage";
 const MessageContainer = () => {
   const { user } = useContext(AuthContext);
   const dispatch = useDispatch<AppDispatch>();
+  const ref = useRef<HTMLDivElement>(null);
+
+  const { pagination, loading } = useSelector(
+    (state: RootState) => state.message
+  );
 
   const { id } = useParams();
   const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -174,8 +182,32 @@ const MessageContainer = () => {
     return () => window.removeEventListener("click", handleClick);
   }, []);
 
+  const handleScroll = () => {
+    if (!ref.current) return;
+
+    const container = ref.current;
+
+    console.log(container.scrollTop);
+
+    if (container.scrollTop === 0 && !loading) {
+      dispatch(updatePaginationSkip(pagination.skip + 20));
+    }
+    // const previousHeight = container.scrollHeight;
+    // setTimeout(() => {
+    //   container.scrollTop = container.scrollHeight - previousHeight;
+    // }, 100);
+  };
+
+  useEffect(() => {
+    const container = ref.current;
+    if (!container) return;
+
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <MessageContainerStyle>
+    <MessageContainerStyle ref={ref}>
       {formatMessages()}
 
       {showMenu && <SelectedMessageContextMenu points={points} />}

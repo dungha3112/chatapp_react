@@ -87,10 +87,17 @@ export type MessageEventPayload = {
   conversation: ConversationType;
 };
 
+// FetchMessageParams
+export type FetchMessageParams = {
+  id: number;
+  skip: number;
+};
+
 // FetchMessagePayload
 export type FetchMessagePayload = {
   id: number;
   messages: MessageType[];
+  count: number;
 };
 
 // deleteConversationMessageParams

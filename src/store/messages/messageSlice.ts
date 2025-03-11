@@ -14,11 +14,19 @@ import {
 export interface MessagesState {
   messages: ConversationMessage[];
   loading: boolean;
+  pagination: {
+    skip: number;
+    count: number;
+  };
 }
 
 const initialState: MessagesState = {
   messages: [],
   loading: false,
+  pagination: {
+    skip: 0,
+    count: 0,
+  },
 };
 
 export const messageSlice = createSlice({
@@ -70,6 +78,13 @@ export const messageSlice = createSlice({
       );
       conversationMessage.messages[messageIndex].content = content;
     },
+
+    // update pagination
+    updatePaginationSkip: (state, action: PayloadAction<number>) => {
+      console.log(`update skip`, action.payload);
+
+      state.pagination.skip = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -81,13 +96,20 @@ export const messageSlice = createSlice({
       })
       .addCase(fetchMessagesThunk.fulfilled, (state, action) => {
         if (!action.payload) return;
-        const { id } = action.payload.data;
+        const { id, messages, count } = action.payload.data;
+        console.log(messages);
+
         const index = state.messages.findIndex((cm) => cm.id === id);
         const exists = state.messages.find((cm) => cm.id === id);
 
         if (exists) {
           console.log("exists");
-          state.messages[index] = action.payload.data;
+          console.log(index);
+          state.pagination.count = count;
+
+          // state.messages[index] = action.payload.data;
+
+          state.messages[index].messages.concat(messages);
         } else {
           state.messages.push(action.payload.data);
         }
@@ -132,6 +154,7 @@ export const selectConversationMessage = createSelector(
   (conversationMessages, id) => conversationMessages.find((cm) => cm.id === id)
 );
 
-export const { addMessage, deleteMessage, editMessage } = messageSlice.actions;
+export const { addMessage, deleteMessage, editMessage, updatePaginationSkip } =
+  messageSlice.actions;
 
 export default messageSlice.reducer;
