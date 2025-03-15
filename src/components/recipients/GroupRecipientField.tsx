@@ -3,7 +3,7 @@ import {
   InputContainer,
   InputField,
   InputLabel,
-  InputLabelAnimation,
+  LabelAnimation,
 } from "../../styles";
 
 type Props = {
@@ -18,7 +18,7 @@ const GroupRecipientField = ({ searching, setQuery, query }: Props) => {
     <section>
       <InputContainer $backgroundColor="#161616">
         {searching ? (
-          <InputLabelAnimation
+          <LabelAnimation
             htmlFor="username"
             $animation={true}
             $length={titleLength}
@@ -26,11 +26,10 @@ const GroupRecipientField = ({ searching, setQuery, query }: Props) => {
             {"Search ...".split("").map((char, index) => (
               <span key={index}>{char}</span>
             ))}
-          </InputLabelAnimation>
+          </LabelAnimation>
         ) : (
           <InputLabel>Recipient</InputLabel>
         )}
-
         <InputField
           id="username"
           value={query}

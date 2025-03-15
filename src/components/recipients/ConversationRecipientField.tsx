@@ -3,7 +3,7 @@ import {
   InputContainer,
   InputField,
   InputLabel,
-  InputLabelAnimation,
+  LabelAnimation,
 } from "../../styles";
 import { UserType } from "../../utils/types";
 import SelectedConversationRecipientChip from "./SelectedConversationRecipientChip";
@@ -27,15 +27,14 @@ const ConversationRecipientField = ({
     <section>
       <InputContainer $backgroundColor="#161616">
         {searching ? (
-          <InputLabelAnimation $animation={true} $length={"Search ...".length}>
+          <LabelAnimation $animation={true} $length={"Search ...".length}>
             {"Search ...".split("").map((char, index) => (
               <span key={index}>{char}</span>
             ))}
-          </InputLabelAnimation>
+          </LabelAnimation>
         ) : (
           <InputLabel htmlFor="username">Recipient</InputLabel>
         )}
-
         {!selectedUser ? (
           <InputField
             id="username"

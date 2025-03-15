@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
@@ -27,7 +27,10 @@ import {
 import ConversationSidebar from "../../components/sidebars/ConversationSidebar";
 import ConversationPanel from "../../components/conversations/ConversationPanel";
 
-const GroupPage = () => {
+const GroupLayout = () => {
+  const [showSidebar, setShowSidebar] = useState<boolean>(
+    window.innerWidth > 800
+  );
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const socket = useContext(SocketContext);
@@ -35,6 +38,12 @@ const GroupPage = () => {
   const groupMessage = useSelector((state: RootState) =>
     selectGroupMessage(state, parseInt(id!))
   );
+
+  useEffect(() => {
+    const handleResize = () => setShowSidebar(window.innerWidth > 800);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     dispatch(updateType("group"));
@@ -144,11 +153,11 @@ const GroupPage = () => {
 
   return (
     <>
-      <ConversationSidebar />
+      {showSidebar && <ConversationSidebar />}
       {!id && <ConversationPanel />}
       <Outlet />
     </>
   );
 };
 
-export default GroupPage;
+export default GroupLayout;

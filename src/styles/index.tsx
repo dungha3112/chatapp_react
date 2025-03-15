@@ -2,9 +2,14 @@ import styled, { css } from "styled-components";
 import { fadeInUpwards } from "./keyframes";
 import {
   AnimationOceanWavesProps,
+  ButtonProps,
   ContextMenuProps,
+  getButtonSizeStyle,
+  getButtonVariantStyle,
   InputContainerProps,
   PageProps,
+  Size,
+  Variant,
 } from "./styleTypes";
 
 export const InputContainer = styled.div<InputContainerProps>`
@@ -37,7 +42,7 @@ export const InputLabel = styled.label`
   transition: 1s time-out ease-in-out;
 `;
 
-export const InputLabelAnimation = styled.label<AnimationOceanWavesProps>`
+export const LabelAnimation = styled.label<AnimationOceanWavesProps>`
   display: inline-block;
   color: #8f8f8f;
   font-size: 14px;
@@ -49,7 +54,7 @@ export const InputLabelAnimation = styled.label<AnimationOceanWavesProps>`
     ${({ $animation }) =>
       $animation &&
       css`
-        animation: waveText 0.8s infinite ease-in-out;
+        animation: waveText 0.8s infinite ease-in-out, colorWave 1.6s infinite;
       `}
   }
 
@@ -68,6 +73,24 @@ export const InputLabelAnimation = styled.label<AnimationOceanWavesProps>`
         }
       }
 
+      @keyframes colorWave {
+        0% {
+          color: #ff4d4d;
+        }
+        25% {
+          color: #ffbe33;
+        }
+        50% {
+          color: #4caf50;
+        }
+        75% {
+          color: #2196f3;
+        }
+        100% {
+          color: #ff4d4d;
+        }
+      }
+
       ${Array.from({ length: $length ?? 0 })
         .map(
           (_, i) => `
@@ -80,31 +103,22 @@ export const InputLabelAnimation = styled.label<AnimationOceanWavesProps>`
     `}
 `;
 
-export const Button = styled.button`
-  color: #fff;
-  background-color: #2b00ff;
-  width: 100%;
+export const Button = styled.button<ButtonProps>`
   font-family: "Inter";
-  font-size: 14px;
   border-radius: 10px;
   outline: none;
   border: none;
-  padding: 20px 0;
 
-  &:hover {
-    cursor: pointer;
-    background-color: #3415ff;
-  }
+  ${({ $size }) => getButtonSizeStyle($size as Size)}
+  ${({ $variant }) => getButtonVariantStyle($variant as Variant)};
 
-  &:active {
-    background-color: #3a1cff;
-  }
-
-  &:disabled {
-    background-color: #4937dc7c;
-    color: #878787;
-    cursor: not-allowed;
-  }
+  ${({ $flex }) =>
+    $flex &&
+    css`
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    `}
 `;
 
 export const Page = styled.div<PageProps>`

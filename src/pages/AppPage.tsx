@@ -14,6 +14,9 @@ const AppPage = () => {
         location.pathname !== "/conversations/" &&
         location.pathname !== "/groups" &&
         location.pathname !== "/groups/" &&
+        location.pathname === "friends" &&
+        !id &&
+        // location.pathname === "/friends/" &&
         !id && <ConversationSidebar />}
 
       <Outlet />

@@ -7,7 +7,6 @@ import {
   UserSidebarStyle,
 } from "../../styles/userSidebar";
 import { BsChatDots, BsPerson } from "react-icons/bs";
-import { TfiReload } from "react-icons/tfi";
 
 const UserSidebar = () => {
   return (

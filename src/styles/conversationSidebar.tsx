@@ -13,6 +13,11 @@ export const ConversationSidebarStyle = styled.aside`
   flex: 0 0 auto;
   background-color: #111;
   user-select: none;
+
+  @media (max-width: 800px) {
+    /* width: 60px; */
+    /* width: calc(100% - 80px); */
+  }
 `;
 
 export const ConversationHeaderSidebarStyle = styled.header`

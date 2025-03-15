@@ -6,9 +6,8 @@ import AppPage from "./pages/AppPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ConversationChanelPage from "./pages/conversations/ConversationChanelPage";
-import ConversationPage from "./pages/conversations/ConversationPage";
 import GroupChanelPage from "./pages/groups/GroupChanelPage";
-import GroupPage from "./pages/groups/GroupPage";
+import GroupLayout from "./pages/groups/GroupLayout";
 import { store } from "./store";
 import { AuthContext } from "./utils/contexts/AuthContext";
 import { socket, SocketContext } from "./utils/contexts/SocketContext";
@@ -17,6 +16,8 @@ import { UserType } from "./utils/types";
 import { ToastContainer } from "react-toastify";
 import ConversationPageGuard from "./guards/ConversationPageGuard";
 import GroupPageGuard from "./guards/GroupPageGuard";
+import FriendsLayout from "./pages/friends/FriendsLayout";
+import ConversationLayout from "./pages/conversations/ConversationLayout";
 
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/groups",
-        element: <GroupPage />,
+        element: <GroupLayout />,
         children: [
           {
             path: ":id",
@@ -43,7 +44,7 @@ const router = createBrowserRouter([
 
       {
         path: "/conversations",
-        element: <ConversationPage />,
+        element: <ConversationLayout />,
         children: [
           {
             path: ":id",
@@ -52,6 +53,11 @@ const router = createBrowserRouter([
             ),
           },
         ],
+      },
+
+      {
+        path: "/friends",
+        element: <FriendsLayout />,
       },
     ],
   },

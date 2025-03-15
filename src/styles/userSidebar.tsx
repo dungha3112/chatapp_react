@@ -10,6 +10,7 @@ export const UserSidebarStyle = styled.div`
   flex-direction: column;
   overflow-y: scroll;
   user-select: none;
+  z-index: 99;
   &::-webkit-scrollbar {
     display: none;
   }

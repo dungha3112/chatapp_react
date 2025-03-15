@@ -7,6 +7,7 @@ import groupMessagesReducer from "./groupMessage/groupMessageSlice";
 import messageContainerReducer from "./messageContainerSlice";
 import groupRecipientSidebarReducer from "./groupRecipientSidebarSlice";
 import modalReducer from "./modals/modalSlice";
+import friendsReducer from "./friends/friendsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,8 @@ export const store = configureStore({
 
     messageContainer: messageContainerReducer,
     groupSidebar: groupRecipientSidebarReducer,
+
+    friends: friendsReducer,
 
     modal: modalReducer,
   },

@@ -6,3 +6,18 @@ export const chatTypes: ConversationChatTypeData[] = [
   { type: "private", lable: "Private" },
   { type: "group", lable: "Group" },
 ];
+
+export const friendsNavbarItems = [
+  {
+    id: "friendList",
+    label: "Friend List",
+  },
+  {
+    id: "requests",
+    label: "Requests",
+  },
+  {
+    id: "blocked",
+    label: "Blocked",
+  },
+];

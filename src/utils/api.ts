@@ -23,6 +23,8 @@ import {
   UpdateGroupOwnerParams,
   UserLeaveGroupParams,
   FetchMessageParams,
+  FriendType,
+  FriendRequestType,
 } from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
@@ -301,6 +303,32 @@ export const updateGroupOwnerApi = async ({
 export const userLeaveGroupApi = async ({ groupId }: UserLeaveGroupParams) => {
   try {
     return await axiosClient.delete<GroupType>(`/groups/${groupId}/leave`);
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+export const getFriendsApi = async () => {
+  try {
+    return await axiosClient.get<FriendType[]>(`/friends`);
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+export const getFriendsRequestsApi = async () => {
+  try {
+    return await axiosClient.get<FriendRequestType[]>(`/friends/requests`);
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+export const createFriendRequestApi = async (email: string) => {
+  try {
+    return await axiosClient.post<FriendRequestType>(`/friends/requests`, {
+      email,
+    });
   } catch (error) {
     logErrorMessage(error);
   }

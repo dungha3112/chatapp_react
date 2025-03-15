@@ -10,7 +10,10 @@ const AuthenticatedRoute = ({ children }: Props) => {
   const { user, loading } = useAuth();
 
   if (loading) return <div>Loading ...</div>;
-  if (user) return <>{children}</>;
+  if (user) {
+    return <>{children}</>;
+  }
+
   return <Navigate to="/login" state={{ from: location }} replace />;
 };
 

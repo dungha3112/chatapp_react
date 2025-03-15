@@ -23,7 +23,11 @@ export const ConversationSibarItem = ({ conversation }: Props) => {
       onClick={() => navigate(`/conversations/${conversation.id}`)}
       $selected={parseInt(id!) === conversation.id}
     >
-      <div className={styles.conversationAvatar}></div>
+      <div
+        title={getDisplayUser?.firstName + " " + getDisplayUser?.lastName}
+        className={styles.conversationAvatar}
+      ></div>
+
       <div>
         <span className={styles.conversationName}>
           {getDisplayUser?.firstName + " " + getDisplayUser?.lastName}

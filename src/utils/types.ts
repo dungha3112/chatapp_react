@@ -238,3 +238,21 @@ export type GroupParticipantLeftPayload = {
   group: GroupType;
   userId: number;
 };
+
+// FriendType
+export type FriendType = {
+  id: number;
+  sender: UserType;
+  receiver: UserType;
+  createdAt: string;
+};
+
+// FriendRequestType
+export type FriendRequestType = {
+  id: number;
+  sender: UserType;
+  receiver: UserType;
+  createdAt: string;
+  status: FriendRequestStatusType;
+};
+export type FriendRequestStatusType = "accepted" | "pending" | "rejected";

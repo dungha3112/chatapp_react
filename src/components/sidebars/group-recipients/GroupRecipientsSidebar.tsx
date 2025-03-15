@@ -127,6 +127,7 @@ const GroupRecipientsSidebar = () => {
         </span>
         <OnlineGroupRecipients
           users={onlineUsers}
+          ownerId={group?.owner.id}
           onUserContextMenu={onContextMenu}
         />
         <span className="titleOnOffline">
@@ -134,6 +135,7 @@ const GroupRecipientsSidebar = () => {
         </span>
         <OfflineGroupRecipients
           users={offlineUsers}
+          ownerId={group?.owner.id}
           onUserContextMenu={onContextMenu}
         />
 

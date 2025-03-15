@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
 import ConversationSidebar from "../../components/sidebars/ConversationSidebar";
@@ -24,8 +24,18 @@ import {
 } from "../../utils/types";
 import ConversationPanel from "../../components/conversations/ConversationPanel";
 
-const ConversationPage = () => {
+const ConversationLayout = () => {
   const { id } = useParams();
+
+  const [showSidebar, setShowSidebar] = useState<boolean>(
+    window.innerWidth > 800
+  );
+
+  useEffect(() => {
+    const handleResize = () => setShowSidebar(window.innerWidth > 800);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const socket = useContext(SocketContext);
   const dispatch = useDispatch<AppDispatch>();
@@ -99,11 +109,12 @@ const ConversationPage = () => {
 
   return (
     <>
-      <ConversationSidebar />
+      {showSidebar && <ConversationSidebar />}
+
       {!id && <ConversationPanel />}
       <Outlet />
     </>
   );
 };
 
-export default ConversationPage;
+export default ConversationLayout;

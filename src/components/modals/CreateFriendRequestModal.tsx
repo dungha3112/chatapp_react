@@ -1,14 +1,14 @@
-import React, { createRef, Dispatch, useEffect } from "react";
+import { createRef, Dispatch, SetStateAction, useEffect } from "react";
+import { ButtonIconStyle, OverlayStyle } from "../../styles";
+import { ModalContainer, ModalContentBody, ModalHeader } from ".";
 import { MdClose } from "react-icons/md";
-import { ModalContainer, ModalContentBody } from ".";
-import { ButtonIconStyle, ModalHeaderStyle, OverlayStyle } from "../../styles";
-import CreateGroupForm from "../forms/CreateGroupForm";
 import { ContextMenuEventType } from "../../utils/types";
+import SendFriendRequestForm from "../forms/SendFriendRequestForm";
 
 type Props = {
-  setShowModal: Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
 };
-const CreateGroupModal = ({ setShowModal }: Props) => {
+const CreateFriendRequestModal = ({ setShowModal }: Props) => {
   const ref = createRef<HTMLDivElement>();
 
   const handleOverlayClick = (e: ContextMenuEventType) => {
@@ -28,20 +28,18 @@ const CreateGroupModal = ({ setShowModal }: Props) => {
   return (
     <OverlayStyle ref={ref} onClick={handleOverlayClick}>
       <ModalContainer>
-        <ModalHeaderStyle>
-          <h2>Create a new group</h2>
-
+        <ModalHeader>
+          <h2>Send a Friend Request</h2>
           <ButtonIconStyle onClick={() => setShowModal(false)}>
             <MdClose size={20} color="red" />
           </ButtonIconStyle>
-        </ModalHeaderStyle>
-
+        </ModalHeader>
         <ModalContentBody>
-          <CreateGroupForm setShowModal={setShowModal} />
+          <SendFriendRequestForm setShowModal={setShowModal} />
         </ModalContentBody>
       </ModalContainer>
     </OverlayStyle>
   );
 };
 
-export default CreateGroupModal;
+export default CreateFriendRequestModal;

@@ -20,6 +20,7 @@ import CreateGroupModal from "../modals/CreateGroupModal";
 
 const ConversationSidebar = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+
   const dispatch = useDispatch<AppDispatch>();
 
   const chatType = useSelector(
@@ -45,7 +46,9 @@ const ConversationSidebar = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const handleResize = () => dispatch(tonggleGroupSidebarContextMenu(false));
+    const handleResize = () => {
+      dispatch(tonggleGroupSidebarContextMenu(false));
+    };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [dispatch]);
@@ -63,6 +66,7 @@ const ConversationSidebar = () => {
       {showGroupContextMenu && <GroupSidebarContextMenu points={points} />}
 
       <ConversationSidebarStyle>
+        {/* // Header : Search && Button */}
         <ConversationHeaderSidebarStyle>
           <ConversationSearchbar placeholder="Search for conversations ..." />
           <ButtonIconStyle
@@ -76,9 +80,9 @@ const ConversationSidebar = () => {
             )}
           </ButtonIconStyle>
         </ConversationHeaderSidebarStyle>
-
         <ConversationTab />
 
+        {/* Conversation Item or Group item */}
         <ConversationSidebarContainerStyle>
           <ConversationSidebarContainerStyle>
             <section>
@@ -95,8 +99,6 @@ const ConversationSidebar = () => {
             </section>
           </ConversationSidebarContainerStyle>
         </ConversationSidebarContainerStyle>
-
-        {/* <footer style={{ backgroundColor: "#fff" }}>Hello</footer> */}
       </ConversationSidebarStyle>
     </>
   );

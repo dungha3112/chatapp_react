@@ -51,7 +51,8 @@ const GroupItem = ({ group }: Props) => {
       $selected={parseInt(id!) === group.id}
       onContextMenu={(e) => onUserContextMenu(e)}
     >
-      <div className={styles.groupAvatar}></div>
+      <div title={group.title} className={styles.groupAvatar}></div>
+
       <div>
         <span className={styles.groupName}>{group.title}</span>
         <span className={styles.groupLastMessage}>
