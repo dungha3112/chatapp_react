@@ -25,6 +25,7 @@ import {
   FetchMessageParams,
   FriendType,
   FriendRequestType,
+  FriendRequestAcceptResponse,
 } from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
@@ -329,6 +330,36 @@ export const createFriendRequestApi = async (email: string) => {
     return await axiosClient.post<FriendRequestType>(`/friends/requests`, {
       email,
     });
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+export const acceptFriendRequestApi = async (id: number) => {
+  try {
+    return await axiosClient.patch<FriendRequestAcceptResponse>(
+      `/friends/requests/${id}/accept`
+    );
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+export const cancelFriendRequestApi = async (id: number) => {
+  try {
+    return await axiosClient.delete<FriendRequestType>(
+      `/friends/requests/${id}/cancel`
+    );
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+export const rejectFriendRequestApi = async (id: number) => {
+  try {
+    return await axiosClient.patch<FriendRequestType>(
+      `/friends/requests/${id}/reject`
+    );
   } catch (error) {
     logErrorMessage(error);
   }

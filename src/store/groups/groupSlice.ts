@@ -132,7 +132,7 @@ export const groupsSlice = createSlice({
         }
       })
       //updateGroupOwnerThunk
-      .addCase(updateGroupOwnerThunk.fulfilled, (state, action) => {
+      .addCase(updateGroupOwnerThunk.fulfilled, () => {
         console.log("updateGroupOwnerThunk.fulfilled");
       })
 

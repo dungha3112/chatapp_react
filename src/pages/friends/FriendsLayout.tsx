@@ -13,12 +13,13 @@ import { MdOutlinePersonAddAlt1 } from "react-icons/md";
 import CreateFriendRequestModal from "../../components/modals/CreateFriendRequestModal";
 
 const FriendsLayout = () => {
-  const [navbar, setNavbar] = useState<string>("online");
+  const [navbar, setNavbar] = useState<string>("friendList");
   const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
-    if (String(localStorage.getItem("navbarFriend")))
+    if (String(localStorage.getItem("navbarFriend"))) {
       setNavbar(String(localStorage.getItem("navbarFriend")));
+    }
   }, []);
 
   useEffect(() => {

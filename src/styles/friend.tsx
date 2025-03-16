@@ -12,9 +12,10 @@ export const FriendsNavbarStyle = styled.nav`
   align-items: center;
   justify-content: space-between;
   font-size: 16px;
-  padding: 60px 40px;
+  padding: 40px;
   border-bottom: 1px solid #5454543d;
   user-select: none;
+  height: 110px;
 
   & .navLinks {
     display: flex;
@@ -42,8 +43,8 @@ export const FriendNavbarItem = styled.span<FriendNavbarItemProps>`
 
 export const FriendListContainer = styled.div`
   padding: 40px;
-  height: 100px;
-  overflow: auto;
+  height: calc(100% - 110px);
+  overflow-y: scroll;
 
   &::-webkit-scrollbar {
     display: none;
@@ -71,4 +72,45 @@ export const FriendListItemContainer = styled.div`
   }
 `;
 
-export const FriendRequestItemContainer = styled.div``;
+export const FriendRequestItemContainer = styled.div`
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  &:hover {
+    background-color: #363535;
+  }
+
+  & .user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  & .avatar {
+    height: 50px;
+    width: 50px;
+    background-color: blue;
+    border-radius: 50%;
+  }
+
+  & .name {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    & .status {
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 500;
+      color: #626262;
+    }
+  }
+
+  & .icons {
+    display: flex;
+    gap: 10px;
+  }
+`;

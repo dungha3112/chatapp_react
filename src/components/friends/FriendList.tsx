@@ -23,24 +23,6 @@ const FriendList = () => {
       {friends.map((friend) => (
         <FriendListItem friend={friend} key={friend.id} />
       ))}
-      {friends.map((friend) => (
-        <FriendListItem friend={friend} key={friend.id} />
-      ))}
-      {friends.map((friend) => (
-        <FriendListItem friend={friend} key={friend.id} />
-      ))}
-      {friends.map((friend) => (
-        <FriendListItem friend={friend} key={friend.id} />
-      ))}
-      {friends.map((friend) => (
-        <FriendListItem friend={friend} key={friend.id} />
-      ))}
-      {friends.map((friend) => (
-        <FriendListItem friend={friend} key={friend.id} />
-      ))}
-      {friends.map((friend) => (
-        <FriendListItem friend={friend} key={friend.id} />
-      ))}
     </FriendListContainer>
   );
 };

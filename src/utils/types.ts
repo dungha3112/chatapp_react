@@ -256,3 +256,9 @@ export type FriendRequestType = {
   status: FriendRequestStatusType;
 };
 export type FriendRequestStatusType = "accepted" | "pending" | "rejected";
+
+//FriendRequestAcceptResponse
+export type FriendRequestAcceptResponse = {
+  friend: FriendType;
+  friendRequest: FriendRequestType;
+};
