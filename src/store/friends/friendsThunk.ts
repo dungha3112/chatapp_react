@@ -6,15 +6,35 @@ import {
   getFriendsApi,
   getFriendsRequestsApi,
   cancelFriendRequestApi,
+  getFriendRejectedRequestsApi,
+  deleteFriendApi,
 } from "../../utils/api";
+
+/**
+ * Friend
+ */
 
 export const getFriendListThunk = createAsyncThunk("friends/fetch", () =>
   getFriendsApi()
 );
 
+export const deleteFriendThunk = createAsyncThunk(
+  "friends/delete",
+  (id: number) => deleteFriendApi(id)
+);
+
+/**
+ * Friend requests
+ */
+
 export const getFriendRequestListThunk = createAsyncThunk(
   "friends/requests/fetch",
   () => getFriendsRequestsApi()
+);
+
+export const getFriendRejectedRequestListThunk = createAsyncThunk(
+  "friends/requests/rejected/fetch",
+  () => getFriendRejectedRequestsApi()
 );
 
 export const createFriendRequestThunk = createAsyncThunk(

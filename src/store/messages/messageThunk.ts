@@ -7,13 +7,12 @@ import {
 import {
   DeleteConversationMessageParams,
   EditMessageParams,
-  FetchMessageParams,
 } from "../../utils/types";
 import { toast } from "react-toastify";
 
 export const fetchMessagesThunk = createAsyncThunk(
   "messages/fetch",
-  (params: FetchMessageParams) => getMessagesByConversationIdApi(params)
+  (id: number) => getMessagesByConversationIdApi(id)
 );
 
 export const deleteConversationMessageThunk = createAsyncThunk(

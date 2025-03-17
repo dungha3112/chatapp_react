@@ -57,18 +57,50 @@ export const FriendListItemContainer = styled.div`
   gap: 20px;
   padding: 10px;
   cursor: pointer;
+  justify-content: space-between;
   user-select: none;
   border-bottom: 1px solid #5454543d;
-  transition: 0.5s background-color ease;
-  & .avatar {
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    background-color: blue;
+  transition: 0.4s background-color ease-in-out;
+
+  & .userDetails {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    & .avatar {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      background-color: blue;
+    }
+
+    & .nameAndMessage {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      & .name {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      & .message {
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 500;
+        color: #626262;
+      }
+    }
+  }
+
+  & .icon {
+    font-size: 22px;
+    color: #ff0000;
   }
 
   &:hover {
-    background-color: #383838;
+    background-color: #262626;
   }
 `;
 

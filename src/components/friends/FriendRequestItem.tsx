@@ -47,6 +47,7 @@ const FriendRequestItem = ({ friendRequest }: Props) => {
               ? `${friendRequest.sender.firstName} ${friendRequest.sender.lastName}`
               : `${friendRequest.receiver.firstName} ${friendRequest.receiver.lastName}`}
           </span>
+
           {isIncomingRequest() ? (
             <span className="status">
               {`You have a new friend request from ${friendRequest.sender.firstName} ${friendRequest.sender.lastName}`}

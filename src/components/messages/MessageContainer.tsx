@@ -11,10 +11,7 @@ import {
   handleSetIsEditingMessage,
   handleUpdateMessageContentBegingEdited,
 } from "../../store/messageContainerSlice";
-import {
-  selectConversationMessage,
-  updatePaginationSkip,
-} from "../../store/messages/messageSlice";
+import { selectConversationMessage } from "../../store/messages/messageSlice";
 import {
   handleOpenFeedIconEditMess,
   handleOpenFeedIconNewMess,
@@ -185,13 +182,6 @@ const MessageContainer = () => {
   const handleScroll = () => {
     if (!ref.current) return;
 
-    const container = ref.current;
-
-    console.log(container.scrollTop);
-
-    if (container.scrollTop === 0 && !loading) {
-      dispatch(updatePaginationSkip(pagination.skip + 20));
-    }
     // const previousHeight = container.scrollHeight;
     // setTimeout(() => {
     //   container.scrollTop = container.scrollHeight - previousHeight;

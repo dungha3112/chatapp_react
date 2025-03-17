@@ -1,0 +1,23 @@
+.form {
+  width: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  flex: 0;
+}
+
+.details {
+  width: 100%;
+  flex: 3;
+}
+
+.recipientResult {
+  width: 100%;
+}
+
+.button {
+  width: 100%;
+  flex: 1;
+}

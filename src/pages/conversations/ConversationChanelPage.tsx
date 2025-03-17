@@ -24,8 +24,7 @@ const ConversationChanelPage = () => {
 
   useEffect(() => {
     if (!id) return;
-    const params = { id: parseInt(id), skip: pagination.skip };
-    dispatch(fetchMessagesThunk(params))
+    dispatch(fetchMessagesThunk(parseInt(id)))
       .unwrap()
       .catch((err) => console.log(err));
   }, [id, dispatch, pagination]);

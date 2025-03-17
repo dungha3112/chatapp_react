@@ -14,10 +14,15 @@ export const friendsNavbarItems = [
   },
   {
     id: "requests",
-    label: "Requests",
+    label: "Pending",
   },
   {
-    id: "blocked",
-    label: "Blocked",
+    id: "rejected",
+    label: "Rejected",
+  },
+
+  {
+    id: "addFriend",
+    label: "Add Friend",
   },
 ];

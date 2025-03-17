@@ -22,7 +22,6 @@ import {
   RemoveGroupUserParams,
   UpdateGroupOwnerParams,
   UserLeaveGroupParams,
-  FetchMessageParams,
   FriendType,
   FriendRequestType,
   FriendRequestAcceptResponse,
@@ -125,13 +124,10 @@ export const postNewConversationMessageApi = async (
   }
 };
 
-export const getMessagesByConversationIdApi = async ({
-  id,
-  skip,
-}: FetchMessageParams) => {
+export const getMessagesByConversationIdApi = async (id: number) => {
   try {
     return await axiosClient.get<FetchMessagePayload>(
-      `conversations/${id}/messages?skip=${skip}`
+      `conversations/${id}/messages`
     );
   } catch (error) {
     logErrorMessage(error);
@@ -325,6 +321,16 @@ export const getFriendsRequestsApi = async () => {
   }
 };
 
+export const getFriendRejectedRequestsApi = async () => {
+  try {
+    return await axiosClient.get<FriendRequestType[]>(
+      `/friends/requests/reject`
+    );
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
 export const createFriendRequestApi = async (email: string) => {
   try {
     return await axiosClient.post<FriendRequestType>(`/friends/requests`, {
@@ -360,6 +366,14 @@ export const rejectFriendRequestApi = async (id: number) => {
     return await axiosClient.patch<FriendRequestType>(
       `/friends/requests/${id}/reject`
     );
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+export const deleteFriendApi = async (id: number) => {
+  try {
+    return await axiosClient.delete<FriendType>(`/friends/${id}/delete`);
   } catch (error) {
     logErrorMessage(error);
   }

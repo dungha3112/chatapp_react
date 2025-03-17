@@ -87,12 +87,6 @@ export type MessageEventPayload = {
   conversation: ConversationType;
 };
 
-// FetchMessageParams
-export type FetchMessageParams = {
-  id: number;
-  skip: number;
-};
-
 // FetchMessagePayload
 export type FetchMessagePayload = {
   id: number;
@@ -262,3 +256,9 @@ export type FriendRequestAcceptResponse = {
   friend: FriendType;
   friendRequest: FriendRequestType;
 };
+
+export type FriendNavType =
+  | "friendList"
+  | "requests"
+  | "rejected"
+  | "addFriend";

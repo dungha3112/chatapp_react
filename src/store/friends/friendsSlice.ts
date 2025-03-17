@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
+  FriendNavType,
   FriendRequestAcceptResponse,
   FriendRequestType,
 } from "../../utils/types";
@@ -11,18 +12,24 @@ import {
   getFriendListThunk,
   getFriendRequestListThunk,
   cancelFriendRequestThunk,
+  getFriendRejectedRequestListThunk,
+  deleteFriendThunk,
 } from "./friendsThunk";
 
 export interface FriendsState {
   loadingFriend: boolean;
+  friendNavType: FriendNavType;
   friends: FriendType[];
   friendRequests: FriendRequestType[];
+  friendRejectedRequests: FriendRequestType[];
 }
 
 const initialState: FriendsState = {
   loadingFriend: false,
   friends: [],
   friendRequests: [],
+  friendRejectedRequests: [],
+  friendNavType: "friendList",
 };
 
 export const friendsSlice = createSlice({
@@ -34,6 +41,9 @@ export const friendsSlice = createSlice({
     },
     removeFriendRequest: (state, action: PayloadAction<FriendRequestType>) => {
       state.friendRequests = state.friendRequests.filter(
+        (fr) => fr.id !== action.payload.id
+      );
+      state.friendRejectedRequests = state.friendRejectedRequests.filter(
         (fr) => fr.id !== action.payload.id
       );
     },
@@ -48,6 +58,16 @@ export const friendsSlice = createSlice({
         (fr) => fr.id !== friendRequest.id
       );
     },
+
+    deleteFriend: (state, action: PayloadAction<FriendType>) => {
+      state.friends = state.friends.filter((fr) => fr.id !== action.payload.id);
+    },
+
+    onChangeFriendNavType: (state, action: PayloadAction<FriendNavType>) => {
+      state.friendNavType = action.payload;
+    },
+
+    //
   },
   extraReducers: (builder) => {
     builder
@@ -77,6 +97,10 @@ export const friendsSlice = createSlice({
       state.friendRequests = state.friendRequests.filter(
         (fr) => fr.id !== action.payload?.data.id
       );
+      state.friendRejectedRequests = state.friendRequests.filter(
+        (fr) => fr.id !== action.payload?.data.id
+      );
+      console.log(action.payload?.data);
     });
 
     builder.addCase(rejectFriendRequestThunk.fulfilled, (state, action) => {
@@ -90,19 +114,37 @@ export const friendsSlice = createSlice({
       const { friend, friendRequest } = action.payload.data;
       state.friends.push(friend);
 
-      const indexReques = state.friendRequests.findIndex(
-        (f) => f.id === friendRequest.id
+      state.friendRejectedRequests = state.friendRejectedRequests.filter(
+        (fr) => fr.id !== friendRequest.id
       );
-      const request = state.friendRequests.find(
-        (f) => f.id === friendRequest.id
+
+      state.friendRequests = state.friendRequests.filter(
+        (fr) => fr.id !== friendRequest.id
       );
-      if (!request) return;
-      state.friendRequests.splice(indexReques, 1);
+    });
+
+    builder.addCase(
+      getFriendRejectedRequestListThunk.fulfilled,
+      (state, action) => {
+        if (!action.payload) return;
+        state.friendRejectedRequests = action.payload.data;
+      }
+    );
+
+    builder.addCase(deleteFriendThunk.fulfilled, (state, action) => {
+      state.friends = state.friends.filter(
+        (fr) => fr.id !== action.payload?.data.id
+      );
     });
   },
 });
 
-export const { addFriendRequest, removeFriendRequest, addAcceptFriend } =
-  friendsSlice.actions;
+export const {
+  addFriendRequest,
+  removeFriendRequest,
+  addAcceptFriend,
+  onChangeFriendNavType,
+  deleteFriend,
+} = friendsSlice.actions;
 
 export default friendsSlice.reducer;
