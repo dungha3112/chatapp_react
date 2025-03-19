@@ -262,3 +262,9 @@ export type FriendNavType =
   | "requests"
   | "rejected"
   | "addFriend";
+
+export type UserSidebarRouteType = "conversations" | "friends" | "connections";
+export type UserSidebarItemType = {
+  id: UserSidebarRouteType;
+  pathname: string;
+};

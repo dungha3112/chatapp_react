@@ -1,55 +1,27 @@
-import React, { useEffect, useState } from "react";
-import styles from "./index.module.scss";
-import ConversationRecipientField from "../../recipients/ConversationRecipientField";
-import { UserType } from "../../../utils/types";
-import { Button } from "../../../styles";
-import { useToast } from "../../../utils/hooks/useToast";
-import useDebounce from "../../../utils/hooks/useDebounce";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../store";
-import { searchUsersApi } from "../../../utils/api";
 import { createFriendRequestThunk } from "../../../store/friends/friendsThunk";
 import {
-  RecipientNoResultContainerStyle,
-  RecipientNoResultItemStyle,
-} from "../../../styles/recipients";
-import { FaFrownOpen } from "react-icons/fa";
-import FriendResultsContainer from "./FriendResultsContainer";
+  Button,
+  InputContainer,
+  InputField,
+  InputLabel,
+} from "../../../styles";
+import { useToast } from "../../../utils/hooks/useToast";
+import styles from "./index.module.scss";
 
 const AddFriend = () => {
-  const [query, setQuery] = useState<string>("");
-  const [selectedUser, setSelectedUser] = useState<UserType>();
-  const [searching, setSearching] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
 
   const { success, error } = useToast();
 
-  const debounceQuery = useDebounce(query, 1000);
-
   const dispatch = useDispatch<AppDispatch>();
-
-  const [userResults, setUserResults] = useState<UserType[]>([]);
-
-  useEffect(() => {
-    if (debounceQuery) {
-      setSearching(true);
-
-      searchUsersApi(debounceQuery)
-        .then((res) =>
-          res && res.data ? setUserResults(res.data) : setUserResults([])
-        )
-        .catch((err) => console.log(err))
-        .finally(() => setTimeout(() => setSearching(false), 1000));
-    }
-  }, [debounceQuery]);
-
-  const handleSelectUser = (user: UserType) => {
-    setSelectedUser(user);
-  };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!selectedUser) return;
-    dispatch(createFriendRequestThunk(selectedUser.email))
+    if (!email) return;
+    dispatch(createFriendRequestThunk(email))
       .unwrap()
       .then(() => {
         success("Send requests success ...");
@@ -60,50 +32,25 @@ const AddFriend = () => {
   };
 
   return (
-    <form className={styles.container} onSubmit={onSubmit}>
-      <div className={styles.details}>
-        <section className={styles.input}>
-          <ConversationRecipientField
-            query={query}
-            searching={searching}
-            selectedUser={selectedUser}
-            setQuery={setQuery}
-            setSelectedUser={setSelectedUser}
+    <form className={styles.form} onSubmit={onSubmit}>
+      <section className={styles.inputs}>
+        <InputContainer $backgroundColor="#161616">
+          <InputLabel htmlFor="recipient">Email</InputLabel>
+
+          <InputField
+            id="recipient"
+            autoComplete="off"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
+        </InputContainer>
+      </section>
 
-          {/* userResults > 0 */}
-
-          <div className={styles.recipientResult}>
-            {!selectedUser && !searching && userResults.length > 0 && query && (
-              <FriendResultsContainer
-                handleSelectUser={handleSelectUser}
-                userResults={userResults}
-              />
-            )}
-            {/* userResults === [] */}
-            <RecipientNoResultContainerStyle
-              style={{
-                display:
-                  !searching &&
-                  !selectedUser &&
-                  userResults.length === 0 &&
-                  debounceQuery
-                    ? "block"
-                    : "none",
-              }}
-            >
-              <RecipientNoResultItemStyle>
-                <span>No Result ...</span>
-                <FaFrownOpen className="icon" />
-              </RecipientNoResultItemStyle>
-            </RecipientNoResultContainerStyle>
-          </div>
-        </section>
-
-        <section className={styles.button}>
-          <Button>Send request</Button>
-        </section>
-      </div>
+      <section className={styles.button}>
+        <Button $size="sm" $flex={true} type="submit" disabled={!email}>
+          Add Request
+        </Button>
+      </section>
     </form>
   );
 };

@@ -25,6 +25,7 @@ import {
   FriendType,
   FriendRequestType,
   FriendRequestAcceptResponse,
+  SelectedConversationType,
 } from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
@@ -112,6 +113,29 @@ export const getConversationByIdApi = async (conversationId: number) => {
  * @param id
  * @returns
  */
+
+export const postMessageApi = async ({
+  id,
+  type,
+  data,
+}: {
+  id: string;
+  type: SelectedConversationType;
+  data: FormData;
+}) => {
+  try {
+    const url =
+      type === "private"
+        ? `/conversations/${id}/messages`
+        : `/groups/${id}/messages`;
+
+    return axiosClient.post(url, data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
 
 export const postNewConversationMessageApi = async (
   content: string,

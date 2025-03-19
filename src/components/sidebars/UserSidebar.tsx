@@ -1,4 +1,8 @@
+import { useEffect, useState } from "react";
+import { BsChatDots } from "react-icons/bs";
+import { FaUserFriends } from "react-icons/fa";
 import { RiLogoutCircleLine } from "react-icons/ri";
+import { useLocation, useNavigate } from "react-router-dom";
 import { UserAvatarContainer } from "../../styles";
 import {
   UserSidebarFooterStyle,
@@ -6,9 +10,37 @@ import {
   UserSidebarItemStyle,
   UserSidebarStyle,
 } from "../../styles/userSidebar";
-import { BsChatDots, BsPerson } from "react-icons/bs";
+import { userSidebarItems } from "../../utils/constants";
+import { UserSidebarRouteType } from "../../utils/types";
+
+const CustomIcon = (id: UserSidebarRouteType) => {
+  switch (id) {
+    case "conversations":
+      return <BsChatDots size={30} />;
+
+    case "friends":
+      return <FaUserFriends size={30} />;
+    default:
+      return <RiLogoutCircleLine size={30} />;
+  }
+};
 
 const UserSidebar = () => {
+  const [active, setActive] = useState<UserSidebarRouteType>("conversations");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname) {
+      setActive(
+        location.pathname.split("/").slice(1)[0] as UserSidebarRouteType
+      );
+      if (location.pathname.split("/").slice(1)[0] === "groups") {
+        setActive("conversations");
+      }
+    }
+  }, [location.pathname]);
+
   return (
     <>
       <UserSidebarStyle>
@@ -17,17 +49,18 @@ const UserSidebar = () => {
         </UserSidebarHeaderStyle>
 
         <UserSidebarFooterStyle>
-          <UserSidebarItemStyle $active={true}>
-            <BsChatDots size={30} />
-          </UserSidebarItemStyle>
-
-          <UserSidebarItemStyle>
-            <BsPerson size={30} />
-          </UserSidebarItemStyle>
-
-          <UserSidebarItemStyle>
-            <RiLogoutCircleLine size={30} />
-          </UserSidebarItemStyle>
+          {userSidebarItems.map((item) => (
+            <UserSidebarItemStyle
+              key={item.id}
+              $active={item.id === active}
+              onClick={() => {
+                setActive(item.id);
+                navigate(item.pathname);
+              }}
+            >
+              {CustomIcon(item.id)}
+            </UserSidebarItemStyle>
+          ))}
         </UserSidebarFooterStyle>
       </UserSidebarStyle>
     </>

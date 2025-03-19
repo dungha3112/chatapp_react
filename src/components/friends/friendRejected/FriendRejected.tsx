@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store";
-import { getFriendRejectedRequestListThunk } from "../../store/friends/friendsThunk";
-import { FriendListContainer } from "../../styles/friend";
 import FriendRejectedItem from "./FriendRejectedItem";
+import { getFriendRejectedRequestListThunk } from "../../../store/friends/friendsThunk";
+import { AppDispatch, RootState } from "../../../store";
+import { FriendListContainer } from "../../../styles/friend";
 
 const FriendRejected = () => {
   const dispatch = useDispatch<AppDispatch>();

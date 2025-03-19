@@ -1,57 +1,12 @@
-.container {
-  width: 100%;
-  height: 100%;
-  flex: 1 1 auto;
-}
-.details {
-  width: 100%;
-  // height: 100%;
+.form {
   display: flex;
   align-items: center;
-}
-
-.input {
+  gap: 10px;
   width: 100%;
+  padding: 40px;
 }
 
-.friendResultsContainer {
+.inputs {
   width: 100%;
-  height: 100%;
-}
-.friendResultContainerStyle {
-  background-color: #161616;
-  margin-top: 10px;
-  overflow: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-.resultItemStyle {
-  padding: 20px 10px;
-  border: 1px solid #161616;
-
-  transition: 0.5s background-color ease-in-out;
-  user-select: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  &:hover {
-    background-color: #292929;
-    border: 1px solid #22222278;
-    cursor: pointer;
-  }
-
-  &:hover .icon {
-    transition: 0.5s color ease-in-out;
-    color: #2b00ff;
-  }
-
-  & .icon {
-    font-size: 22px;
-    cursor: pointer;
-    color: #656565;
-  }
-}
-
-.button {
+  flex: 3;
 }

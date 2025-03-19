@@ -20,7 +20,7 @@ export const FriendsNavbarStyle = styled.nav`
   & .navLinks {
     display: flex;
     align-items: center;
-    gap: 50px;
+    gap: 20px;
   }
 `;
 
@@ -34,6 +34,7 @@ export const FriendNavbarItem = styled.span<FriendNavbarItemProps>`
     css`
       text-underline-offset: 6px;
       text-decoration: underline;
+      background-color: #383838;
     `}
 
   &:hover {

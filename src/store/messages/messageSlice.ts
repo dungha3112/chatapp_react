@@ -82,14 +82,12 @@ export const messageSlice = createSlice({
       .addCase(fetchMessagesThunk.fulfilled, (state, action) => {
         if (!action.payload) return;
         const { id, messages } = action.payload.data;
-        console.log(messages);
 
         const index = state.messages.findIndex((cm) => cm.id === id);
         const exists = state.messages.find((cm) => cm.id === id);
 
         if (exists) {
           console.log("exists");
-          console.log(index);
 
           // state.messages[index] = action.payload.data;
 

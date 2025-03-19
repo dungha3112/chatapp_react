@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store";
-import { getFriendListThunk } from "../../store/friends/friendsThunk";
-import { FriendListContainer } from "../../styles/friend";
+import { AppDispatch, RootState } from "../../../store";
+import { getFriendListThunk } from "../../../store/friends/friendsThunk";
+import { FriendListContainer } from "../../../styles/friend";
 import FriendListItem from "./FriendListItem";
 
 const FriendList = () => {

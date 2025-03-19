@@ -14,6 +14,7 @@ import {
   handleOpenFeedIconNewMess,
 } from "../../store/modals/modalSlice";
 import {
+  postMessageApi,
   postNewConversationMessageApi,
   postNewGroupMessageApi,
 } from "../../utils/api";
@@ -69,6 +70,10 @@ const MessageInputField = ({ sendTypingStatus }: Props) => {
         console.log(error);
       }
     }
+
+    const params = { type: conversationType, data: content, id: parseInt(id) };
+    // const res = await postMessageApi(params)
+
     dispatch(handleOpenFeedIconNewMess(false));
   };
 

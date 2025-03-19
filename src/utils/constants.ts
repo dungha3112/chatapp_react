@@ -1,4 +1,4 @@
-import { ConversationChatTypeData } from "./types";
+import { ConversationChatTypeData, UserSidebarItemType } from "./types";
 
 export const WIDTH_SIDE_BAR = 265;
 
@@ -24,5 +24,20 @@ export const friendsNavbarItems = [
   {
     id: "addFriend",
     label: "Add Friend",
+  },
+];
+
+export const userSidebarItems: UserSidebarItemType[] = [
+  {
+    id: "conversations",
+    pathname: "/conversations",
+  },
+  {
+    id: "friends",
+    pathname: "/friends",
+  },
+  {
+    id: "connections",
+    pathname: "/connections",
   },
 ];

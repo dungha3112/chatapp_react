@@ -21,7 +21,6 @@ export const store = configureStore({
     groupSidebar: groupRecipientSidebarReducer,
 
     friends: friendsReducer,
-
     modal: modalReducer,
   },
   middleware(getDefaultMiddleware) {

@@ -4,16 +4,16 @@ import {
   IoIosCloseCircleOutline,
   IoMdRemoveCircleOutline,
 } from "react-icons/io";
-import { FriendRequestItemContainer } from "../../styles/friend";
-import { AuthContext } from "../../utils/contexts/AuthContext";
-import { FriendRequestType } from "../../utils/types";
+import { FriendRequestType } from "../../../utils/types";
+import { AuthContext } from "../../../utils/contexts/AuthContext";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store";
+import { AppDispatch } from "../../../store";
 import {
   acceptFriendRequestThunk,
   cancelFriendRequestThunk,
   rejectFriendRequestThunk,
-} from "../../store/friends/friendsThunk";
+} from "../../../store/friends/friendsThunk";
+import { FriendRequestItemContainer } from "../../../styles/friend";
 
 type Props = {
   friendRequest: FriendRequestType;

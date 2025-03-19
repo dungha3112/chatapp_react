@@ -4,15 +4,14 @@ import {
   IoIosCloseCircleOutline,
 } from "react-icons/io";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store";
+import { FriendRequestType } from "../../../utils/types";
+import { AuthContext } from "../../../utils/contexts/AuthContext";
+import { AppDispatch } from "../../../store";
 import {
   acceptFriendRequestThunk,
   cancelFriendRequestThunk,
-} from "../../store/friends/friendsThunk";
-import { FriendRequestItemContainer } from "../../styles/friend";
-import { AuthContext } from "../../utils/contexts/AuthContext";
-import { FriendRequestType } from "../../utils/types";
-
+} from "../../../store/friends/friendsThunk";
+import { FriendRequestItemContainer } from "../../../styles/friend";
 type Props = {
   rejectedRequest: FriendRequestType;
 };

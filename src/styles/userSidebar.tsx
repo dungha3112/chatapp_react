@@ -31,6 +31,8 @@ export const ScrollableContainer = styled.div`
   flex: 1 1 auto;
   overflow-y: auto;
   min-height: 0;
+  width: 100%;
+  height: 100%;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -45,10 +47,8 @@ export const UserSidebarScrollableContainer = styled(ScrollableContainer)`
 `;
 
 export const UserSidebarFooterStyle = styled.footer`
-  padding: 18px 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
 `;
 
 export const UserSidebarItemStyle = styled.div<SidebarItemProps>`
@@ -57,5 +57,6 @@ export const UserSidebarItemStyle = styled.div<SidebarItemProps>`
   align-items: center;
   justify-content: center;
   padding: 18px;
-  background-color: ${({ $active }) => $active && "#bb00ff"};
+  color: ${({ $active }) => ($active ? "#2196f3" : "#f6dcdc")};
+  cursor: pointer;
 `;
