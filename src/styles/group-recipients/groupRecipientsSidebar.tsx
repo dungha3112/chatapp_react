@@ -11,8 +11,7 @@ export const GroupRecipientsSidebarStyle = styled.aside<ShowSidebarProps>`
   flex: 0 0 auto;
   background-color: #111111;
   border-left: 1px solid #49494925;
-
-  /* console.log("Styled Component received $showSidebar:", $showSidebar); */
+ 
   /* ${({ $showSidebar }) => {
     const animation = $showSidebar ? slideInFromRight : slideInFromLeft;
     return css`

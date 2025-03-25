@@ -23,7 +23,7 @@ const RecipientResultsContainer = ({
             key={user.id}
             onClick={() => handleSelectUser(user)}
           >
-            <span>{user.email}</span>
+            <span>{user.username}</span>
             <CiCircleCheck className="icon" />
           </RecipientResultItemStyle>
         ))}

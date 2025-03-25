@@ -53,7 +53,7 @@ const CreateConversationForm = ({ setShowModal }: Props) => {
     e.preventDefault();
     if (!selectedUser || !message) return;
 
-    const data = { email: selectedUser.email, message };
+    const data = { username: selectedUser.username, message };
     return dispatch(createConversationThunk(data))
       .unwrap()
       .then((res) => {

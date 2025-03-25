@@ -1,19 +1,21 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../../../utils/contexts/AuthContext";
-import { FriendListItemContainer } from "../../../styles/friend";
-import { FriendType } from "../../../utils/types";
+import { useContext } from "react";
 import { AiFillDelete } from "react-icons/ai";
-import { ButtonIconStyle } from "../../../styles";
+import { GoDotFill } from "react-icons/go";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../store";
 import { deleteFriendThunk } from "../../../store/friends/friendsThunk";
+import { FriendListItemContainer } from "../../../styles/friend";
+import { AuthContext } from "../../../utils/contexts/AuthContext";
+import { getUserFriendInstance } from "../../../utils/helpers";
+import { FriendType } from "../../../utils/types";
+import { checkConversationOrCreate } from "../../../utils/api";
 import { useNavigate } from "react-router-dom";
-import { isReceiver } from "../../../utils/helpers";
 
 type Props = {
   friend: FriendType;
+  online?: boolean;
 };
-const FriendListItem = ({ friend }: Props) => {
+const FriendListItem = ({ friend, online }: Props) => {
   const { user } = useContext(AuthContext);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -22,34 +24,42 @@ const FriendListItem = ({ friend }: Props) => {
     dispatch(deleteFriendThunk(friend.id));
   };
 
-  const sender = isReceiver(user, friend);
+  const handleSendMessageOrCreateNewConversation = async () => {
+    const recipient = getUserFriendInstance(user, friend);
+    if (!recipient) return;
+
+    checkConversationOrCreate(recipient.id)
+      .then((res) => {
+        navigate(`/conversations/${res?.data.id}`);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
-    <FriendListItemContainer>
-      <div
-        className="userDetails"
-        onClick={() => navigate(`/conversations/${sender?.id}`)}
-      >
-        <div className="avatar"></div>
-
+    <FriendListItemContainer onClick={handleSendMessageOrCreateNewConversation}>
+      <div className="userDetails">
+        <div className="avatar">
+          {online && <GoDotFill fontSize={20} className="online" />}
+        </div>
         <div className="nameAndMessage">
           <div className="name">
             {user?.id === friend.sender.id
-              ? friend.receiver.email
-              : friend.sender.email}
+              ? friend.receiver.username
+              : friend.sender.username}
           </div>
 
           <div className="message">Hi How are you ?</div>
         </div>
       </div>
 
-      <ButtonIconStyle>
-        <AiFillDelete
-          className="icon"
-          onClick={handleDeleteFriend}
-          cursor="pointer"
-        />
-      </ButtonIconStyle>
+      <AiFillDelete
+        className="icon"
+        onClick={(e) => {
+          e.stopPropagation(); // Ngăn chặn sự kiện lan truyền lên phần tử cha
+          handleDeleteFriend();
+        }}
+        cursor="pointer"
+      />
     </FriendListItemContainer>
   );
 };

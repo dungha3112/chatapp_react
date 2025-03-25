@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { BsChatDots } from "react-icons/bs";
 import { FaUserFriends } from "react-icons/fa";
 import { RiLogoutCircleLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { RootState } from "../../store";
 import { UserAvatarContainer } from "../../styles";
 import {
+  IconBadge,
   UserSidebarFooterStyle,
   UserSidebarHeaderStyle,
   UserSidebarItemStyle,
@@ -12,7 +15,7 @@ import {
 } from "../../styles/userSidebar";
 import { userSidebarItems } from "../../utils/constants";
 import { UserSidebarRouteType } from "../../utils/types";
-
+import { IoSettingsOutline } from "react-icons/io5";
 const CustomIcon = (id: UserSidebarRouteType) => {
   switch (id) {
     case "conversations":
@@ -20,6 +23,9 @@ const CustomIcon = (id: UserSidebarRouteType) => {
 
     case "friends":
       return <FaUserFriends size={30} />;
+
+    case "settings":
+      return <IoSettingsOutline size={30} />;
     default:
       return <RiLogoutCircleLine size={30} />;
   }
@@ -29,6 +35,8 @@ const UserSidebar = () => {
   const [active, setActive] = useState<UserSidebarRouteType>("conversations");
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { friendRequests } = useSelector((state: RootState) => state.friends);
 
   useEffect(() => {
     if (location.pathname) {
@@ -59,6 +67,15 @@ const UserSidebar = () => {
               }}
             >
               {CustomIcon(item.id)}
+              {item.id === "friends" && friendRequests.length > 0 && (
+                <IconBadge>
+                  {friendRequests.length > 100 ? (
+                    <span>99+</span>
+                  ) : (
+                    friendRequests.length
+                  )}
+                </IconBadge>
+              )}
             </UserSidebarItemStyle>
           ))}
         </UserSidebarFooterStyle>

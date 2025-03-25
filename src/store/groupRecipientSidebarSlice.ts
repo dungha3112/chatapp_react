@@ -19,7 +19,6 @@ export const groupRecipientSidebarSlice = createSlice({
   initialState,
   reducers: {
     tonggleSidebar: (state, action: PayloadAction<boolean>) => {
-      console.log(`state: `, action.payload);
 
       state.showSidebar = action.payload;
     },

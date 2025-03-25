@@ -7,13 +7,13 @@ import {
 import { FriendType } from "./../../utils/types";
 import {
   acceptFriendRequestThunk,
-  rejectFriendRequestThunk,
-  createFriendRequestThunk,
-  getFriendListThunk,
-  getFriendRequestListThunk,
   cancelFriendRequestThunk,
-  getFriendRejectedRequestListThunk,
+  createFriendRequestThunk,
   deleteFriendThunk,
+  getFriendListThunk,
+  getFriendRejectedRequestListThunk,
+  getFriendRequestListThunk,
+  rejectFriendRequestThunk,
 } from "./friendsThunk";
 
 export interface FriendsState {
@@ -21,7 +21,10 @@ export interface FriendsState {
   friendNavType: FriendNavType;
   friends: FriendType[];
   friendRequests: FriendRequestType[];
+
   friendRejectedRequests: FriendRequestType[];
+
+  friendOnlines: FriendType[];
 }
 
 const initialState: FriendsState = {
@@ -30,6 +33,8 @@ const initialState: FriendsState = {
   friendRequests: [],
   friendRejectedRequests: [],
   friendNavType: "friendList",
+
+  friendOnlines: [],
 };
 
 export const friendsSlice = createSlice({
@@ -67,6 +72,10 @@ export const friendsSlice = createSlice({
       state.friendNavType = action.payload;
     },
 
+    setFriendOnline: (state, action: PayloadAction<FriendType[]>) => {
+      state.friendOnlines = action.payload;
+    },
+
     //
   },
   extraReducers: (builder) => {
@@ -100,7 +109,6 @@ export const friendsSlice = createSlice({
       state.friendRejectedRequests = state.friendRequests.filter(
         (fr) => fr.id !== action.payload?.data.id
       );
-      console.log(action.payload?.data);
     });
 
     builder.addCase(rejectFriendRequestThunk.fulfilled, (state, action) => {
@@ -145,6 +153,7 @@ export const {
   addAcceptFriend,
   onChangeFriendNavType,
   deleteFriend,
+  setFriendOnline,
 } = friendsSlice.actions;
 
 export default friendsSlice.reducer;

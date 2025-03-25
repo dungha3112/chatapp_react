@@ -34,12 +34,24 @@ export const InputField = styled.input`
   }
 `;
 
+export const InputContainerHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+`;
+
 export const InputLabel = styled.label`
   display: block;
   color: #8f8f8f;
   font-size: 14px;
   margin: 4px 0;
   transition: 1s time-out ease-in-out;
+`;
+
+export const InputError = styled.span`
+  color: crimson;
+  font-size: 12px;
 `;
 
 export const LabelAnimation = styled.label<AnimationOceanWavesProps>`

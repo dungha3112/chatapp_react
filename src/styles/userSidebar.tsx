@@ -57,6 +57,23 @@ export const UserSidebarItemStyle = styled.div<SidebarItemProps>`
   align-items: center;
   justify-content: center;
   padding: 18px;
-  color: ${({ $active }) => ($active ? "#2196f3" : "#f6dcdc")};
+  color: ${({ $active }) => ($active ? "#2196f3" : "#f1f1f1")};
   cursor: pointer;
+  position: relative;
+`;
+
+export const IconBadge = styled.div`
+  background-color: #ff3535;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: #fff;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  justify-content: center;
 `;

@@ -43,7 +43,7 @@ export const FriendNavbarItem = styled.span<FriendNavbarItemProps>`
 `;
 
 export const FriendListContainer = styled.div`
-  padding: 40px;
+  padding: 20px 40px 40px 40px;
   height: calc(100% - 110px);
   overflow-y: scroll;
 
@@ -73,6 +73,13 @@ export const FriendListItemContainer = styled.div`
       width: 50px;
       border-radius: 50%;
       background-color: blue;
+      position: relative;
+      & .online {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        color: #07f007;
+      }
     }
 
     & .nameAndMessage {
@@ -96,12 +103,17 @@ export const FriendListItemContainer = styled.div`
   }
 
   & .icon {
+    display: none;
     font-size: 22px;
     color: #ff0000;
+    z-index: 9999;
   }
 
   &:hover {
     background-color: #262626;
+  }
+  &:hover .icon {
+    display: block;
   }
 `;
 

@@ -52,13 +52,11 @@ const GroupLayout = () => {
 
   useEffect(() => {
     socket.on("onGroupCreate", (payload: GroupType) => {
-      console.log(`create group`, payload);
 
       dispatch(addGroup(payload));
     });
 
     socket.on("onGroupMessage", (payload: GroupMessageEventPayload) => {
-      console.log(`on group create message`, payload);
 
       dispatch(addGroupMessage(payload));
       dispatch(updateGroup(payload.group));
@@ -81,13 +79,11 @@ const GroupLayout = () => {
     });
 
     socket.on("onGroupOwnerUpdate", (payload: GroupType) => {
-      console.log("on Group Owner Update", payload);
       dispatch(updateGroup(payload));
     });
 
     // send socket to all user in group
     socket.on("onGroupRecipientRemoved", (payload: GroupType) => {
-      console.log(`group recipients removed`, payload);
       dispatch(updateGroup(payload));
     });
 

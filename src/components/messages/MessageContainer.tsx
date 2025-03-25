@@ -36,10 +36,6 @@ const MessageContainer = () => {
   const dispatch = useDispatch<AppDispatch>();
   const ref = useRef<HTMLDivElement>(null);
 
-  const { pagination, loading } = useSelector(
-    (state: RootState) => state.message
-  );
-
   const { id } = useParams();
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [points, setPoints] = useState<{ x: number; y: number }>({

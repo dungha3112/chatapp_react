@@ -16,9 +16,10 @@ import { friendsNavbarItems } from "../../utils/constants";
 import { FriendNavType } from "../../utils/types";
 
 const FriendsLayout = () => {
-  const friendNavType = useSelector(
-    (state: RootState) => state.friends.friendNavType
+  const { friendNavType, friendRejectedRequests, friendRequests } = useSelector(
+    (state: RootState) => state.friends
   );
+
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -30,6 +31,21 @@ const FriendsLayout = () => {
       );
     }
   }, [dispatch]);
+
+  const onRenderNumber = (item: FriendNavType) => {
+    return (
+      <>
+        {item === "requests" && friendRequests.length > 0 && (
+          <span style={{ color: "green" }}> ({friendRequests.length})</span>
+        )}
+        {item === "rejected" && friendRejectedRequests.length > 0 && (
+          <span style={{ color: "red" }}>
+            ({friendRejectedRequests.length})
+          </span>
+        )}
+      </>
+    );
+  };
 
   return (
     <>
@@ -49,6 +65,7 @@ const FriendsLayout = () => {
                 }}
               >
                 {item.label}
+                {onRenderNumber(item.id as FriendNavType)}
               </FriendNavbarItem>
             ))}
           </div>

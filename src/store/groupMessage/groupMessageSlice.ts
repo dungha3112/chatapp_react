@@ -32,7 +32,6 @@ export const groupMessagesSlice = createSlice({
     },
 
     deleteGroupMessage: (state, action: PayloadAction<GroupMessageType>) => {
-      console.log("deleteGroupMessage . ...");
 
       const groupId = action.payload.group?.id;
       const messageId = action.payload.id;
@@ -89,7 +88,6 @@ export const groupMessagesSlice = createSlice({
 
       .addCase(deleteGroupMessageThunk.fulfilled, (state, action) => {
         if (!action.payload) return;
-        console.log("delete group message thunk", action.payload.data);
 
         const { groupId, messageId } = action.payload.data;
 

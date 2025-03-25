@@ -76,7 +76,7 @@ const CreateGroupForm = ({ setShowModal }: Props) => {
     e.preventDefault();
     if (selectedRecipients.length === 0 || !title || !message) return;
 
-    const users = selectedRecipients.map((user) => user.email);
+    const users = selectedRecipients.map((user) => user.username);
 
     return dispatch(createGroupThunk({ users, title, message }))
       .unwrap()

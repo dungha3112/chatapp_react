@@ -1,13 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Button, InputContainer, InputField, InputLabel } from "../../styles";
-import styles from "./index.module.scss";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { UserCredentialsParams } from "../../utils/types";
-import { postLoginApi } from "../../utils/api";
 import { useContext, useEffect, useState } from "react";
-import { useAuth } from "../../utils/hooks/useAuth";
-import { SocketContext } from "../../utils/contexts/SocketContext";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Button } from "../../../styles";
+import { postLoginApi } from "../../../utils/api";
+import { SocketContext } from "../../../utils/contexts/SocketContext";
+import { useAuth } from "../../../utils/hooks/useAuth";
+import { UserCredentialsParams } from "../../../utils/types";
+import styles from "../index.module.scss";
+import UsernameField from "./UsernameField";
+import PasswordField from "./PasswordField";
 
 const LoginForm = () => {
   const {
@@ -40,25 +42,12 @@ const LoginForm = () => {
     if (user) return navigate("/conversations");
   }, [navigate, user]);
 
+  const formFieldProps = { errors, register };
+
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <InputContainer>
-        <InputLabel htmlFor="email">Email</InputLabel>
-        <InputField
-          id="email"
-          type="email"
-          {...register("email", { required: "Email is required" })}
-        />
-      </InputContainer>
-
-      <InputContainer className={styles.loginFormPassword}>
-        <InputLabel htmlFor="password">Password</InputLabel>
-        <InputField
-          id="password"
-          type="password"
-          {...register("password", { required: "Password is required" })}
-        />
-      </InputContainer>
+      <UsernameField {...formFieldProps} />
+      <PasswordField {...formFieldProps} />
 
       <Button className={styles.button} type="submit">
         {loading ? "Loading ..." : "Login Now"}

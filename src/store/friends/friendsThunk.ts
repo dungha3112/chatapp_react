@@ -39,7 +39,7 @@ export const getFriendRejectedRequestListThunk = createAsyncThunk(
 
 export const createFriendRequestThunk = createAsyncThunk(
   "friends/requests/create",
-  (email: string) => createFriendRequestApi(email)
+  (username: string) => createFriendRequestApi(username)
 );
 
 export const cancelFriendRequestThunk = createAsyncThunk(

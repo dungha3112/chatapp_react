@@ -14,7 +14,7 @@ const SelectedConversationRecipientChip = ({
   return (
     <SelectedRecipientPillStyle>
       <div className="container">
-        <span>{user.email}</span>
+        <span>{user.username}</span>
         <CiCircleRemove
           className="icon"
           onClick={() => setSelectedUser(undefined)}

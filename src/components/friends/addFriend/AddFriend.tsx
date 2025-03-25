@@ -12,7 +12,7 @@ import { useToast } from "../../../utils/hooks/useToast";
 import styles from "./index.module.scss";
 
 const AddFriend = () => {
-  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
 
   const { success, error } = useToast();
 
@@ -20,8 +20,8 @@ const AddFriend = () => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email) return;
-    dispatch(createFriendRequestThunk(email))
+    if (!username) return;
+    dispatch(createFriendRequestThunk(username))
       .unwrap()
       .then(() => {
         success("Send requests success ...");
@@ -35,19 +35,19 @@ const AddFriend = () => {
     <form className={styles.form} onSubmit={onSubmit}>
       <section className={styles.inputs}>
         <InputContainer $backgroundColor="#161616">
-          <InputLabel htmlFor="recipient">Email</InputLabel>
+          <InputLabel htmlFor="recipient">Username</InputLabel>
 
           <InputField
             id="recipient"
             autoComplete="off"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </InputContainer>
       </section>
 
       <section className={styles.button}>
-        <Button $size="sm" $flex={true} type="submit" disabled={!email}>
+        <Button $size="sm" $flex={true} type="submit" disabled={!username}>
           Add Request
         </Button>
       </section>

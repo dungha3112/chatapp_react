@@ -53,7 +53,7 @@ const SendFriendRequestForm = ({ setShowModal }: Props) => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!selectedUser) return;
-    dispatch(createFriendRequestThunk(selectedUser.email))
+    dispatch(createFriendRequestThunk(selectedUser.username))
       .unwrap()
       .then(() => {
         success("Send requests success ...");

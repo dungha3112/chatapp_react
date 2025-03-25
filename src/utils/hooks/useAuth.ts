@@ -16,7 +16,6 @@ export const useAuth = () => {
       })
       .catch((error) => {
         toast.clearWaitingQueue();
-        console.log(error);
 
         // toast(String(error), { type: "error" });
       })

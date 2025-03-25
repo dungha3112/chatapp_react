@@ -39,7 +39,6 @@ export const conversationSlice = createSlice({
       state,
       action: PayloadAction<EditOrDeleteLastMessageConversationSidebarResponse>
     ) => {
-      console.log("editOrDeleteLastMessageConversation");
 
       const { isEdit, messages, message, conversationId } = action.payload;
 
@@ -55,12 +54,10 @@ export const conversationSlice = createSlice({
 
       if (!isLastMessageSent) return;
       if (isEdit) {
-        console.log("edit message last sent conversation");
 
         state.conversations[index].lastMessageSent = message;
       } else {
         if (!messages) return;
-        console.log("delete message last sent conversation");
 
         state.conversations[index].lastMessageSent = messages[1];
       }

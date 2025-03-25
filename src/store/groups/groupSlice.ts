@@ -33,13 +33,11 @@ export const groupsSlice = createSlice({
   initialState,
   reducers: {
     addGroup: (state, action: PayloadAction<GroupType>) => {
-      console.log(`add group slice`, action.payload);
 
       state.groups.unshift(action.payload);
     },
 
     updateGroup: (state, action: PayloadAction<GroupType>) => {
-      console.log("update group...");
 
       const group = action.payload;
       const existingGroup = state.groups.find((g) => g.id === group.id);
@@ -53,7 +51,6 @@ export const groupsSlice = createSlice({
     },
 
     removeGroup: (state, action: PayloadAction<GroupType>) => {
-      console.log(`remove group reducer ..:..`);
 
       const group = state.groups.find((g) => g.id === action.payload.id);
       const index = state.groups.findIndex((g) => g.id === action.payload.id);
@@ -68,7 +65,6 @@ export const groupsSlice = createSlice({
     ) => {
       const { isEdit, messages, message, groupId } = action.payload;
 
-      console.log("editOrDeleteLastMessage group : ", action.payload);
 
       const group = state.groups.find((g) => g.id === groupId);
       const index = state.groups.findIndex((g) => g.id === groupId);
@@ -76,11 +72,9 @@ export const groupsSlice = createSlice({
       if (!isLastMessageSent) return;
 
       if (isEdit) {
-        console.log("edit message last sent in the group ...");
         state.groups[index].lastMessageSent = message;
       } else {
         if (!messages) return;
-        console.log("delete message last sent in the group ");
         state.groups[index].lastMessageSent = messages[1];
       }
     },
@@ -133,7 +127,6 @@ export const groupsSlice = createSlice({
       })
       //updateGroupOwnerThunk
       .addCase(updateGroupOwnerThunk.fulfilled, () => {
-        console.log("updateGroupOwnerThunk.fulfilled");
       })
 
       //userLeaveGroupThunk

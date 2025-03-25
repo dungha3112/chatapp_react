@@ -88,7 +88,6 @@ const ConversationLayout = () => {
     });
 
     socket.on("onMessageEdit", (payload: MessageType) => {
-      console.log("Message Edit", payload);
       dispatch(editMessage(payload));
 
       dispatch(

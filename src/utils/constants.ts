@@ -1,4 +1,8 @@
-import { ConversationChatTypeData, UserSidebarItemType } from "./types";
+import {
+  ConversationChatTypeData,
+  SettingsItemType,
+  UserSidebarItemType,
+} from "./types";
 
 export const WIDTH_SIDE_BAR = 265;
 
@@ -37,7 +41,39 @@ export const userSidebarItems: UserSidebarItemType[] = [
     pathname: "/friends",
   },
   {
+    id: "settings",
+    pathname: "/settings",
+  },
+  {
     id: "connections",
     pathname: "/connections",
+  },
+];
+
+export const settingsItems: SettingsItemType[] = [
+  {
+    id: "profile",
+    label: "Profile",
+    pathname: "/settings/profile",
+  },
+  // {
+  //   id: "security",
+  //   label: "Security",
+  //   pathname: "/settings/security",
+  // },
+  // {
+  //   id: "notifications",
+  //   label: "Notifications",
+  //   pathname: "/settings/notifications",
+  // },
+  // {
+  //   id: "integrations",
+  //   label: "Integrations",
+  //   pathname: "/settings/integrations",
+  // },
+  {
+    id: "appearance",
+    label: "Appearance",
+    pathname: "/settings/appearance",
   },
 ];

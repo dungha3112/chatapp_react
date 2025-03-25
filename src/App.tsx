@@ -1,6 +1,10 @@
 import { ReactNode, useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import AppPage from "./pages/AppPage";
 import LoginPage from "./pages/LoginPage";
@@ -18,6 +22,9 @@ import ConversationPageGuard from "./guards/ConversationPageGuard";
 import GroupPageGuard from "./guards/GroupPageGuard";
 import FriendsLayout from "./pages/friends/FriendsLayout";
 import ConversationLayout from "./pages/conversations/ConversationLayout";
+import SettingsPage from "./pages/settings/SettingsPage";
+import SettingsProfilePage from "./pages/settings/SettingsProfilePage";
+import SettingsAppearancePage from "./pages/settings/SettingsAppearancePage";
 
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -58,6 +65,19 @@ const router = createBrowserRouter([
       {
         path: "/friends",
         element: <FriendsLayout />,
+      },
+
+      {
+        path: "/settings",
+        element: <SettingsPage />,
+        children: [
+          { path: "profile", element: <SettingsProfilePage /> },
+          { path: "appearance", element: <SettingsAppearancePage /> },
+        ],
+      },
+      {
+        path: "/*",
+        element: <Navigate to="/" />,
       },
     ],
   },

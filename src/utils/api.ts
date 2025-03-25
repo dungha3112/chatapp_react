@@ -48,6 +48,7 @@ const logErrorMessage = (error: unknown) => {
  * @param data
  * @returns
  */
+
 export const postRegisterApi = async (data: CreateUserParams) => {
   try {
     return await axiosClient.post("auth/register", data);
@@ -137,12 +138,25 @@ export const postMessageApi = async ({
   }
 };
 
+/**
+ * ConversatioN API
+ */
 export const postNewConversationMessageApi = async (
   content: string,
   id: number
 ) => {
   try {
     return await axiosClient.post(`conversations/${id}/messages`, { content });
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+export const checkConversationOrCreate = async (recipientId: number) => {
+  try {
+    return await axiosClient.get<ConversationType>(
+      `exists/conversations/${recipientId}`
+    );
   } catch (error) {
     logErrorMessage(error);
   }
@@ -193,6 +207,14 @@ export const editMessageApi = async ({
 export const searchUsersApi = async (query: string) => {
   try {
     return await axiosClient.get<UserType[]>(`/users/search?query=${query}`);
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+export const checkUsernameApi = async (username: string) => {
+  try {
+    return await axiosClient.post(`users/check?username=${username}`);
   } catch (error) {
     logErrorMessage(error);
   }
@@ -281,13 +303,13 @@ export const editGroupMessageApi = async ({
 
 export const addGroupRecipientApi = async ({
   groupId,
-  email,
+  username,
 }: AddGroupRecipientParams) => {
   try {
     return await axiosClient.post<AddGroupRecipientResponse>(
       `/groups/${groupId}/recipients`,
       {
-        email,
+        username,
       }
     );
   } catch (error) {
@@ -355,10 +377,10 @@ export const getFriendRejectedRequestsApi = async () => {
   }
 };
 
-export const createFriendRequestApi = async (email: string) => {
+export const createFriendRequestApi = async (username: string) => {
   try {
     return await axiosClient.post<FriendRequestType>(`/friends/requests`, {
-      email,
+      username,
     });
   } catch (error) {
     logErrorMessage(error);
@@ -398,6 +420,20 @@ export const rejectFriendRequestApi = async (id: number) => {
 export const deleteFriendApi = async (id: number) => {
   try {
     return await axiosClient.delete<FriendType>(`/friends/${id}/delete`);
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+/**
+ * Profile
+ */
+
+export const completeUserProfile = async (data: FormData) => {
+  try {
+    return axiosClient.post("/users/profiles", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
   } catch (error) {
     logErrorMessage(error);
   }

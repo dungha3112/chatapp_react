@@ -3,7 +3,7 @@ export type ContextMenuEventType = React.MouseEvent<HTMLDivElement, MouseEvent>;
 
 //UserCredentialsParams
 export type UserCredentialsParams = {
-  email: string;
+  username: string;
   password: string;
 };
 
@@ -42,7 +42,7 @@ export type ConversationChatTypeData = {
 
 //CreateConversationParams
 export type CreateConversationParams = {
-  email: string;
+  username: string;
   message: string;
 };
 
@@ -75,7 +75,6 @@ export type ConversationMessage = {
 //UserType
 export type UserType = {
   id: number;
-  email: string;
   username: string;
   firstName: string;
   lastName: string;
@@ -201,7 +200,7 @@ export type EditGroupMessageParams = {
 // AddGroupRecipientParams
 export type AddGroupRecipientParams = {
   groupId: number;
-  email: string;
+  username: string;
 };
 
 // AddGroupRecipientResponse
@@ -263,8 +262,25 @@ export type FriendNavType =
   | "rejected"
   | "addFriend";
 
-export type UserSidebarRouteType = "conversations" | "friends" | "connections";
+export type UserSidebarRouteType =
+  | "conversations"
+  | "friends"
+  | "connections"
+  | "settings";
 export type UserSidebarItemType = {
   id: UserSidebarRouteType;
+  pathname: string;
+};
+
+export type SettingsSidebarRouteType =
+  | "profile"
+  | "security"
+  | "notifications"
+  | "integrations"
+  | "appearance";
+
+export type SettingsItemType = {
+  id: SettingsSidebarRouteType;
+  label: string;
   pathname: string;
 };

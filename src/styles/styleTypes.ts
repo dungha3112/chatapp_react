@@ -112,3 +112,8 @@ export type ShowSidebarProps = Partial<{
 export type FriendNavbarItemProps = Partial<{
   $active: boolean;
 }>;
+
+
+export type SettingsSidebarItemProps = {
+  $isActive: boolean;
+};

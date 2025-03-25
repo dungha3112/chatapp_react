@@ -1,15 +1,8 @@
+import { useContext, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import ConversationSidebar from "../components/sidebars/ConversationSidebar";
 import UserSidebar from "../components/sidebars/UserSidebar";
-import { LayoutPage } from "../styles";
-import { useContext, useEffect } from "react";
-import {
-  FriendRequestAcceptResponse,
-  FriendRequestType,
-  FriendType,
-} from "../utils/types";
-import { SocketContext } from "../utils/contexts/SocketContext";
-import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import {
   addAcceptFriend,
@@ -18,15 +11,30 @@ import {
   onChangeFriendNavType,
   removeFriendRequest,
 } from "../store/friends/friendsSlice";
+import { LayoutPage } from "../styles";
+import { SocketContext } from "../utils/contexts/SocketContext";
 import { useToast } from "../utils/hooks/useToast";
+import {
+  FriendRequestAcceptResponse,
+  FriendRequestType,
+  FriendType,
+} from "../utils/types";
+import { getFriendRequestListThunk } from "../store/friends/friendsThunk";
+import { AuthContext } from "../utils/contexts/AuthContext";
+import { getUserFriendInstance } from "../utils/helpers";
 
 const AppPage = () => {
   const location = useLocation();
   const { id } = useParams();
   const socket = useContext(SocketContext);
+  const { user } = useContext(AuthContext);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { info } = useToast({ theme: "dark", position: "bottom-left" });
+
+  useEffect(() => {
+    dispatch(getFriendRequestListThunk());
+  }, [dispatch]);
 
   useEffect(() => {
     socket.on("onFriendRequestReceived", (payload: FriendRequestType) => {
@@ -91,9 +99,10 @@ const AppPage = () => {
 
     socket.on("onFriendDelete", (payload: FriendType) => {
       dispatch(deleteFriend(payload));
-      const { sender } = payload;
 
-      info(`${sender.firstName} ${sender.lastName} unfriend you`, {
+      const receiver = getUserFriendInstance(user, payload);
+
+      info(`${receiver?.firstName} ${receiver?.lastName} unfriend you`, {
         onClick: () => {
           navigate("/friends");
           dispatch(onChangeFriendNavType("friendList"));

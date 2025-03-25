@@ -9,7 +9,6 @@ export const useGroupGuard = () => {
   const controller = new AbortController();
 
   useEffect(() => {
-    console.log("fetchung groups ...");
     setLoading(true);
 
     getGroupByIdApi(parseInt(id!))

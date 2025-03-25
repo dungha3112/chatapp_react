@@ -43,7 +43,6 @@ export const messageSlice = createSlice({
       const conversationMessages = state.messages.find(
         (cm) => cm.id === conversationId
       );
-      console.log(conversationMessages);
 
       if (!conversationMessages) return;
 
@@ -87,7 +86,6 @@ export const messageSlice = createSlice({
         const exists = state.messages.find((cm) => cm.id === id);
 
         if (exists) {
-          console.log("exists");
 
           // state.messages[index] = action.payload.data;
 
