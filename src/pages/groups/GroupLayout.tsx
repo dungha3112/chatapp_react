@@ -52,12 +52,10 @@ const GroupLayout = () => {
 
   useEffect(() => {
     socket.on("onGroupCreate", (payload: GroupType) => {
-
       dispatch(addGroup(payload));
     });
 
     socket.on("onGroupMessage", (payload: GroupMessageEventPayload) => {
-
       dispatch(addGroupMessage(payload));
       dispatch(updateGroup(payload.group));
     });
@@ -118,7 +116,7 @@ const GroupLayout = () => {
         editOrDeleteLastMessageGroupSidebar({
           isEdit: false,
           messages: groupMessage?.messages.slice(0, 2),
-          groupId: Number(payload.group?.id),
+          id: Number(payload.group?.id),
           message: payload,
         })
       );
@@ -131,7 +129,7 @@ const GroupLayout = () => {
         editOrDeleteLastMessageGroupSidebar({
           isEdit: true,
           messages: [],
-          groupId: Number(payload.group?.id),
+          id: Number(payload.group?.id),
           message: payload,
         })
       );

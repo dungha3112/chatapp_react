@@ -2,7 +2,8 @@
   height: 40px;
   width: 40px;
   border-radius: 50%;
-  background-color: rgb(223, 223, 21);
+  object-fit: cover;
+  border: #f3efef solid 0.5px;
 }
 
 .conversationName {

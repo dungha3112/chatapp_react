@@ -32,11 +32,10 @@ export const groupMessagesSlice = createSlice({
     },
 
     deleteGroupMessage: (state, action: PayloadAction<GroupMessageType>) => {
-
-      const groupId = action.payload.group?.id;
+      const id = action.payload.group?.id;
       const messageId = action.payload.id;
 
-      const groupMessage = state.messages.find((gm) => gm.id === groupId);
+      const groupMessage = state.messages.find((gm) => gm.id === id);
 
       if (!groupMessage) return;
 
@@ -48,11 +47,11 @@ export const groupMessagesSlice = createSlice({
     },
 
     editGroupMessage: (state, action: PayloadAction<GroupMessageType>) => {
-      const groupId = action.payload.group?.id;
+      const id = action.payload.group?.id;
       const messageId = action.payload.id;
       const content = action.payload.content;
 
-      const groupMessage = state.messages.find((gm) => gm.id === groupId);
+      const groupMessage = state.messages.find((gm) => gm.id === id);
       if (!groupMessage) return;
 
       const messageIndex = groupMessage.messages.findIndex(
@@ -89,9 +88,9 @@ export const groupMessagesSlice = createSlice({
       .addCase(deleteGroupMessageThunk.fulfilled, (state, action) => {
         if (!action.payload) return;
 
-        const { groupId, messageId } = action.payload.data;
+        const { id, messageId } = action.payload.data;
 
-        const groupMessage = state.messages.find((gm) => (gm.id = groupId));
+        const groupMessage = state.messages.find((gm) => (gm.id = id));
 
         if (!groupMessage) return;
         const messageIndex = groupMessage.messages.findIndex(
@@ -105,10 +104,8 @@ export const groupMessagesSlice = createSlice({
         if (!action.payload) return;
 
         const message = action.payload.data;
-        const conversationId = message.group?.id;
-        const groupMessage = state.messages.find(
-          (cm) => cm.id === conversationId
-        );
+        const id = message.group?.id;
+        const groupMessage = state.messages.find((cm) => cm.id === id);
         if (!groupMessage) return;
 
         const messageIndex = groupMessage.messages.findIndex(

@@ -19,7 +19,7 @@ const AddGroupRecipientForm = ({ setShowModal }: Props) => {
     e.preventDefault();
     if (!id || !username) return;
 
-    const params = { username: username, groupId: parseInt(id) };
+    const params = { username: username, id: parseInt(id) };
     addGroupRecipientApi(params)
       .then(() => {
         setShowModal(false);

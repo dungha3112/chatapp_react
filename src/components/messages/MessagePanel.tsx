@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../store";
@@ -14,6 +14,7 @@ import { getRecipientFromConversation } from "../../utils/helpers";
 import MessageContainer from "./MessageContainer";
 import MessageInputField from "./MessageInputField";
 import MessagePanelHeader from "./MessagePanelHeader";
+import MessageAttachmentContainer from "./attachments/MessageAttachmentContainer";
 
 type Props = {
   sendTypingStatus: () => void;
@@ -23,6 +24,8 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
   const { id } = useParams();
 
   const { user } = useContext(AuthContext);
+
+  const { attachments } = useSelector((state: RootState) => state.messagePanel);
 
   const { loading: isLoadingConversationMessage } = useSelector(
     (state: RootState) => state.message
@@ -51,6 +54,8 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
         </MessagePanelBody>
 
         <MessagePanelFooter>
+          {attachments.length > 0 && <MessageAttachmentContainer />}
+
           <MessageInputField sendTypingStatus={sendTypingStatus} />
 
           <MessageTypingStatusStyle>

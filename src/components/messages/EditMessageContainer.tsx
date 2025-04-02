@@ -56,7 +56,7 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
     if (!id || !messageBegingEdited.content.trim()) return;
     if (conversationType === "private") {
       const params = {
-        conversationId: parseInt(id),
+        id: parseInt(id),
         messageId: messageBegingEdited.id,
         content: messageBegingEdited.content,
       };
@@ -69,7 +69,7 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
             editOrDeleteLastMessageConversationSidebar({
               isEdit: true,
               messages: [],
-              conversationId: parseInt(id),
+              id: parseInt(id),
               message: messageBegingEdited as MessageType,
             })
           );
@@ -79,7 +79,7 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
 
     if (conversationType === "group") {
       const params = {
-        groupId: parseInt(id),
+        id: parseInt(id),
         messageId: messageBegingEdited.id,
         content: messageBegingEdited.content,
       };
@@ -92,7 +92,7 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
             editOrDeleteLastMessageGroupSidebar({
               isEdit: true,
               messages: [],
-              groupId: parseInt(id),
+              id: parseInt(id),
               message: messageBegingEdited as GroupMessageType,
             })
           );

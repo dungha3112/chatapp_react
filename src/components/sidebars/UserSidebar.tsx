@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BsChatDots } from "react-icons/bs";
 import { FaUserFriends } from "react-icons/fa";
 import { RiLogoutCircleLine } from "react-icons/ri";
@@ -16,6 +16,8 @@ import {
 import { userSidebarItems } from "../../utils/constants";
 import { UserSidebarRouteType } from "../../utils/types";
 import { IoSettingsOutline } from "react-icons/io5";
+import { logoutUserApi } from "../../utils/api";
+import { AuthContext } from "../../utils/contexts/AuthContext";
 const CustomIcon = (id: UserSidebarRouteType) => {
   switch (id) {
     case "conversations":
@@ -27,12 +29,14 @@ const CustomIcon = (id: UserSidebarRouteType) => {
     case "settings":
       return <IoSettingsOutline size={30} />;
     default:
-      return <RiLogoutCircleLine size={30} />;
+      break;
   }
 };
 
 const UserSidebar = () => {
   const [active, setActive] = useState<UserSidebarRouteType>("conversations");
+
+  const { updateAuthUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -48,6 +52,14 @@ const UserSidebar = () => {
       }
     }
   }, [location.pathname]);
+
+  const handleLogoutUser = () => {
+    logoutUserApi()
+      .then(() => {
+        updateAuthUser(undefined);
+      })
+      .finally(() => navigate("/login", { replace: true }));
+  };
 
   return (
     <>
@@ -79,6 +91,10 @@ const UserSidebar = () => {
             </UserSidebarItemStyle>
           ))}
         </UserSidebarFooterStyle>
+
+        <UserSidebarItemStyle onClick={handleLogoutUser}>
+          <RiLogoutCircleLine size={30} />
+        </UserSidebarItemStyle>
       </UserSidebarStyle>
     </>
   );

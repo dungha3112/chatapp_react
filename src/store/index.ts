@@ -8,6 +8,7 @@ import messageContainerReducer from "./messageContainerSlice";
 import groupRecipientSidebarReducer from "./groupRecipientSidebarSlice";
 import modalReducer from "./modals/modalSlice";
 import friendsReducer from "./friends/friendsSlice";
+import messagePanelReducer from "./message-panel/messagePanelSlice";
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,8 @@ export const store = configureStore({
 
     friends: friendsReducer,
     modal: modalReducer,
+
+    messagePanel: messagePanelReducer,
   },
   middleware(getDefaultMiddleware) {
     return getDefaultMiddleware({ serializableCheck: false });

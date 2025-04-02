@@ -39,10 +39,10 @@ const GroupRecipientsSidebar = () => {
   useEffect(() => {
     if (!id) return;
 
-    socket.emit("getOnlineGroupUsers", { groupId: parseInt(id) });
+    socket.emit("getOnlineGroupUsers", { id: parseInt(id) });
 
     const interval = setInterval(() => {
-      socket.emit("getOnlineGroupUsers", { groupId: parseInt(id) });
+      socket.emit("getOnlineGroupUsers", { id: parseInt(id) });
     }, 5000);
 
     const updateOnlineUsers = ({

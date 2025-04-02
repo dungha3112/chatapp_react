@@ -23,10 +23,10 @@ const GroupSidebarContextMenu = ({ points }: Props) => {
 
   const handleUserLeaveGroup = async () => {
     if (!selectGroup) return;
-    const groupId = selectGroup.id;
-    dispatch(userLeaveGroupThunk({ groupId })).then(() => {
+    const id = selectGroup.id;
+    dispatch(userLeaveGroupThunk({ id })).then(() => {
       if (selectGroup.owner.id === user?.id) return;
-      if (parseInt(id!) === groupId) {
+      if (parseInt(id!) === id) {
         navigate("/groups");
       }
     });

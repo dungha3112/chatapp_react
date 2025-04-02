@@ -19,16 +19,14 @@ const GroupChanelPage = () => {
   const { showSidebar } = useSelector((state: RootState) => state.groupSidebar);
 
   useEffect(() => {
-    const groupId = parseInt(id!);
-
-    socket.emit("onGroupJoin", { groupId });
+    socket.emit("onGroupJoin", { id });
 
     socket.emit("userGroupJoin", () => {
       console.log(` user group join ..`);
     });
 
     return () => {
-      socket.emit("onGroupLeave", { groupId });
+      socket.emit("onGroupLeave", { id });
 
       // socket.off("userGroupJoin");
     };

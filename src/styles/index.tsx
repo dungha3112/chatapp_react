@@ -120,6 +120,7 @@ export const Button = styled.button<ButtonProps>`
   border-radius: 10px;
   outline: none;
   border: none;
+  cursor: pointer;
 
   ${({ $size }) => getButtonSizeStyle($size as Size)}
   ${({ $variant }) => getButtonVariantStyle($variant as Variant)};
@@ -137,9 +138,12 @@ export const Page = styled.div<PageProps>`
   height: 100%;
   width: 100%;
   background-color: #1a1a1a;
+
   display: ${({ $display }) => $display};
   justify-content: ${({ $justifyContent }) => $justifyContent};
   align-items: ${({ $alignItems }) => $alignItems};
+
+  overflow: hidden;
 `;
 
 export const LayoutPage = styled.div`

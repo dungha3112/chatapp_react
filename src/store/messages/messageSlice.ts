@@ -35,14 +35,12 @@ export const messageSlice = createSlice({
     },
 
     deleteMessage: (state, action: PayloadAction<MessageType>) => {
-      // const { content, messageId, conversationId, userId } = action.payload;
+      // const { content, messageId, id, userId } = action.payload;
 
-      const conversationId = action.payload.conversation?.id;
+      const id = action.payload.conversation?.id;
       const messageId = action.payload.id;
 
-      const conversationMessages = state.messages.find(
-        (cm) => cm.id === conversationId
-      );
+      const conversationMessages = state.messages.find((cm) => cm.id === id);
 
       if (!conversationMessages) return;
 
@@ -53,15 +51,13 @@ export const messageSlice = createSlice({
     },
 
     editMessage: (state, action: PayloadAction<MessageType>) => {
-      // const { content, messageId, conversationId, userId } = action.payload;
+      // const { content, messageId, id, userId } = action.payload;
 
-      const conversationId = action.payload.conversation?.id;
+      const id = action.payload.conversation?.id;
       const messageId = action.payload.id;
       const content = action.payload.content;
 
-      const conversationMessage = state.messages.find(
-        (cm) => cm.id === conversationId
-      );
+      const conversationMessage = state.messages.find((cm) => cm.id === id);
       if (!conversationMessage) return;
 
       const messageIndex = conversationMessage.messages.findIndex(
@@ -86,7 +82,6 @@ export const messageSlice = createSlice({
         const exists = state.messages.find((cm) => cm.id === id);
 
         if (exists) {
-
           // state.messages[index] = action.payload.data;
 
           state.messages[index].messages.concat(messages);
@@ -97,10 +92,8 @@ export const messageSlice = createSlice({
       })
       .addCase(deleteConversationMessageThunk.fulfilled, (state, action) => {
         if (!action.payload) return;
-        const { conversationId, messageId } = action.payload.data;
-        const conversationMessages = state.messages.find(
-          (cm) => (cm.id = conversationId)
-        );
+        const { id, messageId } = action.payload.data;
+        const conversationMessages = state.messages.find((cm) => (cm.id = id));
         if (!conversationMessages) return;
 
         const messageIndex = conversationMessages.messages.findIndex(
@@ -113,10 +106,8 @@ export const messageSlice = createSlice({
         if (!action.payload) return;
 
         const message = action.payload.data;
-        const conversationId = message.conversation?.id;
-        const conversationMessage = state.messages.find(
-          (cm) => cm.id === conversationId
-        );
+        const id = message.conversation?.id;
+        const conversationMessage = state.messages.find((cm) => cm.id === id);
         if (!conversationMessage) return;
 
         const messageIndex = conversationMessage.messages.findIndex(

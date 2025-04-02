@@ -81,7 +81,7 @@ const ConversationLayout = () => {
         editOrDeleteLastMessageConversationSidebar({
           isEdit: false,
           messages: conversationMessage?.messages.slice(0, 2),
-          conversationId: Number(payload.conversation?.id),
+          id: Number(payload.conversation?.id),
           message: payload as MessageType,
         })
       );
@@ -94,7 +94,7 @@ const ConversationLayout = () => {
         editOrDeleteLastMessageConversationSidebar({
           isEdit: true,
           messages: [],
-          conversationId: Number(payload.conversation?.id),
+          id: Number(payload.conversation?.id),
           message: payload,
         })
       );

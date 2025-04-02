@@ -1,12 +1,12 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterForm from "../components/forms/register/index";
 import { Page } from "../styles";
-import { useAuth } from "../utils/hooks/useAuth";
+import { AuthContext } from "../utils/contexts/AuthContext";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     if (user) return navigate("/conversations");

@@ -32,7 +32,7 @@ const ConversationChanelPage = () => {
   useEffect(() => {
     if (!id) return;
 
-    socket.emit("onConversationJoin", { conversationId: parseInt(id) });
+    socket.emit("onConversationJoin", { id: parseInt(id) });
 
     socket.on("userLeave", () => {
       console.log("userLeave ");
@@ -43,7 +43,7 @@ const ConversationChanelPage = () => {
     });
 
     socket.on("onTypingStart", (payload) => {
-      // if (parseInt(id) === parseInt(payload.conversationId)) {
+      // if (parseInt(id) === parseInt(payload.id)) {
       //   console.log("user start typing ...", payload);
       //   if (user?.id !== payload.userId) {
       //     setIsRecipientTyping(true);
@@ -54,7 +54,7 @@ const ConversationChanelPage = () => {
     socket.on("onTypingStop", (payload) => {
       console.log("onTypingStop", payload);
 
-      if (parseInt(id) === parseInt(payload.conversationId)) {
+      if (parseInt(id) === parseInt(payload.id)) {
         console.log("user stop typing ...", payload);
         setIsRecipientTyping(false);
       }
@@ -62,7 +62,7 @@ const ConversationChanelPage = () => {
 
     return () => {
       socket.emit("onConversationLeave", {
-        conversationId: parseInt(id),
+        id: parseInt(id),
       });
 
       socket.off("userConversationJoin");
@@ -79,12 +79,12 @@ const ConversationChanelPage = () => {
     //   clearTimeout(timer);
     //   setTimer(
     //     setTimeout(() => {
-    //       socket.emit("onTypingStop", { conversationId: parseInt(id) });
+    //       socket.emit("onTypingStop", { id: parseInt(id) });
     //       setIsTyping(false);
     //     }, 500)
     //   );
     // } else {
-    //   socket.emit("onTypingStart", { conversationId: parseInt(id) });
+    //   socket.emit("onTypingStart", { id: parseInt(id) });
     //   setIsTyping(true);
     // }
   };

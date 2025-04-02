@@ -48,8 +48,8 @@ export const getButtonVariantStyle = (variant: Variant) => {
   switch (variant) {
     case "secondary":
       return css`
+        background-color: #212121;
         color: #fff;
-        background-color: #2b00ff;
       `;
 
     default:
@@ -113,7 +113,10 @@ export type FriendNavbarItemProps = Partial<{
   $active: boolean;
 }>;
 
-
 export type SettingsSidebarItemProps = {
   $isActive: boolean;
 };
+
+export type UserBannerProps = Partial<{
+  $backgroundUrl: string;
+}>;

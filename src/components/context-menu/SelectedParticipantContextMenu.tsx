@@ -20,20 +20,20 @@ const SelectedParticipantContextMenu = ({ points }: Props) => {
   const { selectedUser } = useSelector(
     (state: RootState) => state.groupSidebar
   );
-  const { id: groupId } = useParams();
+  const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const group = useSelector((state: RootState) =>
-    selectGroupById(state, parseInt(groupId!))
+    selectGroupById(state, parseInt(id!))
   );
   const { user } = useContext(AuthContext);
 
   const isOwner = isGroupOwner(user, group);
 
   const handleKickUser = async () => {
-    if (!selectedUser || !groupId) return;
+    if (!selectedUser || !id) return;
 
     const params: RemoveGroupUserParams = {
-      groupId: parseInt(groupId),
+      id: parseInt(id),
       removeUserId: selectedUser.id,
     };
     dispatch(removeGroupUserThunk(params))
@@ -42,9 +42,9 @@ const SelectedParticipantContextMenu = ({ points }: Props) => {
   };
 
   const handleTransferGroupOwner = async () => {
-    if (!selectedUser || !groupId) return;
+    if (!selectedUser || !id) return;
 
-    const params = { groupId: parseInt(groupId), newOwnerId: selectedUser.id };
+    const params = { id: parseInt(id), newOwnerId: selectedUser.id };
     dispatch(updateGroupOwnerThunk(params));
   };
 

@@ -48,14 +48,14 @@ const SelectedMessageContextMenu = ({ points }: Props) => {
     if (conversationType === "private") {
       await dispatch(
         deleteConversationMessageThunk({
-          conversationId: parseInt(id),
+          id: parseInt(id),
           messageId: selectedMessage.id,
         })
       );
       dispatch(
         editOrDeleteLastMessageConversationSidebar({
           isEdit: false,
-          conversationId: Number(conversationMessage?.id),
+          id: Number(conversationMessage?.id),
           messages: conversationMessage?.messages.slice(0, 2),
           message: selectedMessage,
         })
@@ -65,14 +65,14 @@ const SelectedMessageContextMenu = ({ points }: Props) => {
     if (conversationType === "group") {
       await dispatch(
         deleteGroupMessageThunk({
-          groupId: parseInt(id),
+          id: parseInt(id),
           messageId: selectedMessage.id,
         })
       );
       dispatch(
         editOrDeleteLastMessageGroupSidebar({
           isEdit: false,
-          groupId: Number(groupMessage?.id),
+          id: Number(groupMessage?.id),
           messages: groupMessage?.messages.slice(0, 2),
           message: selectedMessage,
         })

@@ -16,8 +16,6 @@ import { GroupHeaderIconsStyle } from "../../styles/group";
 const MessagePanelHeader = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
-  const { id: conversationId } = useParams();
-
   const { user } = useContext(AuthContext);
   const dispatch = useDispatch<AppDispatch>();
   const { showSidebar } = useSelector((state: RootState) => state.groupSidebar);
@@ -26,14 +24,14 @@ const MessagePanelHeader = () => {
     (state: RootState) => state.selectedConversationType.type
   );
 
-  const { id: groupId } = useParams();
+  const { id } = useParams();
 
   const conversation = useSelector((state: RootState) =>
-    selectConversationById(state, parseInt(conversationId!))
+    selectConversationById(state, parseInt(id!))
   );
 
   const group = useSelector((state: RootState) =>
-    selectGroupById(state, parseInt(groupId!))
+    selectGroupById(state, parseInt(id!))
   );
 
   const displayName =

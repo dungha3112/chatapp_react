@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const MessageTextarea = styled.textarea`
   background-color: initial;
@@ -22,4 +22,12 @@ export const MessageTextarea = styled.textarea`
   &::placeholder {
     user-select: none;
   }
+`;
+
+export const FileInput = styled.input`
+  ${({ type }) =>
+    type === "file" &&
+    css`
+      display: none;
+    `}
 `;

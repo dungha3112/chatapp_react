@@ -4,7 +4,6 @@ import styles from "./index.module.scss";
 
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { AiFillPlusCircle } from "react-icons/ai";
 import { HiMiniGif } from "react-icons/hi2";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -13,18 +12,18 @@ import {
   handleOpenFeedIconEditMess,
   handleOpenFeedIconNewMess,
 } from "../../store/modals/modalSlice";
-import {
-  postMessageApi,
-  postNewConversationMessageApi,
-  postNewGroupMessageApi,
-} from "../../utils/api";
+import { postNewMessageApi } from "../../utils/api";
 import MessageTextField from "../inputs/MessageTextField";
+import { removeAllAttachments } from "../../store/message-panel/messagePanelSlice";
+import MessageAttachmentActionIcon from "./MessageAttachmentActionIcon";
 
 type Props = {
   sendTypingStatus: () => void;
 };
 
 const MessageInputField = ({ sendTypingStatus }: Props) => {
+  const { id } = useParams();
+
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const [content, setContent] = useState<string>("");
@@ -36,43 +35,35 @@ const MessageInputField = ({ sendTypingStatus }: Props) => {
     (state: RootState) => state.modal
   );
 
+  const { attachments } = useSelector((state: RootState) => state.messagePanel);
+
   const conversationType = useSelector(
     (state: RootState) => state.selectedConversationType.type
   );
-  const { id } = useParams();
 
   const MAX_LENGTH = 2048;
   const atMaxLength = content.length === MAX_LENGTH;
 
-  const ARROW_KEYS = new Set([
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowRight",
-    "ArrowLeft",
-  ]);
-
   const sendMessage = async () => {
-    if (!content.trim() || !id) return;
-    if (conversationType === "private") {
-      try {
-        await postNewConversationMessageApi(content, parseInt(id));
-        setContent("");
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    const trimmedContent = content.trim();
+    if (!id) return;
+    if (!trimmedContent && !attachments.length) return;
 
-    if (conversationType === "group") {
-      try {
-        await postNewGroupMessageApi(content, parseInt(id));
-        setContent("");
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    const formData = new FormData();
 
-    const params = { type: conversationType, data: content, id: parseInt(id) };
-    // const res = await postMessageApi(params)
+    if (trimmedContent) formData.append("content", trimmedContent);
+
+    attachments.forEach((attachment) => {
+      formData.append("attachments", attachment);
+    });
+
+    try {
+      await postNewMessageApi(id, conversationType, formData);
+      setContent("");
+      dispatch(removeAllAttachments());
+    } catch (error) {
+      console.log(error);
+    }
 
     dispatch(handleOpenFeedIconNewMess(false));
   };
@@ -100,7 +91,7 @@ const MessageInputField = ({ sendTypingStatus }: Props) => {
   return (
     <>
       <MessageInputContainer>
-        <AiFillPlusCircle className={styles.icon} />
+        <MessageAttachmentActionIcon />
 
         <form className={styles.form}>
           <MessageTextField

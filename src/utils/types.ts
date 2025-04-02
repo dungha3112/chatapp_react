@@ -1,6 +1,10 @@
 import React from "react";
-export type ContextMenuEventType = React.MouseEvent<HTMLDivElement, MouseEvent>;
 
+export type ContextMenuEventType = React.MouseEvent<HTMLDivElement, MouseEvent>;
+export type DivMouseEventType = React.MouseEvent<HTMLDivElement, MouseEvent>;
+export type InputChangeEventType = React.ChangeEvent<HTMLInputElement>;
+export type DragEventType = React.DragEvent<HTMLTextAreaElement>;
+export type ClipboardEventType = React.ClipboardEvent<HTMLTextAreaElement>;
 //UserCredentialsParams
 export type UserCredentialsParams = {
   username: string;
@@ -50,7 +54,7 @@ export type CreateConversationParams = {
 export type EditOrDeleteLastMessageConversationSidebarResponse = {
   isEdit: boolean;
   messages?: MessageType[];
-  conversationId: number;
+  id: number;
   message: MessageType;
 };
 
@@ -58,12 +62,19 @@ export type EditOrDeleteLastMessageConversationSidebarResponse = {
  * MESSAGE
  */
 //MessageType
+export type MessageAttachment = {
+  key: string;
+  secure_url: string;
+  public_id: string;
+  type: string;
+};
 export type MessageType = {
   id: number;
-  content: string;
+  content?: string;
   createdAt: string;
   author: UserType;
   conversation?: ConversationType;
+  attachments?: MessageAttachment[];
 };
 
 //ConversationMessage
@@ -78,6 +89,15 @@ export type UserType = {
   username: string;
   firstName: string;
   lastName: string;
+  profile?: ProfileType;
+};
+
+// ProfileType
+export type ProfileType = {
+  id: number;
+  about?: string;
+  avatar?: { secure_url: string; public_id: string };
+  banner?: { secure_url: string; public_id: string };
 };
 
 //MessageEventPayload
@@ -95,27 +115,27 @@ export type FetchMessagePayload = {
 
 // deleteConversationMessageParams
 export type DeleteConversationMessageParams = {
-  conversationId: number;
+  id: number;
   messageId: number;
 };
 
 // DeleteMessageResponse
 export type DeleteMessageResponse = {
   messageId: number;
-  conversationId: number;
+  id: number;
   userId: number;
 };
 
 // EditMessageParams
 export type EditMessageParams = {
-  conversationId: number;
+  id: number;
   messageId: number;
   content: string;
 };
 
 // EditMessageResponse
 export type EditMessageResponse = {
-  conversationId: number;
+  id: number;
   userId: number;
   content: string;
   messageId: number;
@@ -130,13 +150,21 @@ export type GroupMessage = {
   messages: GroupMessageType[];
 };
 
+export type GroupMessageAttachment = {
+  key: string;
+  secure_url: string;
+  public_id: string;
+  type: string;
+};
+
 // GroupMessageType
 export type GroupMessageType = {
   id: number;
-  content: string;
+  content?: string;
   createdAt: string;
   author: UserType;
   group?: GroupType;
+  attachments: GroupMessageAttachment[];
 };
 
 // GroupType
@@ -172,13 +200,13 @@ export type CreateGroupParams = {
 
 // DeleteGroupMessageParams
 export type DeleteGroupMessageParams = {
-  groupId: number;
+  id: number;
   messageId: number;
 };
 
 // DeleteGroupMessageResponse
 export type DeleteGroupMessageResponse = {
-  groupId: number;
+  id: number;
   messageId: number;
 };
 
@@ -186,20 +214,20 @@ export type DeleteGroupMessageResponse = {
 export type EditOrDeleteLastMessageGroupSidebarResponse = {
   isEdit: boolean;
   messages?: GroupMessageType[];
-  groupId: number;
+  id: number;
   message: GroupMessageType;
 };
 
 // EditGroupMessageParams
 export type EditGroupMessageParams = {
-  groupId: number;
+  id: number;
   messageId: number;
   content: string;
 };
 
 // AddGroupRecipientParams
 export type AddGroupRecipientParams = {
-  groupId: number;
+  id: number;
   username: string;
 };
 
@@ -211,19 +239,19 @@ export type AddGroupRecipientResponse = {
 
 // RemoveGroupUserParams
 export type RemoveGroupUserParams = {
-  groupId: number;
+  id: number;
   removeUserId: number;
 };
 
 // UpdateGroupOwnerParams
 export type UpdateGroupOwnerParams = {
-  groupId: number;
+  id: number;
   newOwnerId: number;
 };
 
 // UserLeaveGroupParams
 export type UserLeaveGroupParams = {
-  groupId: number;
+  id: number;
 };
 
 //GroupParticipantLeftPayload
@@ -283,4 +311,9 @@ export type SettingsItemType = {
   id: SettingsSidebarRouteType;
   label: string;
   pathname: string;
+};
+
+export type AttachmentType = {
+  id: number;
+  file: File;
 };

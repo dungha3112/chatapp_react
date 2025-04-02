@@ -5,6 +5,7 @@ import { AuthContext } from "../../utils/contexts/AuthContext";
 import { getRecipientFromConversation } from "../../utils/helpers";
 import { ConversationType } from "../../utils/types";
 import styles from "./index.module.scss";
+import defaultAvatar from "../../assets/default_avatar.jpg";
 
 type Props = {
   conversation: ConversationType;
@@ -23,10 +24,23 @@ export const ConversationSibarItem = ({ conversation }: Props) => {
       onClick={() => navigate(`/conversations/${conversation.id}`)}
       $selected={parseInt(id!) === conversation.id}
     >
-      <div
+      {/* <div
         title={getDisplayUser?.firstName + " " + getDisplayUser?.lastName}
         className={styles.conversationAvatar}
-      ></div>
+      ></div> */}
+      {getDisplayUser?.profile?.avatar ? (
+        <img
+          src={getDisplayUser?.profile.avatar.secure_url}
+          alt="avatar"
+          className={styles.conversationAvatar}
+        />
+      ) : (
+        <img
+          src={defaultAvatar}
+          alt="avatar"
+          className={styles.conversationAvatar}
+        />
+      )}
 
       <div>
         <span className={styles.conversationName}>
@@ -39,6 +53,7 @@ export const ConversationSibarItem = ({ conversation }: Props) => {
           </span>
 
           {conversation?.lastMessageSent &&
+          conversation?.lastMessageSent.content &&
           conversation?.lastMessageSent?.content.length > 15
             ? conversation?.lastMessageSent?.content.slice(0, 15) + " ..."
             : conversation?.lastMessageSent?.content}

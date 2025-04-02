@@ -8,9 +8,10 @@ export const UserSidebarStyle = styled.div`
   flex: 0 0 80px;
   align-items: center;
   flex-direction: column;
-  overflow-y: scroll;
   user-select: none;
   z-index: 99;
+
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -49,6 +50,7 @@ export const UserSidebarScrollableContainer = styled(ScrollableContainer)`
 export const UserSidebarFooterStyle = styled.footer`
   display: flex;
   flex-direction: column;
+  height: 100%;
 `;
 
 export const UserSidebarItemStyle = styled.div<SidebarItemProps>`

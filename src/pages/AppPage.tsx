@@ -118,7 +118,7 @@ const AppPage = () => {
 
       socket.off("onFriendDelete");
     };
-  }, [socket, dispatch, info, navigate]);
+  }, [socket, dispatch, info, navigate, user]);
 
   return (
     <LayoutPage>

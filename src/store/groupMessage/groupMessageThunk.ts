@@ -23,9 +23,9 @@ export const fetchGroupMessagesThunk = createAsyncThunk(
 
 export const deleteGroupMessageThunk = createAsyncThunk(
   "groupMessages/delete",
-  ({ messageId, groupId }: DeleteGroupMessageParams) => {
+  ({ messageId, id }: DeleteGroupMessageParams) => {
     try {
-      return deleteGroupMessageApi({ groupId, messageId });
+      return deleteGroupMessageApi({ id, messageId });
     } catch (error) {
       toast(String(error), { type: "error" });
     }
@@ -34,9 +34,9 @@ export const deleteGroupMessageThunk = createAsyncThunk(
 
 export const editGroupMessageThunk = createAsyncThunk(
   "groupMessages/edit",
-  ({ messageId, groupId, content }: EditGroupMessageParams) => {
+  ({ messageId, id, content }: EditGroupMessageParams) => {
     try {
-      return editGroupMessageApi({ groupId, messageId, content });
+      return editGroupMessageApi({ id, messageId, content });
     } catch (error) {
       toast(String(error), { type: "error" });
     }

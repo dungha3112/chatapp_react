@@ -4,12 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button } from "../../../styles";
 import { postLoginApi } from "../../../utils/api";
+import { AuthContext } from "../../../utils/contexts/AuthContext";
 import { SocketContext } from "../../../utils/contexts/SocketContext";
-import { useAuth } from "../../../utils/hooks/useAuth";
 import { UserCredentialsParams } from "../../../utils/types";
 import styles from "../index.module.scss";
-import UsernameField from "./UsernameField";
 import PasswordField from "./PasswordField";
+import UsernameField from "./UsernameField";
+import Loading from "../../loadings";
 
 const LoginForm = () => {
   const {
@@ -21,7 +22,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const socket = useContext(SocketContext);
 
-  const { user } = useAuth();
+  const { user } = useContext(AuthContext);
 
   const onSubmit: SubmitHandler<UserCredentialsParams> = async (data) => {
     try {
@@ -35,7 +36,9 @@ const LoginForm = () => {
       toast.clearWaitingQueue();
       toast(String(error), { type: "error" });
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
   };
   useEffect(() => {
@@ -45,20 +48,26 @@ const LoginForm = () => {
   const formFieldProps = { errors, register };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <UsernameField {...formFieldProps} />
-      <PasswordField {...formFieldProps} />
+    <>
+      {loading && <Loading text="Loading ..." />}
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <UsernameField {...formFieldProps} />
 
-      <Button className={styles.button} type="submit">
-        {loading ? "Loading ..." : "Login Now"}
-      </Button>
-      <div className={styles.footer}>
-        <span>You don't have the account?</span>
-        <Link to="/register">
-          <span>Register.</span>
-        </Link>
-      </div>
-    </form>
+        <section className={styles.loginFormPassword}>
+          <PasswordField {...formFieldProps} />
+        </section>
+
+        <Button className={styles.button} type="submit" disabled={loading}>
+          Login
+        </Button>
+        <div className={styles.footer}>
+          <span>You don't have the account?</span>
+          <Link to="/register">
+            <span>Register.</span>
+          </Link>
+        </div>
+      </form>
+    </>
   );
 };
 

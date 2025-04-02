@@ -18,8 +18,10 @@ import {
 } from "../../store/modals/modalSlice";
 import {
   MessageContainerStyle,
+  MessageItemAvatar,
   MessageItemContainer,
   MessageItemContent,
+  MessageItemDetails,
 } from "../../styles/messages";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 import {
@@ -28,8 +30,11 @@ import {
   MessageType,
 } from "../../utils/types";
 import SelectedMessageContextMenu from "../context-menu/SelectedMessageContextMenu";
+import MessageItemAttachmentContainer from "./attachments/MessageItemAttachmentContainer";
 import EditMessageContainer from "./EditMessageContainer";
-import FormatedMessage from "./FormatedMessage";
+import MessageItemHeader from "./MessageItemHeader";
+
+import avatarDefault from "../../assets/default_avatar.jpg";
 
 const MessageContainer = () => {
   const { user } = useContext(AuthContext);
@@ -117,18 +122,36 @@ const MessageContainer = () => {
     const currentMessage = messages[index];
     const nextMessage = messages[nextIndex];
 
+    const urlAvatar = m.author.profile?.avatar?.secure_url
+      ? m.author.profile?.avatar?.secure_url
+      : avatarDefault;
+
     if (
       messages.length === nextIndex ||
       currentMessage.author.id != nextMessage.author.id
     ) {
       return (
-        <FormatedMessage
-          onContextMenu={(e) => onContextMenu(e, m)}
-          key={m.id}
-          user={user}
-          message={m}
-          onEditMessageChange={onEditMessageChange}
-        />
+        <MessageItemContainer onContextMenu={(e) => onContextMenu(e, m)}>
+          <MessageItemAvatar $url={urlAvatar} />
+
+          <MessageItemDetails>
+            <MessageItemHeader message={m} />
+
+            {isEditingMessage && m.id === messageBegingEdited?.id ? (
+              <MessageItemContent style={{ padding: "0 0 0 7px" }}>
+                <EditMessageContainer
+                  onEditMessageChange={onEditMessageChange}
+                />
+              </MessageItemContent>
+            ) : (
+              <MessageItemContent style={{ padding: "0 0 0 7px" }}>
+                {m.content || null}
+
+                <MessageItemAttachmentContainer message={m} />
+              </MessageItemContent>
+            )}
+          </MessageItemDetails>
+        </MessageItemContainer>
       );
     }
 
@@ -139,15 +162,16 @@ const MessageContainer = () => {
           onContextMenu={(e) => onContextMenu(e, m)}
         >
           {isEditingMessage && m.id === messageBegingEdited?.id ? (
-            <MessageItemContent $padding="0 0 0 0">
+            <MessageItemContent $padding="8px 0 0 0">
               <EditMessageContainer
                 onEditMessageChange={onEditMessageChange}
                 key={m.id}
               />
             </MessageItemContent>
           ) : (
-            <MessageItemContent $padding="0 0 0 40px">
-              {m.content}
+            <MessageItemContent $padding="8px 0 0 0">
+              {m.content || null}
+              <MessageItemAttachmentContainer message={m} />
             </MessageItemContent>
           )}
         </MessageItemContainer>

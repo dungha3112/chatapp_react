@@ -39,22 +39,16 @@ export const conversationSlice = createSlice({
       state,
       action: PayloadAction<EditOrDeleteLastMessageConversationSidebarResponse>
     ) => {
+      const { isEdit, messages, message, id } = action.payload;
 
-      const { isEdit, messages, message, conversationId } = action.payload;
+      const conversation = state.conversations.find((c) => c.id === id);
 
-      const conversation = state.conversations.find(
-        (c) => c.id === conversationId
-      );
-
-      const index = state.conversations.findIndex(
-        (c) => c.id === conversationId
-      );
+      const index = state.conversations.findIndex((c) => c.id === id);
 
       const isLastMessageSent = conversation?.lastMessageSent.id === message.id;
 
       if (!isLastMessageSent) return;
       if (isEdit) {
-
         state.conversations[index].lastMessageSent = message;
       } else {
         if (!messages) return;
@@ -86,12 +80,11 @@ export const conversationSlice = createSlice({
 
 const selectConversations = (state: RootState) =>
   state.conversation.conversations;
-const selectConversationId = (state: RootState, id: number) => id;
+const selectid = (state: RootState, id: number) => id;
 
 export const selectConversationById = createSelector(
-  [selectConversations, selectConversationId],
-  (conversations, conversationId) =>
-    conversations.find((c) => c.id === conversationId)
+  [selectConversations, selectid],
+  (conversations, id) => conversations.find((c) => c.id === id)
 );
 
 export const {

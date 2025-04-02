@@ -33,12 +33,10 @@ export const groupsSlice = createSlice({
   initialState,
   reducers: {
     addGroup: (state, action: PayloadAction<GroupType>) => {
-
       state.groups.unshift(action.payload);
     },
 
     updateGroup: (state, action: PayloadAction<GroupType>) => {
-
       const group = action.payload;
       const existingGroup = state.groups.find((g) => g.id === group.id);
 
@@ -51,7 +49,6 @@ export const groupsSlice = createSlice({
     },
 
     removeGroup: (state, action: PayloadAction<GroupType>) => {
-
       const group = state.groups.find((g) => g.id === action.payload.id);
       const index = state.groups.findIndex((g) => g.id === action.payload.id);
       if (!group) return;
@@ -63,11 +60,10 @@ export const groupsSlice = createSlice({
       state,
       action: PayloadAction<EditOrDeleteLastMessageGroupSidebarResponse>
     ) => {
-      const { isEdit, messages, message, groupId } = action.payload;
+      const { isEdit, messages, message, id } = action.payload;
 
-
-      const group = state.groups.find((g) => g.id === groupId);
-      const index = state.groups.findIndex((g) => g.id === groupId);
+      const group = state.groups.find((g) => g.id === id);
+      const index = state.groups.findIndex((g) => g.id === id);
       const isLastMessageSent = group?.lastMessageSent.id === message.id;
       if (!isLastMessageSent) return;
 
@@ -126,8 +122,7 @@ export const groupsSlice = createSlice({
         }
       })
       //updateGroupOwnerThunk
-      .addCase(updateGroupOwnerThunk.fulfilled, () => {
-      })
+      .addCase(updateGroupOwnerThunk.fulfilled, () => {})
 
       //userLeaveGroupThunk
       .addCase(userLeaveGroupThunk.fulfilled, (state, action) => {
@@ -145,11 +140,11 @@ export const groupsSlice = createSlice({
 });
 
 const selectGroups = (state: RootState) => state.group.groups;
-const selectGroupId = (state: RootState, id: number) => id;
+const selectid = (state: RootState, id: number) => id;
 
 export const selectGroupById = createSelector(
-  [selectGroups, selectGroupId],
-  (groups, groupId) => groups.find((g) => g.id === groupId)
+  [selectGroups, selectid],
+  (groups, id) => groups.find((g) => g.id === id)
 );
 
 export const {

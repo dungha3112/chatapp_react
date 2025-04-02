@@ -62,6 +62,7 @@ const GroupItem = ({ group }: Props) => {
           </span>
 
           {group?.lastMessageSent &&
+          group?.lastMessageSent.content &&
           group?.lastMessageSent?.content.length >= 15
             ? group?.lastMessageSent?.content.slice(0, 15) + " ..."
             : group?.lastMessageSent?.content}

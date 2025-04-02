@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   deleteMessageApi,
   editMessageApi,
-  getMessagesByConversationIdApi,
+  getMessagesByidApi,
 } from "../../utils/api";
 import {
   DeleteConversationMessageParams,
@@ -12,14 +12,14 @@ import { toast } from "react-toastify";
 
 export const fetchMessagesThunk = createAsyncThunk(
   "messages/fetch",
-  (id: number) => getMessagesByConversationIdApi(id)
+  (id: number) => getMessagesByidApi(id)
 );
 
 export const deleteConversationMessageThunk = createAsyncThunk(
   "messages/delete",
-  ({ conversationId, messageId }: DeleteConversationMessageParams) => {
+  ({ id, messageId }: DeleteConversationMessageParams) => {
     try {
-      return deleteMessageApi({ conversationId, messageId });
+      return deleteMessageApi({ id, messageId });
     } catch (error) {
       toast(String(error), { type: "error" });
     }
@@ -28,9 +28,9 @@ export const deleteConversationMessageThunk = createAsyncThunk(
 
 export const editConversationMessageThunk = createAsyncThunk(
   "messages/edit",
-  ({ content, conversationId, messageId }: EditMessageParams) => {
+  ({ content, id, messageId }: EditMessageParams) => {
     try {
-      return editMessageApi({ content, conversationId, messageId });
+      return editMessageApi({ content, id, messageId });
     } catch (error) {
       toast(String(error), { type: "error" });
     }

@@ -7,6 +7,8 @@ export const MessagePanelStyle = styled.div`
   height: 100%;
   width: 100%;
   background-color: #141414;
+
+  overflow: hidden;
 `;
 
 export const MessagePanelHeaderStyle = styled.div`
@@ -25,11 +27,11 @@ export const MessagePanelHeaderStyle = styled.div`
 
 export const MessagePanelBody = styled.div`
   padding: 32px 32px 0 32px;
-  box-sizing: border-box;
+  padding-top: 0;
   flex: 1 1 auto;
   overflow-y: auto;
   min-height: 0;
-  /* height: calc(100% - 600px); */
+  height: calc(100% - 600px);
 `;
 
 export const MessageContainerStyle = styled.div`
@@ -38,8 +40,7 @@ export const MessageContainerStyle = styled.div`
   padding: 10px 0;
   display: flex;
   flex-direction: column-reverse;
-  /* flex-direction: column; */
-  overflow-y: auto;
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     width: 8px;
     height: 5px;
@@ -51,7 +52,6 @@ export const MessageContainerStyle = styled.div`
 `;
 
 export const MessagePanelFooter = styled.div`
-  position: relative;
   padding: 0 32px 10px 32px;
   margin-top: 0;
 `;
@@ -99,24 +99,25 @@ export const MessageInputStyle = styled.input`
 export const MessageItemContainer = styled.div`
   display: flex;
   gap: 10px;
-  align-items: center;
   padding: 5px 0;
   word-break: break-word;
 `;
 
-export const MessageItemAvatar = styled.div`
+export const MessageItemAvatar = styled.div<{ $url: string }>`
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: #c1c1c1;
+  border: #f3efef solid 0.5px;
+  background: url(${(props) => props.$url}) no-repeat center;
+  background-size: cover;
 `;
 
 export const MessageItemDetails = styled.div`
-  display: flex;
-  text-align: center;
-  align-items: center;
+  /* display: flex;
+  flex-direction: column;
   gap: 12px;
-  width: 100%;
+  width: 100%; */
+  flex: 1;
 
   .authorName {
     font-size: 16px;
@@ -128,10 +129,10 @@ export const MessageItemDetails = styled.div`
   }
 `;
 
-export const MessageItemHeader = styled.div`
-  /* display: flex;
+export const MessageItemHeaderStyle = styled.div`
+  display: flex;
+  align-items: center;
   gap: 12px;
-  width: 100%; */
 `;
 
 export const MessageItemContent = styled.div<MessageItemContentProps>`
@@ -161,4 +162,53 @@ export const CharacterLimit = styled.span<CharacterLimitProps>`
   font-weight: 500;
   color: ${({ $atMaxLength }) => ($atMaxLength ? "#ff0000" : "#9c9c9c")};
   transition: 0.5s color ease;
+`;
+
+export const MessageAttachmentContainerStyle = styled.div`
+  display: flex;
+  overflow-x: scroll;
+  padding: 10px;
+  background-color: #101010;
+  gap: 10px;
+  margin: 10px 0;
+  &::-webkit-scrollbar {
+    height: 8px;
+    cursor: pointer;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #101010;
+    cursor: pointer;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #1c1c1c;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+`;
+
+export const MessageAttachmentStyle = styled.div`
+  position: relative; /* Đảm bảo các phần tử con có thể đặt absolute */
+  width: 200px; /* Kích thước vuông */
+  height: 150px;
+  background-color: #161616;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover .icon {
+    display: block;
+    transition: 1s ease-in;
+  }
+
+  .icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 10;
+    cursor: pointer;
+    color: red;
+    font-size: 20px;
+    display: none;
+  }
 `;

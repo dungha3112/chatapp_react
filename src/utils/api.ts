@@ -1,31 +1,31 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import {
-  CreateConversationParams,
-  ConversationType,
-  CreateUserParams,
-  FetchMessagePayload,
-  UserCredentialsParams,
-  UserType,
-  DeleteConversationMessageParams,
-  DeleteMessageResponse,
-  EditMessageParams,
-  MessageType,
-  GroupType,
-  FetchGroupMessagePayload,
-  CreateGroupParams,
-  DeleteGroupMessageParams,
-  DeleteGroupMessageResponse,
-  EditGroupMessageParams,
-  GroupMessageType,
   AddGroupRecipientParams,
   AddGroupRecipientResponse,
-  RemoveGroupUserParams,
-  UpdateGroupOwnerParams,
-  UserLeaveGroupParams,
-  FriendType,
-  FriendRequestType,
+  ConversationType,
+  CreateConversationParams,
+  CreateGroupParams,
+  CreateUserParams,
+  DeleteConversationMessageParams,
+  DeleteGroupMessageParams,
+  DeleteGroupMessageResponse,
+  DeleteMessageResponse,
+  EditGroupMessageParams,
+  EditMessageParams,
+  FetchGroupMessagePayload,
+  FetchMessagePayload,
   FriendRequestAcceptResponse,
+  FriendRequestType,
+  FriendType,
+  GroupMessageType,
+  GroupType,
+  MessageType,
+  RemoveGroupUserParams,
   SelectedConversationType,
+  UpdateGroupOwnerParams,
+  UserCredentialsParams,
+  UserLeaveGroupParams,
+  UserType,
 } from "./types";
 
 const BASEURL = import.meta.env.VITE_APP_KEY_URL;
@@ -65,6 +65,14 @@ export const postLoginApi = async (data: UserCredentialsParams) => {
   }
 };
 
+export const logoutUserApi = async () => {
+  try {
+    return await axiosClient.post("auth/logout");
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
 /**
  * User Api
  * @returns
@@ -99,11 +107,9 @@ export const postNewConversationApi = async (
   }
 };
 
-export const getConversationByIdApi = async (conversationId: number) => {
+export const getConversationByIdApi = async (id: number) => {
   try {
-    return await axiosClient.get<ConversationType>(
-      `/conversations/${conversationId} `
-    );
+    return await axiosClient.get<ConversationType>(`conversations/${id} `);
   } catch (error) {
     logErrorMessage(error);
   }
@@ -115,20 +121,16 @@ export const getConversationByIdApi = async (conversationId: number) => {
  * @returns
  */
 
-export const postMessageApi = async ({
-  id,
-  type,
-  data,
-}: {
-  id: string;
-  type: SelectedConversationType;
-  data: FormData;
-}) => {
+export const postNewMessageApi = async (
+  id: string,
+  type: SelectedConversationType,
+  data: FormData
+) => {
   try {
     const url =
       type === "private"
-        ? `/conversations/${id}/messages`
-        : `/groups/${id}/messages`;
+        ? `conversations/${id}/messages`
+        : `groups/${id}/messages`;
 
     return axiosClient.post(url, data, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -141,16 +143,6 @@ export const postMessageApi = async ({
 /**
  * ConversatioN API
  */
-export const postNewConversationMessageApi = async (
-  content: string,
-  id: number
-) => {
-  try {
-    return await axiosClient.post(`conversations/${id}/messages`, { content });
-  } catch (error) {
-    logErrorMessage(error);
-  }
-};
 
 export const checkConversationOrCreate = async (recipientId: number) => {
   try {
@@ -162,7 +154,7 @@ export const checkConversationOrCreate = async (recipientId: number) => {
   }
 };
 
-export const getMessagesByConversationIdApi = async (id: number) => {
+export const getMessagesByidApi = async (id: number) => {
   try {
     return await axiosClient.get<FetchMessagePayload>(
       `conversations/${id}/messages`
@@ -173,12 +165,12 @@ export const getMessagesByConversationIdApi = async (id: number) => {
 };
 
 export const deleteMessageApi = async ({
-  conversationId,
+  id,
   messageId,
 }: DeleteConversationMessageParams) => {
   try {
     return await axiosClient.delete<DeleteMessageResponse>(
-      `conversations/${conversationId}/messages/${messageId}`
+      `conversations/${id}/messages/${messageId}`
     );
   } catch (error) {
     logErrorMessage(error);
@@ -186,13 +178,13 @@ export const deleteMessageApi = async ({
 };
 
 export const editMessageApi = async ({
-  conversationId,
+  id,
   messageId,
   content,
 }: EditMessageParams) => {
   try {
     return await axiosClient.patch<MessageType>(
-      `/conversations/${conversationId}/messages/${messageId}`,
+      `conversations/${id}/messages/${messageId}`,
       { content }
     );
   } catch (error) {
@@ -206,7 +198,7 @@ export const editMessageApi = async ({
 
 export const searchUsersApi = async (query: string) => {
   try {
-    return await axiosClient.get<UserType[]>(`/users/search?query=${query}`);
+    return await axiosClient.get<UserType[]>(`users/search?query=${query}`);
   } catch (error) {
     logErrorMessage(error);
   }
@@ -227,7 +219,7 @@ export const checkUsernameApi = async (username: string) => {
 
 export const getGroupsApi = async () => {
   try {
-    return await axiosClient.get<GroupType[]>("/groups");
+    return await axiosClient.get<GroupType[]>("groups");
   } catch (error) {
     logErrorMessage(error);
   }
@@ -235,15 +227,15 @@ export const getGroupsApi = async () => {
 
 export const createGroupsApi = async (params: CreateGroupParams) => {
   try {
-    return await axiosClient.post<GroupType>("/groups", params);
+    return await axiosClient.post<GroupType>("groups", params);
   } catch (error) {
     logErrorMessage(error);
   }
 };
 
-export const getGroupByIdApi = async (conversationId: number) => {
+export const getGroupByIdApi = async (id: number) => {
   try {
-    return await axiosClient.get<GroupType>(`/groups/${conversationId} `);
+    return await axiosClient.get<GroupType>(`groups/${id} `);
   } catch (error) {
     logErrorMessage(error);
   }
@@ -258,28 +250,20 @@ export const getGroupByIdApi = async (conversationId: number) => {
 export const fetchGroupMessagesApi = async (id: number) => {
   try {
     return await axiosClient.get<FetchGroupMessagePayload>(
-      `/groups/${id}/messages`
+      `groups/${id}/messages`
     );
   } catch (error) {
     logErrorMessage(error);
   }
 };
 
-export const postNewGroupMessageApi = async (content: string, id: number) => {
-  try {
-    return await axiosClient.post(`/groups/${id}/messages`, { content });
-  } catch (error) {
-    logErrorMessage(error);
-  }
-};
-
 export const deleteGroupMessageApi = async ({
-  groupId,
+  id,
   messageId,
 }: DeleteGroupMessageParams) => {
   try {
     return await axiosClient.delete<DeleteGroupMessageResponse>(
-      `/groups/${groupId}/messages/${messageId}`
+      `groups/${id}/messages/${messageId}`
     );
   } catch (error) {
     logErrorMessage(error);
@@ -287,13 +271,13 @@ export const deleteGroupMessageApi = async ({
 };
 
 export const editGroupMessageApi = async ({
-  groupId,
+  id,
   messageId,
   content,
 }: EditGroupMessageParams) => {
   try {
     return await axiosClient.patch<GroupMessageType>(
-      `/groups/${groupId}/messages/${messageId}`,
+      `groups/${id}/messages/${messageId}`,
       { content }
     );
   } catch (error) {
@@ -302,12 +286,12 @@ export const editGroupMessageApi = async ({
 };
 
 export const addGroupRecipientApi = async ({
-  groupId,
+  id,
   username,
 }: AddGroupRecipientParams) => {
   try {
     return await axiosClient.post<AddGroupRecipientResponse>(
-      `/groups/${groupId}/recipients`,
+      `groups/${id}/recipients`,
       {
         username,
       }
@@ -318,12 +302,12 @@ export const addGroupRecipientApi = async ({
 };
 
 export const removeGroupUserApi = async ({
-  groupId,
+  id,
   removeUserId,
 }: RemoveGroupUserParams) => {
   try {
     return await axiosClient.delete<GroupType>(
-      `/groups/${groupId}/recipients/${removeUserId}`
+      `groups/${id}/recipients/${removeUserId}`
     );
   } catch (error) {
     logErrorMessage(error);
@@ -331,11 +315,11 @@ export const removeGroupUserApi = async ({
 };
 
 export const updateGroupOwnerApi = async ({
-  groupId,
+  id,
   newOwnerId,
 }: UpdateGroupOwnerParams) => {
   try {
-    return await axiosClient.patch<GroupType>(`/groups/${groupId}/owner`, {
+    return await axiosClient.patch<GroupType>(`groups/${id}/owner`, {
       newOwnerId,
     });
   } catch (error) {
@@ -343,9 +327,9 @@ export const updateGroupOwnerApi = async ({
   }
 };
 
-export const userLeaveGroupApi = async ({ groupId }: UserLeaveGroupParams) => {
+export const userLeaveGroupApi = async ({ id }: UserLeaveGroupParams) => {
   try {
-    return await axiosClient.delete<GroupType>(`/groups/${groupId}/leave`);
+    return await axiosClient.delete<GroupType>(`groups/${id}/leave`);
   } catch (error) {
     logErrorMessage(error);
   }
@@ -353,7 +337,7 @@ export const userLeaveGroupApi = async ({ groupId }: UserLeaveGroupParams) => {
 
 export const getFriendsApi = async () => {
   try {
-    return await axiosClient.get<FriendType[]>(`/friends`);
+    return await axiosClient.get<FriendType[]>(`friends`);
   } catch (error) {
     logErrorMessage(error);
   }
@@ -361,7 +345,7 @@ export const getFriendsApi = async () => {
 
 export const getFriendsRequestsApi = async () => {
   try {
-    return await axiosClient.get<FriendRequestType[]>(`/friends/requests`);
+    return await axiosClient.get<FriendRequestType[]>(`friends/requests`);
   } catch (error) {
     logErrorMessage(error);
   }
@@ -379,7 +363,7 @@ export const getFriendRejectedRequestsApi = async () => {
 
 export const createFriendRequestApi = async (username: string) => {
   try {
-    return await axiosClient.post<FriendRequestType>(`/friends/requests`, {
+    return await axiosClient.post<FriendRequestType>(`friends/requests`, {
       username,
     });
   } catch (error) {
@@ -390,7 +374,7 @@ export const createFriendRequestApi = async (username: string) => {
 export const acceptFriendRequestApi = async (id: number) => {
   try {
     return await axiosClient.patch<FriendRequestAcceptResponse>(
-      `/friends/requests/${id}/accept`
+      `friends/requests/${id}/accept`
     );
   } catch (error) {
     logErrorMessage(error);
@@ -400,7 +384,7 @@ export const acceptFriendRequestApi = async (id: number) => {
 export const cancelFriendRequestApi = async (id: number) => {
   try {
     return await axiosClient.delete<FriendRequestType>(
-      `/friends/requests/${id}/cancel`
+      `friends/requests/${id}/cancel`
     );
   } catch (error) {
     logErrorMessage(error);
@@ -410,7 +394,7 @@ export const cancelFriendRequestApi = async (id: number) => {
 export const rejectFriendRequestApi = async (id: number) => {
   try {
     return await axiosClient.patch<FriendRequestType>(
-      `/friends/requests/${id}/reject`
+      `friends/requests/${id}/reject`
     );
   } catch (error) {
     logErrorMessage(error);
@@ -419,7 +403,7 @@ export const rejectFriendRequestApi = async (id: number) => {
 
 export const deleteFriendApi = async (id: number) => {
   try {
-    return await axiosClient.delete<FriendType>(`/friends/${id}/delete`);
+    return await axiosClient.delete<FriendType>(`friends/${id}/delete`);
   } catch (error) {
     logErrorMessage(error);
   }
@@ -429,9 +413,9 @@ export const deleteFriendApi = async (id: number) => {
  * Profile
  */
 
-export const completeUserProfile = async (data: FormData) => {
+export const updateUserProfileApi = async (data: FormData) => {
   try {
-    return axiosClient.post("/users/profiles", data, {
+    return await axiosClient.patch<UserType>(`users/profiles`, data, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   } catch (error) {

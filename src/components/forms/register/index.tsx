@@ -10,6 +10,7 @@ import { CreateUserParams } from "../../../utils/types";
 import NameField from "./NameField";
 import PasswordField from "./PasswordField";
 import UsernameField from "./UsernameField";
+import Loading from "../../loadings";
 
 const RegisterForm = () => {
   const {
@@ -38,24 +39,27 @@ const RegisterForm = () => {
 
   const formFieldProps = { errors, register };
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <UsernameField {...formFieldProps} />
+    <>
+      {loading && <Loading text="Create new account, Please awaiting ..." />}
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <UsernameField {...formFieldProps} />
 
-      <NameField {...formFieldProps} />
+        <NameField {...formFieldProps} />
 
-      <PasswordField {...formFieldProps} />
+        <PasswordField {...formFieldProps} />
 
-      <Button type="submit" className={styles.button}>
-        {loading ? "Loading ..." : "Create a new account"}
-      </Button>
+        <Button type="submit" className={styles.button} disabled={loading}>
+          Create a new account
+        </Button>
 
-      <div className={styles.footer}>
-        <span>Already have an account ?</span>
-        <Link to="/login">
-          <span>Login now.</span>
-        </Link>
-      </div>
-    </form>
+        <div className={styles.footer}>
+          <span>Already have an account ?</span>
+          <Link to="/login">
+            <span>Login now.</span>
+          </Link>
+        </div>
+      </form>
+    </>
   );
 };
 
