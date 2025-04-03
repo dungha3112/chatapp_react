@@ -110,7 +110,8 @@ const ConversationLayout = () => {
     <>
       {showSidebar && <ConversationSidebar />}
 
-      {!id && <ConversationPanel />}
+      {!id && !showSidebar && <ConversationSidebar />}
+      {!id && showSidebar && <ConversationPanel />}
       <Outlet />
     </>
   );

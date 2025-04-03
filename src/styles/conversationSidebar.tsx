@@ -15,8 +15,7 @@ export const ConversationSidebarStyle = styled.aside`
   user-select: none;
 
   @media (max-width: 800px) {
-    /* width: 60px; */
-    /* width: calc(100% - 80px); */
+    width: calc(100% - 80px);
   }
 `;
 

@@ -2,16 +2,15 @@ import { useContext } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { GoDotFill } from "react-icons/go";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../../store";
 import { deleteFriendThunk } from "../../../store/friends/friendsThunk";
 import { FriendListItemContainer } from "../../../styles/friend";
+import { checkConversationOrCreate } from "../../../utils/api";
 import { AuthContext } from "../../../utils/contexts/AuthContext";
 import { getUserFriendInstance } from "../../../utils/helpers";
 import { FriendType } from "../../../utils/types";
-import { checkConversationOrCreate } from "../../../utils/api";
-import { useNavigate } from "react-router-dom";
 import Avatar from "../../avatars/Avatar";
-import avatarDefatult from "../../../assets/default_avatar.jpg";
 
 type Props = {
   friend: FriendType;
@@ -37,15 +36,11 @@ const FriendListItem = ({ friend, online }: Props) => {
       .catch((err) => console.log(err));
   };
 
-  const avatarString = recipient?.profile?.avatar?.secure_url
-    ? String(recipient?.profile?.avatar?.secure_url)
-    : String(avatarDefatult);
-
   return (
     <FriendListItemContainer onClick={handleSendMessageOrCreateNewConversation}>
       <div className="userDetails">
         <div className="avatar">
-          <Avatar size="md" url={avatarString} />
+          <Avatar size="md" user={recipient} />
           {online && <GoDotFill fontSize={20} className="online" />}
         </div>
         <div className="nameAndMessage">
@@ -54,8 +49,6 @@ const FriendListItem = ({ friend, online }: Props) => {
               ? friend.receiver.username
               : friend.sender.username}
           </div>
-
-          <div className="message">Hi How are you ?</div>
         </div>
       </div>
 

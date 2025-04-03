@@ -1,21 +1,21 @@
 import React, { Dispatch, useEffect, useState } from "react";
+import { FaFrownOpen } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../store";
 import { createConversationThunk } from "../../store/conversations/conversationThunk";
 import { Button, InputContainer, InputLabel, TextField } from "../../styles";
-import { searchUsersApi } from "../../utils/api";
-import useDebounce from "../../utils/hooks/useDebounce";
-import { UserType } from "../../utils/types";
-import ConversationRecipientField from "../recipients/ConversationRecipientField";
-import RecipientResultsContainer from "../recipients/RecipientResultsContainer";
-import styles from "./index.module.scss";
 import {
   RecipientNoResultContainerStyle,
   RecipientNoResultItemStyle,
 } from "../../styles/recipients";
-import { FaFrownOpen } from "react-icons/fa";
+import { searchUsersApi } from "../../utils/api";
+import useDebounce from "../../utils/hooks/useDebounce";
 import { useToast } from "../../utils/hooks/useToast";
+import { UserType } from "../../utils/types";
+import ConversationRecipientField from "../recipients/ConversationRecipientField";
+import RecipientResultsContainer from "../recipients/RecipientResultsContainer";
+import styles from "./index.module.scss";
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>;

@@ -4,9 +4,8 @@ import { ConversationSidebarItemStyle } from "../../styles/conversationSidebar";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 import { getRecipientFromConversation } from "../../utils/helpers";
 import { ConversationType } from "../../utils/types";
-import styles from "./index.module.scss";
-import defaultAvatar from "../../assets/default_avatar.jpg";
 import Avatar from "../avatars/Avatar";
+import styles from "./index.module.scss";
 
 type Props = {
   conversation: ConversationType;
@@ -17,11 +16,7 @@ export const ConversationSibarItem = ({ conversation }: Props) => {
 
   const navigate = useNavigate();
 
-  const getDisplayUser = getRecipientFromConversation(conversation, user);
-
-  const avatarString = getDisplayUser?.profile?.avatar
-    ? String(getDisplayUser?.profile?.avatar.secure_url)
-    : String(defaultAvatar);
+  const recipient = getRecipientFromConversation(conversation, user);
 
   return (
     <ConversationSidebarItemStyle
@@ -29,11 +24,11 @@ export const ConversationSibarItem = ({ conversation }: Props) => {
       onClick={() => navigate(`/conversations/${conversation.id}`)}
       $selected={parseInt(id!) === conversation.id}
     >
-      <Avatar url={avatarString} size="md" />
+      <Avatar user={recipient} size="md" />
 
       <div>
         <span className={styles.conversationName}>
-          {getDisplayUser?.firstName + " " + getDisplayUser?.lastName}
+          {recipient?.firstName + " " + recipient?.lastName}
         </span>
         <span className={styles.conversationMessage}>
           <span style={{ fontWeight: "bold", color: "#e2e2e2" }}>

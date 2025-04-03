@@ -5,6 +5,7 @@ import {
 } from "../../styles/recipients";
 import { UserType } from "../../utils/types";
 import { CiCircleCheck } from "react-icons/ci";
+import Avatar from "../avatars/Avatar";
 
 type Props = {
   userResults: UserType[];
@@ -23,7 +24,10 @@ const RecipientResultsContainer = ({
             key={user.id}
             onClick={() => handleSelectUser(user)}
           >
-            <span>{user.username}</span>
+            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+              <Avatar size="sm" user={user} />
+              <span>{user.username}</span>
+            </div>
             <CiCircleCheck className="icon" />
           </RecipientResultItemStyle>
         ))}

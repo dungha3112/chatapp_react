@@ -1,6 +1,5 @@
 import moment from "moment";
 import { useContext } from "react";
-import avatarDefault from "../../../assets/default_avatar.jpg";
 import { MessageItemHeaderStyle } from "../../../styles/messages";
 import { AuthContext } from "../../../utils/contexts/AuthContext";
 import { GroupMessageType, MessageType } from "../../../utils/types";
@@ -12,13 +11,9 @@ type Props = {
 const MessageItemHeader = ({ message }: Props) => {
   const { user } = useContext(AuthContext);
 
-  const urlAvatar = message.author.profile?.avatar?.secure_url
-    ? message.author.profile?.avatar?.secure_url
-    : avatarDefault;
-
   return (
     <MessageItemHeaderStyle>
-      <Avatar url={urlAvatar} size="sm" />
+      <Avatar user={user} size="sm" />
 
       <span
         className="authorName"

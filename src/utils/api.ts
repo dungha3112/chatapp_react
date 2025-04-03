@@ -336,6 +336,18 @@ export const userLeaveGroupApi = async ({ id }: UserLeaveGroupParams) => {
   }
 };
 
+/**
+ * FRIEND API
+ */
+
+export const searchFriendUsersApi = async (query: string) => {
+  try {
+    return await axiosClient.get<UserType[]>(`friends/search?query=${query}`);
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
 export const getFriendsApi = async () => {
   try {
     return await axiosClient.get<FriendType[]>(`friends`);

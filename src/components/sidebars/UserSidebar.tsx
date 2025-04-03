@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { BsChatDots } from "react-icons/bs";
 import { FaUserFriends } from "react-icons/fa";
+import { IoSettingsOutline } from "react-icons/io5";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -12,12 +13,12 @@ import {
   UserSidebarItemStyle,
   UserSidebarStyle,
 } from "../../styles/userSidebar";
-import { userSidebarItems } from "../../utils/constants";
-import { UserSidebarRouteType } from "../../utils/types";
-import { IoSettingsOutline } from "react-icons/io5";
 import { logoutUserApi } from "../../utils/api";
+import { userSidebarItems } from "../../utils/constants";
 import { AuthContext } from "../../utils/contexts/AuthContext";
+import { UserSidebarRouteType } from "../../utils/types";
 import Avatar from "../avatars/Avatar";
+
 const CustomIcon = (id: UserSidebarRouteType) => {
   switch (id) {
     case "conversations":
@@ -65,7 +66,7 @@ const UserSidebar = () => {
     <>
       <UserSidebarStyle>
         <UserSidebarHeaderStyle>
-          <Avatar size="md" url={String(user?.profile?.avatar?.secure_url)} />
+          <Avatar size="md" user={user} />
         </UserSidebarHeaderStyle>
 
         <UserSidebarFooterStyle>

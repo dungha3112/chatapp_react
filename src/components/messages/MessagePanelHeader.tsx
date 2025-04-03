@@ -1,20 +1,19 @@
 import { useContext, useState } from "react";
+import { BsPersonAdd } from "react-icons/bs";
+import { MdGroups } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
 import { selectConversationById } from "../../store/conversations/conversationSlice";
+import { tonggleSidebar } from "../../store/groupRecipientSidebarSlice";
 import { selectGroupById } from "../../store/groups/groupSlice";
+import { ButtonIconStyle } from "../../styles";
+import { GroupHeaderIconsStyle } from "../../styles/group";
 import { MessagePanelHeaderStyle } from "../../styles/messages";
 import { AuthContext } from "../../utils/contexts/AuthContext";
-import { BsPersonAdd } from "react-icons/bs";
-import { ButtonIconStyle } from "../../styles";
-import AddGroupRecipientModal from "../modals/AddGroupRecipientModal";
-import { MdGroups } from "react-icons/md";
-import { tonggleSidebar } from "../../store/groupRecipientSidebarSlice";
-import { GroupHeaderIconsStyle } from "../../styles/group";
 import { getRecipientFromConversation } from "../../utils/helpers";
 import Avatar from "../avatars/Avatar";
-import avatarDefault from "../../assets/default_avatar.jpg";
+import AddGroupRecipientModal from "../modals/AddGroupRecipientModal";
 
 const MessagePanelHeader = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -40,9 +39,6 @@ const MessagePanelHeader = () => {
   const recipient = getRecipientFromConversation(conversation, user);
 
   const displayName = recipient?.firstName + " " + recipient?.lastName;
-  const avartarString: string = recipient?.profile?.avatar?.secure_url
-    ? recipient?.profile?.avatar?.secure_url
-    : avatarDefault;
 
   const groupTitle = group?.title || "Group";
   const headerTitle = conversationType === "group" ? groupTitle : displayName;
@@ -54,7 +50,7 @@ const MessagePanelHeader = () => {
       <MessagePanelHeaderStyle>
         <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
           {conversationType === "private" && (
-            <Avatar size="sm" url={avartarString} />
+            <Avatar size="sm" user={recipient} />
           )}
           {headerTitle}
         </div>

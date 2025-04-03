@@ -4,8 +4,6 @@ import {
   IoIosCloseCircleOutline,
   IoMdRemoveCircleOutline,
 } from "react-icons/io";
-import { FriendRequestType } from "../../../utils/types";
-import { AuthContext } from "../../../utils/contexts/AuthContext";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../store";
 import {
@@ -14,9 +12,10 @@ import {
   rejectFriendRequestThunk,
 } from "../../../store/friends/friendsThunk";
 import { FriendRequestItemContainer } from "../../../styles/friend";
-import avatarDefatult from "../../../assets/default_avatar.jpg";
-import Avatar from "../../avatars/Avatar";
+import { AuthContext } from "../../../utils/contexts/AuthContext";
 import { getUserFriendInstance } from "../../../utils/helpers";
+import { FriendRequestType } from "../../../utils/types";
+import Avatar from "../../avatars/Avatar";
 
 type Props = {
   friendRequest: FriendRequestType;
@@ -41,14 +40,10 @@ const FriendRequestItem = ({ friendRequest }: Props) => {
 
   const recipient = getUserFriendInstance(user, friendRequest);
 
-  const avatarString = recipient?.profile?.avatar?.secure_url
-    ? String(recipient?.profile?.avatar?.secure_url)
-    : String(avatarDefatult);
-
   return (
     <FriendRequestItemContainer>
       <div className="user">
-        <Avatar size="md" url={avatarString} />
+        <Avatar size="md" user={recipient} />
 
         <div className="name">
           <span>
