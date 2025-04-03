@@ -69,23 +69,27 @@ export const SettingsProfileBanner = styled.div<UserBannerProps>`
           background-color: #404040;
         `}
 
-  &::before {
-    background-color: none;
-    content: "Change Banner";
-    /* width: 100px; */
-    height: 310px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #b5b5b5;
-    font-size: 20px;
-    font-weight: 500;
-    opacity: 0;
-    transition: 300ms opacity ease;
-  }
-  &:hover:before {
-    opacity: 1;
-  }
+  ${({ $isChange }) =>
+    $isChange &&
+    css`
+      &::before {
+        background-color: none;
+        content: "Change Banner";
+        /* width: 100px; */
+        height: 310px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #b5b5b5;
+        font-size: 20px;
+        font-weight: 500;
+        opacity: 0;
+        transition: 300ms opacity ease;
+      }
+      &:hover:before {
+        opacity: 1;
+      }
+    `}
 `;
 
 export const ProfileSection = styled.div`
@@ -106,7 +110,10 @@ export const SettingsProfileUserDetails = styled.div`
   }
 `;
 
-export const UserAvatarContainer = styled.div<{ $url?: string }>`
+export const UserAvatarContainer = styled.div<{
+  $url?: string;
+  $isChange: boolean;
+}>`
   height: 140px;
   width: 140px;
   border-radius: 100%;
@@ -118,9 +125,9 @@ export const UserAvatarContainer = styled.div<{ $url?: string }>`
           transition: 1s background ease;
           background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
             url("${$url}") no-repeat center;
+          background-size: cover;
           opacity: 100%;
           transition: 300ms opacity ease;
-          background-size: cover;
           &:hover {
             opacity: 100%;
           }
@@ -129,23 +136,34 @@ export const UserAvatarContainer = styled.div<{ $url?: string }>`
           background-color: #404040;
         `};
 
-  &::before {
-    background-color: none;
-    content: "Change";
-    /* width: 100px; */
-    height: 140px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #b5b5b5;
-    font-size: 20px;
-    font-weight: 500;
-    opacity: 0;
-    transition: 300ms opacity ease;
-  }
-  &:hover:before {
-    opacity: 1;
-  }
+  ${({ $isChange }) =>
+    $isChange &&
+    css`
+      &::before {
+        height: 140px;
+        width: 140px;
+        content: "Change";
+        position: absolute;
+        border-radius: 50%;
+        /* width: 100%;
+        height: 100%; */
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #b5b5b5;
+        font-size: 20px;
+        font-weight: 500;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        transition: 300ms opacity ease;
+      }
+
+      &:hover::before {
+        opacity: 1;
+      }
+    `}
 `;
 
 export const ProfileAboutSection = styled.div`

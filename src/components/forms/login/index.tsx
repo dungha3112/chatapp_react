@@ -49,7 +49,7 @@ const LoginForm = () => {
 
   return (
     <>
-      {loading && <Loading text="Loading ..." />}
+      {loading && <Loading text="Loading, awaiting ..." />}
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <UsernameField {...formFieldProps} />
 

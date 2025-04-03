@@ -4,12 +4,14 @@ import { FaPeopleArrows, FaUserCircle } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
+import { handleUserProfileModal } from "../../store/friends/friendsSlice";
 import { selectGroupById } from "../../store/groups/groupSlice";
 import {
   removeGroupUserThunk,
   updateGroupOwnerThunk,
 } from "../../store/groups/groupThunk";
 import { ContextMenuItemStyle, ContextMenuSyle } from "../../styles";
+import { getUserProfileApi } from "../../utils/api";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 import { isGroupOwner } from "../../utils/helpers";
 import { PointsType, RemoveGroupUserParams } from "../../utils/types";
@@ -29,7 +31,7 @@ const SelectedParticipantContextMenu = ({ points }: Props) => {
 
   const isOwner = isGroupOwner(user, group);
 
-  const handleKickUser = async () => {
+  const handleKickUser = () => {
     if (!selectedUser || !id) return;
 
     const params: RemoveGroupUserParams = {
@@ -41,16 +43,31 @@ const SelectedParticipantContextMenu = ({ points }: Props) => {
       .catch((err) => console.log(err));
   };
 
-  const handleTransferGroupOwner = async () => {
+  const handleTransferGroupOwner = () => {
     if (!selectedUser || !id) return;
 
     const params = { id: parseInt(id), newOwnerId: selectedUser.id };
     dispatch(updateGroupOwnerThunk(params));
   };
 
+  const handleWatchProfile = () => {
+    if (!selectedUser) return;
+    getUserProfileApi(selectedUser?.id)
+      .then((res) => {
+        if (!res?.data) return;
+        dispatch(
+          handleUserProfileModal({
+            openModalUserProfile: true,
+            userProfile: res.data,
+          })
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <ContextMenuSyle $top={points.y} $left={points.x}>
-      <ContextMenuItemStyle>
+      <ContextMenuItemStyle onClick={handleWatchProfile}>
         <FaUserCircle fontSize={20} />
         Profile
       </ContextMenuItemStyle>

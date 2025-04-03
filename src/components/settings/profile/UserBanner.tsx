@@ -32,6 +32,7 @@ const UserBanner = ({
   return (
     <>
       <SettingsProfileBanner
+        $isChange={true}
         $backgroundUrl={bannerSourceCopy}
         onClick={handleBannerClick}
       />

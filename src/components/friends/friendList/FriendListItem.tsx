@@ -10,6 +10,8 @@ import { getUserFriendInstance } from "../../../utils/helpers";
 import { FriendType } from "../../../utils/types";
 import { checkConversationOrCreate } from "../../../utils/api";
 import { useNavigate } from "react-router-dom";
+import Avatar from "../../avatars/Avatar";
+import avatarDefatult from "../../../assets/default_avatar.jpg";
 
 type Props = {
   friend: FriendType;
@@ -24,8 +26,8 @@ const FriendListItem = ({ friend, online }: Props) => {
     dispatch(deleteFriendThunk(friend.id));
   };
 
+  const recipient = getUserFriendInstance(user, friend);
   const handleSendMessageOrCreateNewConversation = async () => {
-    const recipient = getUserFriendInstance(user, friend);
     if (!recipient) return;
 
     checkConversationOrCreate(recipient.id)
@@ -35,10 +37,15 @@ const FriendListItem = ({ friend, online }: Props) => {
       .catch((err) => console.log(err));
   };
 
+  const avatarString = recipient?.profile?.avatar?.secure_url
+    ? String(recipient?.profile?.avatar?.secure_url)
+    : String(avatarDefatult);
+
   return (
     <FriendListItemContainer onClick={handleSendMessageOrCreateNewConversation}>
       <div className="userDetails">
         <div className="avatar">
+          <Avatar size="md" url={avatarString} />
           {online && <GoDotFill fontSize={20} className="online" />}
         </div>
         <div className="nameAndMessage">

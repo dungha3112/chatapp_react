@@ -20,6 +20,7 @@ import {
   GroupMessageType,
   GroupType,
   MessageType,
+  ProfileType,
   RemoveGroupUserParams,
   SelectedConversationType,
   UpdateGroupOwnerParams,
@@ -418,6 +419,14 @@ export const updateUserProfileApi = async (data: FormData) => {
     return await axiosClient.patch<UserType>(`users/profiles`, data, {
       headers: { "Content-Type": "multipart/form-data" },
     });
+  } catch (error) {
+    logErrorMessage(error);
+  }
+};
+
+export const getUserProfileApi = async (id: number) => {
+  try {
+    return await axiosClient.get<ProfileType>(`users/profiles/${id}`);
   } catch (error) {
     logErrorMessage(error);
   }

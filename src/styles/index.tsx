@@ -161,7 +161,7 @@ export const OverlayStyle = styled.div`
   left: 0;
   justify-content: center;
   align-items: center;
-  z-index: 99;
+  z-index: 9999999;
 `;
 
 export const ModalContainerStyle = styled.div`
@@ -242,13 +242,6 @@ export const ContextMenuItemStyle = styled.li`
     cursor: pointer;
     background-color: #1f1f1f;
   }
-`;
-
-export const UserAvatarContainer = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
 `;
 
 export const ButtonIconStyle = styled.div`

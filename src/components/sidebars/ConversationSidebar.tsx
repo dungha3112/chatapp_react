@@ -17,6 +17,7 @@ import ConversationTab from "../conversations/ConversationTab";
 import GroupItem from "../groups/GroupItem";
 import CreateConversationModal from "../modals/CreateConversationModal";
 import CreateGroupModal from "../modals/CreateGroupModal";
+import { useHandleClick } from "../../utils/hooks";
 
 const ConversationSidebar = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -34,16 +35,9 @@ const ConversationSidebar = () => {
   const { groups, showGroupContextMenu, points } = useSelector(
     (state: RootState) => state.group
   );
+  const handleClick = () => dispatch(tonggleGroupSidebarContextMenu(false));
 
-  useEffect(() => {
-    const handleClick = () => dispatch(tonggleGroupSidebarContextMenu(false));
-    window.addEventListener("click", handleClick);
-
-    return () => {
-      console.log("UnClick ...");
-      window.removeEventListener("click", handleClick);
-    };
-  }, [dispatch]);
+  useHandleClick(handleClick, [dispatch]);
 
   useEffect(() => {
     const handleResize = () => {

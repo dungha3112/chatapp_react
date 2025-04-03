@@ -6,6 +6,7 @@ import { getRecipientFromConversation } from "../../utils/helpers";
 import { ConversationType } from "../../utils/types";
 import styles from "./index.module.scss";
 import defaultAvatar from "../../assets/default_avatar.jpg";
+import Avatar from "../avatars/Avatar";
 
 type Props = {
   conversation: ConversationType;
@@ -18,29 +19,17 @@ export const ConversationSibarItem = ({ conversation }: Props) => {
 
   const getDisplayUser = getRecipientFromConversation(conversation, user);
 
+  const avatarString = getDisplayUser?.profile?.avatar
+    ? String(getDisplayUser?.profile?.avatar.secure_url)
+    : String(defaultAvatar);
+
   return (
     <ConversationSidebarItemStyle
       key={conversation.id}
       onClick={() => navigate(`/conversations/${conversation.id}`)}
       $selected={parseInt(id!) === conversation.id}
     >
-      {/* <div
-        title={getDisplayUser?.firstName + " " + getDisplayUser?.lastName}
-        className={styles.conversationAvatar}
-      ></div> */}
-      {getDisplayUser?.profile?.avatar ? (
-        <img
-          src={getDisplayUser?.profile.avatar.secure_url}
-          alt="avatar"
-          className={styles.conversationAvatar}
-        />
-      ) : (
-        <img
-          src={defaultAvatar}
-          alt="avatar"
-          className={styles.conversationAvatar}
-        />
-      )}
+      <Avatar url={avatarString} size="md" />
 
       <div>
         <span className={styles.conversationName}>

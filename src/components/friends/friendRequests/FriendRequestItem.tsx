@@ -14,6 +14,9 @@ import {
   rejectFriendRequestThunk,
 } from "../../../store/friends/friendsThunk";
 import { FriendRequestItemContainer } from "../../../styles/friend";
+import avatarDefatult from "../../../assets/default_avatar.jpg";
+import Avatar from "../../avatars/Avatar";
+import { getUserFriendInstance } from "../../../utils/helpers";
 
 type Props = {
   friendRequest: FriendRequestType;
@@ -36,10 +39,16 @@ const FriendRequestItem = ({ friendRequest }: Props) => {
     dispatch(cancelFriendRequestThunk(friendRequest.id));
   };
 
+  const recipient = getUserFriendInstance(user, friendRequest);
+
+  const avatarString = recipient?.profile?.avatar?.secure_url
+    ? String(recipient?.profile?.avatar?.secure_url)
+    : String(avatarDefatult);
+
   return (
     <FriendRequestItemContainer>
       <div className="user">
-        <div className="avatar"></div>
+        <Avatar size="md" url={avatarString} />
 
         <div className="name">
           <span>

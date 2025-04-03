@@ -69,10 +69,7 @@ export const FriendListItemContainer = styled.div`
     gap: 10px;
 
     & .avatar {
-      height: 50px;
-      width: 50px;
       border-radius: 50%;
-      background-color: blue;
       position: relative;
       & .online {
         position: absolute;
@@ -132,13 +129,6 @@ export const FriendRequestItemContainer = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
-  }
-
-  & .avatar {
-    height: 50px;
-    width: 50px;
-    background-color: blue;
-    border-radius: 50%;
   }
 
   & .name {

@@ -12,6 +12,9 @@ import AddGroupRecipientModal from "../modals/AddGroupRecipientModal";
 import { MdGroups } from "react-icons/md";
 import { tonggleSidebar } from "../../store/groupRecipientSidebarSlice";
 import { GroupHeaderIconsStyle } from "../../styles/group";
+import { getRecipientFromConversation } from "../../utils/helpers";
+import Avatar from "../avatars/Avatar";
+import avatarDefault from "../../assets/default_avatar.jpg";
 
 const MessagePanelHeader = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -34,25 +37,27 @@ const MessagePanelHeader = () => {
     selectGroupById(state, parseInt(id!))
   );
 
-  const displayName =
-    conversation?.creator.id === user?.id
-      ? `${conversation?.recipient.firstName} ${conversation?.recipient.lastName}`
-      : `${conversation?.creator.firstName} ${conversation?.creator.lastName}`;
+  const recipient = getRecipientFromConversation(conversation, user);
+
+  const displayName = recipient?.firstName + " " + recipient?.lastName;
+  const avartarString: string = recipient?.profile?.avatar?.secure_url
+    ? recipient?.profile?.avatar?.secure_url
+    : avatarDefault;
 
   const groupTitle = group?.title || "Group";
   const headerTitle = conversationType === "group" ? groupTitle : displayName;
 
   return (
     <>
-      {showModal && (
-        <AddGroupRecipientModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-        />
-      )}
+      {showModal && <AddGroupRecipientModal setShowModal={setShowModal} />}
 
       <MessagePanelHeaderStyle>
-        <div>{headerTitle}</div>
+        <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+          {conversationType === "private" && (
+            <Avatar size="sm" url={avartarString} />
+          )}
+          {headerTitle}
+        </div>
 
         <GroupHeaderIconsStyle>
           {conversationType === "group" && user?.id === group?.owner.id && (

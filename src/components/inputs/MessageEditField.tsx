@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { MessageTextarea } from "../../styles/inputs/textarea";
 
 type Props = {
-  message: string;
+  message?: string;
   setMessage: (s: string) => void;
   maxLength: number;
   sendMessage: () => void;

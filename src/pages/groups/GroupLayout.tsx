@@ -56,6 +56,8 @@ const GroupLayout = () => {
     });
 
     socket.on("onGroupMessage", (payload: GroupMessageEventPayload) => {
+      console.log("ongroupmessage", payload);
+
       dispatch(addGroupMessage(payload));
       dispatch(updateGroup(payload.group));
     });

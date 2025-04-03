@@ -33,6 +33,7 @@ const UserAvatar = ({
     <>
       <UserAvatarContainer
         $url={avatarSourceCopy}
+        $isChange={true}
         onClick={handleAvatarClick}
       />
       <FileInput

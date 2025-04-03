@@ -130,7 +130,7 @@ export type DeleteMessageResponse = {
 export type EditMessageParams = {
   id: number;
   messageId: number;
-  content: string;
+  content?: string;
 };
 
 // EditMessageResponse
@@ -222,7 +222,7 @@ export type EditOrDeleteLastMessageGroupSidebarResponse = {
 export type EditGroupMessageParams = {
   id: number;
   messageId: number;
-  content: string;
+  content?: string;
 };
 
 // AddGroupRecipientParams
@@ -316,4 +316,9 @@ export type SettingsItemType = {
 export type AttachmentType = {
   id: number;
   file: File;
+};
+
+export type UserProfileModalType = {
+  userProfile?: ProfileType | null;
+  openModalUserProfile: boolean;
 };

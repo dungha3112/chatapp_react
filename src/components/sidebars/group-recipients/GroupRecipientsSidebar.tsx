@@ -19,6 +19,7 @@ import { UserType } from "../../../utils/types";
 import SelectedParticipantContextMenu from "../../context-menu/SelectedParticipantContextMenu";
 import OfflineGroupRecipients from "./OfflineGroupRecipients";
 import OnlineGroupRecipients from "./OnlineGroupRecipients";
+import { useHandleClick } from "../../../utils/hooks";
 
 const GroupRecipientsSidebar = () => {
   const [onlineUsers, setOnlineUsers] = useState<UserType[]>([]);
@@ -64,15 +65,9 @@ const GroupRecipientsSidebar = () => {
     };
   }, [id, socket]);
 
-  useEffect(() => {
-    const handleClick = () => dispatch(tongleGroupRecipientContextMenu(false));
-    window.addEventListener("click", handleClick);
+  const handleClick = () => dispatch(tongleGroupRecipientContextMenu(false));
 
-    return () => {
-      console.log("UnClick ...");
-      window.removeEventListener("click", handleClick);
-    };
-  }, [dispatch]);
+  useHandleClick(handleClick, [dispatch]);
 
   useEffect(() => {
     const handleResize = () => dispatch(tongleGroupRecipientContextMenu(false));

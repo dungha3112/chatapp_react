@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../store";
@@ -15,6 +15,7 @@ import MessageContainer from "./MessageContainer";
 import MessageInputField from "./MessageInputField";
 import MessagePanelHeader from "./MessagePanelHeader";
 import MessageAttachmentContainer from "./attachments/MessageAttachmentContainer";
+import UserProfileModal from "../modals/UserProfileModal";
 
 type Props = {
   sendTypingStatus: () => void;
@@ -24,16 +25,10 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
   const { id } = useParams();
 
   const { user } = useContext(AuthContext);
-
+  const { openModalUserProfile } = useSelector(
+    (state: RootState) => state.friends
+  );
   const { attachments } = useSelector((state: RootState) => state.messagePanel);
-
-  const { loading: isLoadingConversationMessage } = useSelector(
-    (state: RootState) => state.message
-  );
-
-  const { loading: isLoadingGroupMessage } = useSelector(
-    (state: RootState) => state.groupMessages
-  );
 
   const conversation = useSelector((state: RootState) =>
     selectConversationById(state, parseInt(id!))
@@ -41,11 +36,9 @@ const MessagePanel = ({ sendTypingStatus, isRecipientTyping }: Props) => {
 
   const recipient = getRecipientFromConversation(conversation, user);
 
-  if (isLoadingConversationMessage || isLoadingGroupMessage)
-    return <div>Loading message ..</div>;
-
   return (
     <>
+      {openModalUserProfile && <UserProfileModal />}
       <MessagePanelStyle>
         <MessagePanelHeader />
 

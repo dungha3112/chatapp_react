@@ -5,7 +5,6 @@ import { RiLogoutCircleLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "../../store";
-import { UserAvatarContainer } from "../../styles";
 import {
   IconBadge,
   UserSidebarFooterStyle,
@@ -18,6 +17,7 @@ import { UserSidebarRouteType } from "../../utils/types";
 import { IoSettingsOutline } from "react-icons/io5";
 import { logoutUserApi } from "../../utils/api";
 import { AuthContext } from "../../utils/contexts/AuthContext";
+import Avatar from "../avatars/Avatar";
 const CustomIcon = (id: UserSidebarRouteType) => {
   switch (id) {
     case "conversations":
@@ -36,7 +36,7 @@ const CustomIcon = (id: UserSidebarRouteType) => {
 const UserSidebar = () => {
   const [active, setActive] = useState<UserSidebarRouteType>("conversations");
 
-  const { updateAuthUser } = useContext(AuthContext);
+  const { updateAuthUser, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -65,7 +65,7 @@ const UserSidebar = () => {
     <>
       <UserSidebarStyle>
         <UserSidebarHeaderStyle>
-          <UserAvatarContainer />
+          <Avatar size="md" url={String(user?.profile?.avatar?.secure_url)} />
         </UserSidebarHeaderStyle>
 
         <UserSidebarFooterStyle>

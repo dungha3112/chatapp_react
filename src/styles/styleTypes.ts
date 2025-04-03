@@ -44,6 +44,39 @@ export const getButtonSizeStyle = (size: Size) => {
   }
 };
 
+export type AvatarProps = Partial<{
+  $size: Size;
+  $url: string;
+}>;
+
+export const getAvatarSizeStyle = (size: Size) => {
+  switch (size) {
+    case "sm":
+      return css`
+        width: 30px;
+        height: 30px;
+      `;
+
+    case "md":
+      return css`
+        width: 40px;
+        height: 40px;
+      `;
+
+    case "lg":
+      return css`
+        width: 60px;
+        height: 60px;
+      `;
+
+    default:
+      return css`
+        width: 150px;
+        height: 150px;
+      `;
+  }
+};
+
 export const getButtonVariantStyle = (variant: Variant) => {
   switch (variant) {
     case "secondary":
@@ -117,6 +150,7 @@ export type SettingsSidebarItemProps = {
   $isActive: boolean;
 };
 
-export type UserBannerProps = Partial<{
+export type UserBannerProps = {
   $backgroundUrl: string;
-}>;
+  $isChange: boolean;
+};

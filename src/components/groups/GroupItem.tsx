@@ -24,6 +24,7 @@ const GroupItem = ({ group }: Props) => {
     let x = e.pageX;
     let y = e.pageY;
     const padding = 10;
+    console.log({ x, y });
 
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
@@ -38,6 +39,7 @@ const GroupItem = ({ group }: Props) => {
     if (y + height > screenHeight) {
       y = screenHeight - height - padding;
     }
+    console.log({ x, y });
 
     dispatch(tonggleGroupSidebarContextMenu(true));
     dispatch(setGroupSidebarContextMenuLocal({ x, y }));

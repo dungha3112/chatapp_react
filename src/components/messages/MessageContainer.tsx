@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store";
@@ -18,9 +18,7 @@ import {
 } from "../../store/modals/modalSlice";
 import {
   MessageContainerStyle,
-  MessageItemAvatar,
   MessageItemContainer,
-  MessageItemContent,
   MessageItemDetails,
 } from "../../styles/messages";
 import { AuthContext } from "../../utils/contexts/AuthContext";
@@ -28,38 +26,31 @@ import {
   ContextMenuEventType,
   GroupMessageType,
   MessageType,
+  PointsType,
 } from "../../utils/types";
 import SelectedMessageContextMenu from "../context-menu/SelectedMessageContextMenu";
-import MessageItemAttachmentContainer from "./attachments/MessageItemAttachmentContainer";
-import EditMessageContainer from "./EditMessageContainer";
-import MessageItemHeader from "./MessageItemHeader";
+import MessageItemHeader from "./messageItems/MessageItemHeader";
 
-import avatarDefault from "../../assets/default_avatar.jpg";
+import { useHandleClick, useKeydown } from "../../utils/hooks";
+import MessageItemContainerBody from "./messageItems/MessageItemContainerBody";
 
 const MessageContainer = () => {
   const { user } = useContext(AuthContext);
   const dispatch = useDispatch<AppDispatch>();
-  const ref = useRef<HTMLDivElement>(null);
 
   const { id } = useParams();
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const [points, setPoints] = useState<{ x: number; y: number }>({
-    x: 0,
-    y: 0,
-  });
+  const [points, setPoints] = useState<PointsType>({ x: 0, y: 0 });
 
-  const { isEditingMessage, messageBegingEdited } = useSelector(
+  const { isEditingMessage } = useSelector(
     (state: RootState) => state.messageContainer
   );
-
   const conversationMessage = useSelector((state: RootState) =>
     selectConversationMessage(state, parseInt(id!))
   );
-
   const groupMessage = useSelector((state: RootState) =>
     selectGroupMessage(state, parseInt(id!))
   );
-
   const conversationType = useSelector(
     (state: RootState) => state.selectedConversationType.type
   );
@@ -69,37 +60,23 @@ const MessageContainer = () => {
     dispatch(handleUpdateMessageContentBegingEdited(e.target.value));
   };
 
-  useEffect(() => {
-    const handleClick = () => setShowMenu(false);
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      dispatch(handleSetIsEditingMessage(false));
+      dispatch(handleOpenFeedIconEditMess(false));
+      dispatch(tonggleGroupSidebarContextMenu(false));
+      dispatch(tongleGroupRecipientContextMenu(false));
+      dispatch(handleOpenFeedIconNewMess(false));
+      setShowMenu(false);
+    }
+  };
+  const handleClick = () => setShowMenu(false);
 
-    window.addEventListener("click", handleClick);
-
-    return () => {
-      console.log("UnClick ...");
-      window.removeEventListener("click", handleClick);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleKeyDown = (e: globalThis.KeyboardEvent) =>
-      e.key === "Escape" &&
-      (dispatch(handleSetIsEditingMessage(false)),
-      dispatch(handleOpenFeedIconEditMess(false)),
-      dispatch(tonggleGroupSidebarContextMenu(false)),
-      dispatch(tongleGroupRecipientContextMenu(false)),
-      dispatch(handleOpenFeedIconNewMess(false)));
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      console.log("Removing keydown listenner ...");
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [dispatch]);
+  useKeydown(handleKeyDown, [id]);
+  useHandleClick(handleClick, [id]);
 
   useEffect(() => {
     return () => {
-      console.log("Unmuseting ...");
-
       dispatch(handleResetMessageContainter());
     };
   }, [id, dispatch]);
@@ -108,117 +85,104 @@ const MessageContainer = () => {
     e.preventDefault();
     if (mess.author.id !== user?.id) return;
 
-    setShowMenu(true);
-    setPoints({ x: e.pageX, y: e.pageY });
-    dispatch(handleSelectedMessage(mess));
-  };
+    let x = e.pageX;
+    let y = e.pageY;
 
+    const targetElement = e.currentTarget as HTMLElement;
+    const itemWidth = targetElement.offsetWidth;
+    const itemLeft = targetElement.getBoundingClientRect().left;
+    const relativeX = x - itemLeft;
+
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    const width = 180; // width of SelectedParticipantContextMenu
+    const height = 188; // height of SelectedParticipantContextMenu
+
+    // Điều chỉnh nếu menu bị tràn ra khỏi màn hình
+    if (itemWidth === 264 && relativeX < (itemWidth * 2) / 3) {
+      x -= width / 2; // Chỉ giảm một phần nhỏ thay vì 120px cứng nhắc
+    }
+
+    if (x + width > screenWidth) {
+      x = screenWidth - width - 10; // Tránh tràn phải
+    }
+    if (x < 0) {
+      x = 10; // Tránh tràn trái
+    }
+
+    if (y + height > screenHeight) {
+      y = screenHeight - height - 10; // Tránh tràn dưới
+    }
+    if (y < 0) {
+      y = 10; // Tránh tràn trên
+    }
+
+    // Dùng giá trị x, y đã chỉnh sửa
+    setPoints({ x, y });
+    dispatch(handleSelectedMessage(mess));
+    setShowMenu(true);
+  };
   const mapMessages = (
     m: MessageType | GroupMessageType,
     index: number,
     messages: MessageType[] | GroupMessageType[]
   ) => {
-    const nextIndex = index + 1;
     const currentMessage = messages[index];
-    const nextMessage = messages[nextIndex];
+    const nextMessage = messages[index + 1];
+    const showMessageHeader =
+      messages.length === index + 1 ||
+      currentMessage.author.id !== nextMessage.author.id;
 
-    const urlAvatar = m.author.profile?.avatar?.secure_url
-      ? m.author.profile?.avatar?.secure_url
-      : avatarDefault;
-
-    if (
-      messages.length === nextIndex ||
-      currentMessage.author.id != nextMessage.author.id
-    ) {
-      return (
-        <MessageItemContainer onContextMenu={(e) => onContextMenu(e, m)}>
-          <MessageItemAvatar $url={urlAvatar} />
-
+    return (
+      <MessageItemContainer
+        onContextMenu={(e) => onContextMenu(e, m)}
+        key={m.id}
+      >
+        {showMessageHeader && <MessageItemHeader message={m} />}
+        {showMessageHeader ? (
           <MessageItemDetails>
-            <MessageItemHeader message={m} />
-
-            {isEditingMessage && m.id === messageBegingEdited?.id ? (
-              <MessageItemContent style={{ padding: "0 0 0 7px" }}>
-                <EditMessageContainer
-                  onEditMessageChange={onEditMessageChange}
-                />
-              </MessageItemContent>
-            ) : (
-              <MessageItemContent style={{ padding: "0 0 0 7px" }}>
-                {m.content || null}
-
-                <MessageItemAttachmentContainer message={m} />
-              </MessageItemContent>
-            )}
+            <MessageItemContainerBody
+              padding="0 0 0 45px"
+              m={m}
+              onEditMessageChange={onEditMessageChange}
+              key={m.id}
+            />
           </MessageItemDetails>
-        </MessageItemContainer>
-      );
-    }
-
-    if (currentMessage.author.id === nextMessage.author.id) {
-      return (
-        <MessageItemContainer
-          key={m.id}
-          onContextMenu={(e) => onContextMenu(e, m)}
-        >
-          {isEditingMessage && m.id === messageBegingEdited?.id ? (
-            <MessageItemContent $padding="8px 0 0 0">
-              <EditMessageContainer
-                onEditMessageChange={onEditMessageChange}
-                key={m.id}
-              />
-            </MessageItemContent>
-          ) : (
-            <MessageItemContent $padding="8px 0 0 0">
-              {m.content || null}
-              <MessageItemAttachmentContainer message={m} />
-            </MessageItemContent>
-          )}
-        </MessageItemContainer>
-      );
-    }
+        ) : (
+          <MessageItemDetails>
+            <MessageItemContainerBody
+              padding="0 0 0 45px"
+              m={m}
+              onEditMessageChange={onEditMessageChange}
+              key={m.id}
+            />
+          </MessageItemDetails>
+        )}
+      </MessageItemContainer>
+    );
   };
-
-  const formatMessages = () => {
-    if (conversationType === "private") {
-      return conversationMessage?.messages.map(mapMessages);
-    }
-
-    if (conversationType === "group") {
-      return groupMessage?.messages.map(mapMessages);
-    }
-  };
-
-  useEffect(() => {
-    formatMessages();
-  }, []);
-
-  useEffect(() => {
-    const handleClick = () => setShowMenu(false);
-    window.addEventListener("click", handleClick);
-    return () => window.removeEventListener("click", handleClick);
-  }, []);
-
-  const handleScroll = () => {
-    if (!ref.current) return;
-
-    // const previousHeight = container.scrollHeight;
-    // setTimeout(() => {
-    //   container.scrollTop = container.scrollHeight - previousHeight;
-    // }, 100);
-  };
-
-  useEffect(() => {
-    const container = ref.current;
-    if (!container) return;
-
-    container.addEventListener("scroll", handleScroll);
-    return () => container.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
-    <MessageContainerStyle ref={ref}>
-      {formatMessages()}
+    <MessageContainerStyle
+      onScroll={(e) => {
+        const node = e.target as HTMLDivElement;
+        const scrollTopMax = node.scrollHeight - node.clientHeight;
+
+        if (node.scrollTop === scrollTopMax) {
+          console.log("Đã cuộn xuống dưới cùng!");
+        }
+
+        if (-Math.round(scrollTopMax) === Math.round(node.scrollTop)) {
+          console.log("?????");
+        }
+      }}
+    >
+      <>
+        {conversationType === "private"
+          ? conversationMessage?.messages.map(mapMessages)
+          : groupMessage?.messages.map(mapMessages)}
+      </>
 
       {showMenu && <SelectedMessageContextMenu points={points} />}
     </MessageContainerStyle>

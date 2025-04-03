@@ -149,8 +149,12 @@ const SettingsProfilePage = () => {
               maxLength={200}
               disabled={!isEditing}
               placeholder="Write something ..."
-              value={aboutCopy}
-              onChange={(e) => setAboutCopy(e.target.value)}
+              value={aboutCopy.slice(0, 200)}
+              onChange={(e) => {
+                if (e.target.value.length <= 200) {
+                  setAboutCopy(e.target.value);
+                }
+              }}
             />
           </ProfileAboutSection>
         </ProfileSection>

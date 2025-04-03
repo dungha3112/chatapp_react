@@ -35,8 +35,9 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
   const { messageBegingEdited } = useSelector(
     (state: RootState) => state.messageContainer
   );
+
   const MAX_LENGTH = 2048;
-  const atMaxLength = messageBegingEdited?.content.length === MAX_LENGTH;
+  const atMaxLength = messageBegingEdited?.content?.length === MAX_LENGTH;
   const dispatch = useDispatch<AppDispatch>();
 
   const conversationType = useSelector(
@@ -53,7 +54,7 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
   if (!id || !messageBegingEdited) return;
 
   const sendMessage = async () => {
-    if (!id || !messageBegingEdited.content.trim()) return;
+    if (!id || !messageBegingEdited.content?.trim()) return;
     if (conversationType === "private") {
       const params = {
         id: parseInt(id),
@@ -105,8 +106,8 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
     if (!textAreaRef.current) return;
 
     const cursorPos = textAreaRef.current.selectionStart; // Lấy vị trí con trỏ
-    const textBefore = messageBegingEdited.content.substring(0, cursorPos); // Phần trước con trỏ
-    const textAfter = messageBegingEdited.content.substring(cursorPos); // Phần sau con trỏ
+    const textBefore = messageBegingEdited?.content?.substring(0, cursorPos); // Phần trước con trỏ
+    const textAfter = messageBegingEdited?.content?.substring(cursorPos); // Phần sau con trỏ
 
     // Cập nhật state với emoji được chèn vào vị trí con trỏ
 
@@ -159,7 +160,7 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
         />
 
         <CharacterLimit $atMaxLength={atMaxLength}>
-          {messageBegingEdited.content.length}/{MAX_LENGTH}
+          {messageBegingEdited?.content?.length}/{MAX_LENGTH}
         </CharacterLimit>
 
         <div className={styles.emojiPicker}>

@@ -31,7 +31,7 @@ export const MessagePanelBody = styled.div`
   flex: 1 1 auto;
   overflow-y: auto;
   min-height: 0;
-  height: calc(100% - 600px);
+  /* height: calc(100% - 600px); */
 `;
 
 export const MessageContainerStyle = styled.div`
@@ -97,27 +97,20 @@ export const MessageInputStyle = styled.input`
 `;
 
 export const MessageItemContainer = styled.div`
-  display: flex;
+  /* display: flex; */
   gap: 10px;
   padding: 5px 0;
   word-break: break-word;
 `;
 
-export const MessageItemAvatar = styled.div<{ $url: string }>`
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: #f3efef solid 0.5px;
-  background: url(${(props) => props.$url}) no-repeat center;
-  background-size: cover;
+export const MessageItemDetails = styled.div`
+  flex: 1;
 `;
 
-export const MessageItemDetails = styled.div`
-  /* display: flex;
-  flex-direction: column;
+export const MessageItemHeaderStyle = styled.div`
+  display: flex;
+  align-items: center;
   gap: 12px;
-  width: 100%; */
-  flex: 1;
 
   .authorName {
     font-size: 16px;
@@ -129,13 +122,9 @@ export const MessageItemDetails = styled.div`
   }
 `;
 
-export const MessageItemHeaderStyle = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-`;
-
 export const MessageItemContent = styled.div<MessageItemContentProps>`
+  display: flex;
+  flex-direction: column;
   ${({ $padding }) => css`
     padding: ${$padding};
   `}

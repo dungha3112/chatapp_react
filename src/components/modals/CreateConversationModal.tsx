@@ -1,9 +1,10 @@
-import React, { createRef, Dispatch, useEffect } from "react";
+import React, { createRef, Dispatch } from "react";
 import { MdClose } from "react-icons/md";
 import { ModalContainer, ModalContentBody } from ".";
 import { ButtonIconStyle, ModalHeaderStyle, OverlayStyle } from "../../styles";
-import CreateConversationForm from "../forms/CreateConversationForm";
+import { useKeydown } from "../../utils/hooks";
 import { ContextMenuEventType } from "../../utils/types";
+import CreateConversationForm from "../forms/CreateConversationForm";
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>;
@@ -11,12 +12,10 @@ type Props = {
 const CreateConversationModal = ({ setShowModal }: Props) => {
   const ref = createRef<HTMLDivElement>();
 
-  useEffect(() => {
-    const handleKeydown = (e: KeyboardEvent) =>
-      e.key === "Escape" && setShowModal(false);
-    window.addEventListener("keydown", handleKeydown);
-    return () => window.removeEventListener("keydown", handleKeydown);
-  }, [setShowModal]);
+  const handleKeydown = (e: KeyboardEvent) =>
+    e.key === "Escape" && setShowModal(false);
+
+  useKeydown(handleKeydown, [setShowModal]);
 
   const handleOverlayClick = (e: ContextMenuEventType) => {
     const { current } = ref;

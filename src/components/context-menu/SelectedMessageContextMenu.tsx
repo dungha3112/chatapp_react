@@ -15,7 +15,7 @@ import { AuthContext } from "../../utils/contexts/AuthContext";
 import { deleteGroupMessageThunk } from "../../store/groupMessage/groupMessageThunk";
 import { selectGroupMessage } from "../../store/groupMessage/groupMessageSlice";
 import { editOrDeleteLastMessageGroupSidebar } from "../../store/groups/groupSlice";
-import { PointsType } from "../../utils/types";
+import { GroupMessageType, PointsType } from "../../utils/types";
 
 type Props = {
   points: PointsType;
@@ -74,7 +74,7 @@ const SelectedMessageContextMenu = ({ points }: Props) => {
           isEdit: false,
           id: Number(groupMessage?.id),
           messages: groupMessage?.messages.slice(0, 2),
-          message: selectedMessage,
+          message: selectedMessage as GroupMessageType,
         })
       );
     }

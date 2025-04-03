@@ -3,6 +3,8 @@ import {
   FriendNavType,
   FriendRequestAcceptResponse,
   FriendRequestType,
+  ProfileType,
+  UserProfileModalType,
 } from "../../utils/types";
 import { FriendType } from "./../../utils/types";
 import {
@@ -25,6 +27,9 @@ export interface FriendsState {
   friendRejectedRequests: FriendRequestType[];
 
   friendOnlines: FriendType[];
+
+  userProfile?: ProfileType | null;
+  openModalUserProfile: boolean;
 }
 
 const initialState: FriendsState = {
@@ -35,6 +40,8 @@ const initialState: FriendsState = {
   friendNavType: "friendList",
 
   friendOnlines: [],
+
+  openModalUserProfile: false,
 };
 
 export const friendsSlice = createSlice({
@@ -76,6 +83,13 @@ export const friendsSlice = createSlice({
       state.friendOnlines = action.payload;
     },
 
+    handleUserProfileModal: (
+      state,
+      action: PayloadAction<UserProfileModalType>
+    ) => {
+      state.openModalUserProfile = action.payload.openModalUserProfile;
+      state.userProfile = action.payload.userProfile;
+    },
     //
   },
   extraReducers: (builder) => {
@@ -154,6 +168,7 @@ export const {
   onChangeFriendNavType,
   deleteFriend,
   setFriendOnline,
+  handleUserProfileModal,
 } = friendsSlice.actions;
 
 export default friendsSlice.reducer;

@@ -7,6 +7,7 @@ import { SocketContext } from "../../../utils/contexts/SocketContext";
 import { FriendType } from "../../../utils/types";
 import FriendListItem from "./FriendListItem";
 import { getFriendListThunk } from "../../../store/friends/friendsThunk";
+import Loading from "../../loadings";
 
 const FriendList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -46,7 +47,7 @@ const FriendList = () => {
     };
   }, [dispatch, socket]);
 
-  if (loadingFriend) return <div>Loading ...</div>;
+  if (loadingFriend) return <Loading text="Loading friend list ..." />;
 
   return (
     <FriendListContainer>
