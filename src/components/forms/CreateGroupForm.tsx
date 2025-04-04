@@ -33,7 +33,7 @@ const CreateGroupForm = ({ setShowModal }: Props) => {
   const [query, setQuery] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [message, setMessage] = useState<string>("");
-  const { success, error } = useToast();
+  const { success } = useToast();
 
   const [selectedRecipients, setSelectedRecipients] = useState<UserType[]>([]);
 
@@ -90,10 +90,6 @@ const CreateGroupForm = ({ setShowModal }: Props) => {
         setTitle("");
         setUserResults([]);
         setSearching(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        error("Try again !");
       });
   };
 

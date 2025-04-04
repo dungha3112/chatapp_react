@@ -61,7 +61,7 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
         messageId: messageBegingEdited.id,
         content: messageBegingEdited.content,
       };
-      dispatch(editConversationMessageThunk(params))
+      await dispatch(editConversationMessageThunk(params))
         .unwrap()
         .then(() => {
           dispatch(handleSetIsEditingMessage(false));
@@ -74,8 +74,7 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
               message: messageBegingEdited as MessageType,
             })
           );
-        })
-        .catch((err) => console.log(err));
+        });
     }
 
     if (conversationType === "group") {
@@ -84,7 +83,7 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
         messageId: messageBegingEdited.id,
         content: messageBegingEdited.content,
       };
-      dispatch(editGroupMessageThunk(params))
+      await dispatch(editGroupMessageThunk(params))
         .unwrap()
         .then(() => {
           dispatch(handleSetIsEditingMessage(false));
@@ -97,8 +96,7 @@ const EditMessageContainer = ({ onEditMessageChange }: Props) => {
               message: messageBegingEdited as GroupMessageType,
             })
           );
-        })
-        .catch((err) => console.log(err));
+        });
     }
   };
 

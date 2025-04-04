@@ -38,9 +38,7 @@ const SelectedParticipantContextMenu = ({ points }: Props) => {
       id: parseInt(id),
       removeUserId: selectedUser.id,
     };
-    dispatch(removeGroupUserThunk(params))
-      .unwrap()
-      .catch((err) => console.log(err));
+    dispatch(removeGroupUserThunk(params));
   };
 
   const handleTransferGroupOwner = () => {

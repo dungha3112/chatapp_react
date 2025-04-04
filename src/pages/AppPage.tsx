@@ -18,10 +18,15 @@ import {
   FriendRequestAcceptResponse,
   FriendRequestType,
   FriendType,
+  UserTypingPayload,
 } from "../utils/types";
 import { getFriendRequestListThunk } from "../store/friends/friendsThunk";
 import { AuthContext } from "../utils/contexts/AuthContext";
 import { getUserFriendInstance } from "../utils/helpers";
+import {
+  handleConversationStartTyping,
+  handleRemoveConversationStopTyping,
+} from "../store/conversations/conversationSlice";
 
 const AppPage = () => {
   const location = useLocation();
@@ -119,6 +124,34 @@ const AppPage = () => {
       socket.off("onFriendDelete");
     };
   }, [socket, dispatch, info, navigate, user]);
+
+  useEffect(() => {
+    socket.on("onTypingStart", (payload: UserTypingPayload) => {
+      console.log("user typing ,,,", payload);
+      if (user?.id !== payload.user.id) {
+        dispatch(
+          handleConversationStartTyping({
+            id: payload.id,
+            isTyping: true,
+            userTyping: payload.user,
+          })
+        );
+      }
+    });
+
+    socket.on("onTypingStop", (payload: UserTypingPayload) => {
+      console.log("user stop ,,,", payload);
+
+      if (user?.id !== payload.user.id) {
+        dispatch(handleRemoveConversationStopTyping({ id: payload.id }));
+      }
+    });
+
+    return () => {
+      socket.off("onTypingStart");
+      socket.off("onTypingStop");
+    };
+  }, [dispatch, socket, user?.id]);
 
   return (
     <LayoutPage>

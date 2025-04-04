@@ -32,6 +32,7 @@ import SelectedMessageContextMenu from "../context-menu/SelectedMessageContextMe
 import MessageItemHeader from "./messageItems/MessageItemHeader";
 
 import { useHandleClick, useKeydown } from "../../utils/hooks";
+import UserTyping from "../typings";
 import MessageItemContainerBody from "./messageItems/MessageItemContainerBody";
 
 const MessageContainer = () => {
@@ -53,6 +54,14 @@ const MessageContainer = () => {
   );
   const conversationType = useSelector(
     (state: RootState) => state.selectedConversationType.type
+  );
+
+  const conversationsTyping = useSelector(
+    (state: RootState) => state.conversation.conversationsTyping
+  );
+
+  const conversationIsTyping = conversationsTyping.find(
+    (cv) => cv.id === parseInt(id!)
   );
 
   const onEditMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -178,12 +187,18 @@ const MessageContainer = () => {
         }
       }}
     >
+      {conversationIsTyping?.isTyping && (
+        <UserTyping
+          isAvatar={true}
+          userTyping={conversationIsTyping.userTyping}
+        />
+      )}
+
       <>
         {conversationType === "private"
           ? conversationMessage?.messages.map(mapMessages)
           : groupMessage?.messages.map(mapMessages)}
       </>
-
       {showMenu && <SelectedMessageContextMenu points={points} />}
     </MessageContainerStyle>
   );

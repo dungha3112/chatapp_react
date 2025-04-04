@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface MessagePanelState {
   attachments: File[];
-  // attachments: AttachmentType[];
 }
 
 const initialState: MessagePanelState = {
@@ -13,10 +12,6 @@ export const messagePanelSlice = createSlice({
   name: "messagePanel",
   initialState,
   reducers: {
-    // addAttachment: (state, action: PayloadAction<File[]>) => {
-    //   state.attachments = [...state.attachments, ...Array.from(action.payload)];
-    // },
-
     addAttachment: (state, action: PayloadAction<File>) => {
       state.attachments.push(action.payload);
     },

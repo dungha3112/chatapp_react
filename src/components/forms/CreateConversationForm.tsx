@@ -27,7 +27,7 @@ const CreateConversationForm = ({ setShowModal }: Props) => {
   const [selectedUser, setSelectedUser] = useState<UserType>();
   const [searching, setSearching] = useState<boolean>(false);
 
-  const { success, error } = useToast();
+  const { success } = useToast();
 
   const debounceQuery = useDebounce(query, 1000);
 
@@ -63,10 +63,6 @@ const CreateConversationForm = ({ setShowModal }: Props) => {
         setQuery("");
         setUserResults([]);
         setMessage("");
-      })
-      .catch((err) => {
-        console.log(err);
-        error(err.message);
       });
   };
 

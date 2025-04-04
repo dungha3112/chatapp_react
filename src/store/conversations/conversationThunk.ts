@@ -1,8 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getConversationsApi, postNewConversationApi } from "../../utils/api";
-import { CreateConversationParams } from "../../utils/types";
 import { useToast } from "../../utils/hooks/useToast";
-import { toast } from "react-toastify";
+import { CreateConversationParams } from "../../utils/types";
 
 export const fetchConversationsThunk = createAsyncThunk(
   "conversations/fetch",
@@ -19,13 +18,11 @@ export const fetchConversationsThunk = createAsyncThunk(
 export const createConversationThunk = createAsyncThunk(
   "conversations/create",
   (data: CreateConversationParams) => {
-    return postNewConversationApi(data);
-    // const { error } = useToast();
-    // try {
-    // } catch (err) {
-    //   console.log(err);
-
-    //   toast(String(err), { type: "error" });
-    // }
+    const { error } = useToast();
+    try {
+      return postNewConversationApi(data);
+    } catch (err) {
+      error(String(err));
+    }
   }
 );

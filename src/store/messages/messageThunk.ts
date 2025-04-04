@@ -4,24 +4,32 @@ import {
   editMessageApi,
   getMessagesByidApi,
 } from "../../utils/api";
+import { useToast } from "../../utils/hooks/useToast";
 import {
   DeleteConversationMessageParams,
   EditMessageParams,
 } from "../../utils/types";
-import { toast } from "react-toastify";
 
 export const fetchMessagesThunk = createAsyncThunk(
   "messages/fetch",
-  (id: number) => getMessagesByidApi(id)
+  (id: number) => {
+    const { error } = useToast();
+    try {
+      return getMessagesByidApi(id);
+    } catch (err) {
+      error(String(err));
+    }
+  }
 );
 
 export const deleteConversationMessageThunk = createAsyncThunk(
   "messages/delete",
   ({ id, messageId }: DeleteConversationMessageParams) => {
+    const { error } = useToast();
     try {
       return deleteMessageApi({ id, messageId });
-    } catch (error) {
-      toast(String(error), { type: "error" });
+    } catch (err) {
+      error(String(err));
     }
   }
 );
@@ -29,10 +37,11 @@ export const deleteConversationMessageThunk = createAsyncThunk(
 export const editConversationMessageThunk = createAsyncThunk(
   "messages/edit",
   ({ content, id, messageId }: EditMessageParams) => {
+    const { error } = useToast();
     try {
       return editMessageApi({ content, id, messageId });
-    } catch (error) {
-      toast(String(error), { type: "error" });
+    } catch (err) {
+      error(String(err));
     }
   }
 );

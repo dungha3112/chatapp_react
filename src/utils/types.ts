@@ -322,3 +322,14 @@ export type UserProfileModalType = {
   userProfile?: ProfileType | null;
   openModalUserProfile: boolean;
 };
+
+export type UserTypingPayload = {
+  id: number;
+  user: UserType;
+};
+
+export type PayloadTypingType = {
+  id: number;
+  isTyping: boolean;
+  userTyping?: UserType;
+};

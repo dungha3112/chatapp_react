@@ -3,6 +3,7 @@ import { RootState } from "..";
 import {
   ConversationType,
   EditOrDeleteLastMessageConversationSidebarResponse,
+  PayloadTypingType,
 } from "../../utils/types";
 import {
   createConversationThunk,
@@ -12,11 +13,13 @@ import {
 export interface ConversationsState {
   conversations: ConversationType[];
   loading: boolean;
+  conversationsTyping: PayloadTypingType[];
 }
 
 const initialState: ConversationsState = {
   conversations: [],
   loading: false,
+  conversationsTyping: [],
 };
 
 export const conversationSlice = createSlice({
@@ -56,6 +59,22 @@ export const conversationSlice = createSlice({
         state.conversations[index].lastMessageSent = messages[1];
       }
     },
+
+    handleConversationStartTyping: (
+      state,
+      action: PayloadAction<PayloadTypingType>
+    ) => {
+      state.conversationsTyping.push(action.payload);
+    },
+    handleRemoveConversationStopTyping: (
+      state,
+      action: PayloadAction<{ id: number }>
+    ) => {
+      state.conversationsTyping = state.conversationsTyping.filter(
+        (conver) => conver.id !== action.payload.id
+      );
+    },
+    //
   },
 
   extraReducers: (builder) => {
@@ -91,6 +110,8 @@ export const {
   addConversation,
   updateConversation,
   editOrDeleteLastMessageConversationSidebar,
+  handleConversationStartTyping,
+  handleRemoveConversationStopTyping,
 } = conversationSlice.actions;
 
 export default conversationSlice.reducer;

@@ -9,18 +9,31 @@ import {
   getFriendRejectedRequestsApi,
   deleteFriendApi,
 } from "../../utils/api";
-
+import { useToast } from "../../utils/hooks/useToast";
 /**
  * Friend
  */
 
-export const getFriendListThunk = createAsyncThunk("friends/fetch", () =>
-  getFriendsApi()
-);
+export const getFriendListThunk = createAsyncThunk("friends/fetch", () => {
+  const { error } = useToast();
+  try {
+    return getFriendsApi();
+  } catch (err) {
+    error(String(err));
+  }
+});
 
 export const deleteFriendThunk = createAsyncThunk(
   "friends/delete",
-  (id: number) => deleteFriendApi(id)
+  (id: number) => {
+    const { error } = useToast();
+
+    try {
+      return deleteFriendApi(id);
+    } catch (err) {
+      error(String(err));
+    }
+  }
 );
 
 /**
@@ -29,30 +42,74 @@ export const deleteFriendThunk = createAsyncThunk(
 
 export const getFriendRequestListThunk = createAsyncThunk(
   "friends/requests/fetch",
-  () => getFriendsRequestsApi()
+  () => {
+    const { error } = useToast();
+
+    try {
+      return getFriendsRequestsApi();
+    } catch (err) {
+      error(String(err));
+    }
+  }
 );
 
 export const getFriendRejectedRequestListThunk = createAsyncThunk(
   "friends/requests/rejected/fetch",
-  () => getFriendRejectedRequestsApi()
+  () => {
+    const { error } = useToast();
+
+    try {
+      getFriendRejectedRequestsApi();
+    } catch (err) {
+      error(String(err));
+    }
+  }
 );
 
 export const createFriendRequestThunk = createAsyncThunk(
   "friends/requests/create",
-  (username: string) => createFriendRequestApi(username)
+  (username: string) => {
+    const { error } = useToast();
+    try {
+      return createFriendRequestApi(username);
+    } catch (err) {
+      error(String(err));
+    }
+  }
 );
 
 export const cancelFriendRequestThunk = createAsyncThunk(
   "friends/requests/cancel",
-  (id: number) => cancelFriendRequestApi(id)
+  (id: number) => {
+    const { error } = useToast();
+    try {
+      return cancelFriendRequestApi(id);
+    } catch (err) {
+      error(String(err));
+    }
+  }
 );
 
 export const rejectFriendRequestThunk = createAsyncThunk(
   "friends/requests/reject",
-  (id: number) => rejectFriendRequestApi(id)
+  (id: number) => {
+    const { error } = useToast();
+    try {
+      return rejectFriendRequestApi(id);
+    } catch (err) {
+      error(String(err));
+    }
+  }
 );
 
 export const acceptFriendRequestThunk = createAsyncThunk(
   "friends/requests/accept",
-  (id: number) => acceptFriendRequestApi(id)
+  (id: number) => {
+    const { error } = useToast();
+    try {
+      acceptFriendRequestApi(id);
+    } catch (err) {
+      error(String(err));
+    }
+  }
 );

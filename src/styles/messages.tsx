@@ -31,7 +31,7 @@ export const MessagePanelBody = styled.div`
   flex: 1 1 auto;
   overflow-y: auto;
   min-height: 0;
-  /* height: calc(100% - 600px); */
+  height: calc(100% - 600px);
 `;
 
 export const MessageContainerStyle = styled.div`
@@ -62,6 +62,7 @@ export const MessageTypingStatusStyle = styled.div`
   font-size: 13px;
   font-style: italic;
   color: #555555;
+  background-color: #000;
   position: absolute;
   z-index: 999;
   margin-left: 24px;
@@ -97,7 +98,6 @@ export const MessageInputStyle = styled.input`
 `;
 
 export const MessageItemContainer = styled.div`
-  /* display: flex; */
   gap: 10px;
   padding: 5px 0;
   word-break: break-word;

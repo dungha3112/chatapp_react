@@ -12,35 +12,61 @@ import {
   UpdateGroupOwnerParams,
   UserLeaveGroupParams,
 } from "../../utils/types";
+import { useToast } from "../../utils/hooks/useToast";
 
 export const fetchGroupsThunk = createAsyncThunk("groups/fetch", () => {
-  return getGroupsApi();
+  const { error } = useToast();
+  try {
+    return getGroupsApi();
+  } catch (err) {
+    error(String(err));
+  }
 });
 
 export const createGroupThunk = createAsyncThunk(
   "group/create",
   (params: CreateGroupParams) => {
-    return createGroupsApi(params);
+    const { error } = useToast();
+    try {
+      return createGroupsApi(params);
+    } catch (err) {
+      error(String(err));
+    }
   }
 );
 
 export const removeGroupUserThunk = createAsyncThunk(
   "group/remove/user",
   (params: RemoveGroupUserParams) => {
-    return removeGroupUserApi(params);
+    const { error } = useToast();
+    try {
+      return removeGroupUserApi(params);
+    } catch (err) {
+      error(String(err));
+    }
   }
 );
 
 export const updateGroupOwnerThunk = createAsyncThunk(
   "group/update/owner",
   (params: UpdateGroupOwnerParams) => {
-    return updateGroupOwnerApi(params);
+    const { error } = useToast();
+    try {
+      return updateGroupOwnerApi(params);
+    } catch (err) {
+      error(String(err));
+    }
   }
 );
 
 export const userLeaveGroupThunk = createAsyncThunk(
   "group/user/leave",
-  (params: UserLeaveGroupParams) => {
-    return userLeaveGroupApi(params);
+  async (params: UserLeaveGroupParams) => {
+    const { error } = useToast();
+    try {
+      return await userLeaveGroupApi(params);
+    } catch (err) {
+      error(String(err));
+    }
   }
 );

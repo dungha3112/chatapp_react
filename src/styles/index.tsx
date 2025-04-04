@@ -57,7 +57,6 @@ export const InputError = styled.span`
 export const LabelAnimation = styled.label<AnimationOceanWavesProps>`
   display: inline-block;
   color: #8f8f8f;
-  font-size: 14px;
   margin: 4px 0;
   white-space: nowrap;
 

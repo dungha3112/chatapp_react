@@ -25,7 +25,7 @@ const SendFriendRequestForm = ({ setShowModal }: Props) => {
   const [selectedUser, setSelectedUser] = useState<UserType>();
   const [searching, setSearching] = useState<boolean>(false);
 
-  const { success, error } = useToast();
+  const { success } = useToast();
 
   const debounceQuery = useDebounce(query, 1000);
 
@@ -58,9 +58,6 @@ const SendFriendRequestForm = ({ setShowModal }: Props) => {
       .then(() => {
         success("Send requests success ...");
         setShowModal(false);
-      })
-      .catch((err) => {
-        error(err.message);
       });
   };
 

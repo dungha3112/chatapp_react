@@ -17,18 +17,13 @@ import MessageTextField from "../inputs/MessageTextField";
 import { removeAllAttachments } from "../../store/message-panel/messagePanelSlice";
 import MessageAttachmentActionIcon from "./MessageAttachmentActionIcon";
 
-type Props = {
-  sendTypingStatus: () => void;
-};
-
-const MessageInputField = ({ sendTypingStatus }: Props) => {
+const MessageInputField = () => {
   const { id } = useParams();
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const [content, setContent] = useState<string>("");
 
-  const [isMultiLine, setIsMultiLine] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
   const { openFeedIconEditMess, openFeedIconNewMess } = useSelector(
@@ -99,8 +94,6 @@ const MessageInputField = ({ sendTypingStatus }: Props) => {
             message={content}
             setMessage={setContent}
             maxLength={MAX_LENGTH}
-            setIsMultiLine={setIsMultiLine}
-            sendTypingStatus={sendTypingStatus}
             sendMessage={sendMessage}
           />
         </form>
