@@ -25,8 +25,6 @@ export const ConversationSibarItem = ({ conversation }: Props) => {
     (cv) => cv.id === conversation.id
   );
 
-  console.log(conversationIsTyping);
-
   const message =
     conversation?.lastMessageSent &&
     conversation?.lastMessageSent.content &&

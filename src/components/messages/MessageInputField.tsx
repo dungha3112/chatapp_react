@@ -16,9 +16,11 @@ import { postNewMessageApi } from "../../utils/api";
 import MessageTextField from "../inputs/MessageTextField";
 import { removeAllAttachments } from "../../store/message-panel/messagePanelSlice";
 import MessageAttachmentActionIcon from "./MessageAttachmentActionIcon";
+import { useToast } from "../../utils/hooks/useToast";
 
 const MessageInputField = () => {
   const { id } = useParams();
+  const { error } = useToast();
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -56,8 +58,8 @@ const MessageInputField = () => {
       await postNewMessageApi(id, conversationType, formData);
       setContent("");
       dispatch(removeAllAttachments());
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      error(String(err));
     }
 
     dispatch(handleOpenFeedIconNewMess(false));

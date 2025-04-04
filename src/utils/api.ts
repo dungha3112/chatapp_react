@@ -133,7 +133,7 @@ export const postNewMessageApi = async (
         ? `conversations/${id}/messages`
         : `groups/${id}/messages`;
 
-    return axiosClient.post(url, data, {
+    return await axiosClient.post(url, data, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   } catch (error) {

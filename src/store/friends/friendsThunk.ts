@@ -59,7 +59,7 @@ export const getFriendRejectedRequestListThunk = createAsyncThunk(
     const { error } = useToast();
 
     try {
-      getFriendRejectedRequestsApi();
+      return getFriendRejectedRequestsApi();
     } catch (err) {
       error(String(err));
     }
@@ -107,7 +107,7 @@ export const acceptFriendRequestThunk = createAsyncThunk(
   (id: number) => {
     const { error } = useToast();
     try {
-      acceptFriendRequestApi(id);
+      return acceptFriendRequestApi(id);
     } catch (err) {
       error(String(err));
     }

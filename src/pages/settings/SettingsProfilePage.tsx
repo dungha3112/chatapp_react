@@ -19,10 +19,11 @@ import {
 } from "../../styles/settings";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 import { updateUserProfileApi } from "../../utils/api";
+import { useToast } from "../../utils/hooks/useToast";
 
 const SettingsProfilePage = () => {
   const { user, updateAuthUser } = useContext(AuthContext);
-
+  const { error } = useToast();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   // about
@@ -90,8 +91,8 @@ const SettingsProfilePage = () => {
 
       updateAuthUser(res?.data);
       setIsEditing(false);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      error(String(err));
     } finally {
       setLoading(false);
     }

@@ -132,7 +132,7 @@ export const friendsSlice = createSlice({
     });
 
     builder.addCase(acceptFriendRequestThunk.fulfilled, (state, action) => {
-      if (!action.payload?.data) return;
+      if (!action.payload) return;
       const { friend, friendRequest } = action.payload.data;
       state.friends.push(friend);
 

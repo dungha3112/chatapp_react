@@ -7,10 +7,10 @@ import { toast } from "react-toastify";
 import { Button } from "../../../styles";
 import { postRegisterApi } from "../../../utils/api";
 import { CreateUserParams } from "../../../utils/types";
+import Loading from "../../loadings";
 import NameField from "./NameField";
 import PasswordField from "./PasswordField";
 import UsernameField from "./UsernameField";
-import Loading from "../../loadings";
 
 const RegisterForm = () => {
   const {
